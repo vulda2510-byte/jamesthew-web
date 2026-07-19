@@ -1,22 +1,28 @@
-// server.js
 require('dotenv').config();
-const sequelize = require('./src/config/database');
+
 const app = require('./src/app');
+
+// Updated paths reflecting the new src/config/ directory
+const logger = require('./src/config/logger');
+const { testDbConnection } = require('./src/config/database'); 
+const { connectRedis } = require('./src/config/redis');
 
 const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Database connection has been established successfully.');
-        
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-        process.exit(1);
-    }
+  try {
+    // Initialize external connections
+    await testDbConnection();
+    await connectRedis();
+
+    // Start Express server
+    app.listen(PORT, () => {
+      logger.info(`Server is running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode.`);
+    });
+  } catch (error) {
+    logger.error('Failed to bootstrap application:', error);
+    process.exit(1);
+  }
 };
 
 startServer();

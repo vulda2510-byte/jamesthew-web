@@ -1,2 +1,42 @@
 <!-- src/views/login.ejs -->
-<h1>Login Page</h1>
+<%- include('partials/header') %>
+
+<main class="login-wrapper">
+    <div class="card login-card">
+        <div class="login-header">
+            <h1 class="login-title">Welcome Back</h1>
+        </div>
+        
+        <form action="/api/v1/auth/login" method="POST">
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+            </div>
+            
+            <div class="login-options">
+                <label class="form-checkbox-group">
+                    <input type="checkbox" name="rememberMe" id="rememberMe">
+                    <span>Remember Me</span>
+                </label>
+                <a href="#" class="text-link">Forgot Password?</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        
+        <div class="divider"></div>
+        
+        <div class="login-footer">
+            <span>Don't have an account?</span>
+            <!-- Internal link updated -->
+            <a href="/register" class="text-link">Register</a>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

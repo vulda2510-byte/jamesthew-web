@@ -1,0 +1,34 @@
+/* public/css/base.css */
+:root {
+    --primary-color: #000000;
+    --text-color: #333333;
+    --bg-color: #f8f9fa;
+    --border-color: #e9ecef;
+    --placeholder-color: #ccc;
+    --placeholder-text: #888;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

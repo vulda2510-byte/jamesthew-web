@@ -1,0 +1,198 @@
+<!-- src/views/membership.ejs -->
+<%- include('partials/header') %>
+
+<main class="membership-page">
+    <!-- Section 1: Hero -->
+    <section class="membership-hero">
+        <div class="container">
+            <h1>Membership</h1>
+            <p class="text-muted">Unlock exclusive culinary experiences, masterclasses, and a private community of food enthusiasts.</p>
+            <div class="mt-section">
+                <a href="#pricing" class="btn btn-primary">Join Membership</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Section 2: Membership Plans -->
+        <section id="pricing" class="mt-section">
+            <h2 class="section-title text-center">Choose Your Plan</h2>
+            <div class="plans-grid mt-section">
+                <!-- Free Plan -->
+                <div class="card plan-card">
+                    <div class="card-body">
+                        <h3>Free</h3>
+                        <div class="plan-price">$0 <span>/month</span></div>
+                        <p class="text-muted">Basic access to recipes</p>
+                        <ul class="plan-features">
+                            <li>Access to free recipes</li>
+                            <li>Community forum (Read-only)</li>
+                            <li>Basic weekly newsletter</li>
+                        </ul>
+                        <a href="/register" class="btn btn-outline btn-block">Sign Up Free</a>
+                    </div>
+                </div>
+
+                <!-- Premium Plan (Highlighted) -->
+                <div class="card plan-card plan-premium">
+                    <div class="card-body">
+                        <h3>Premium</h3>
+                        <div class="plan-price">$9.99 <span>/month</span></div>
+                        <p class="text-muted">For aspiring home chefs</p>
+                        <ul class="plan-features">
+                            <li>All Free features</li>
+                            <li>Unlock Premium recipes</li>
+                            <li>Step-by-step video tutorials</li>
+                            <li>Private community access</li>
+                        </ul>
+                        <a href="/register" class="btn btn-primary btn-block">Get Premium</a>
+                    </div>
+                </div>
+
+                <!-- VIP Plan -->
+                <div class="card plan-card">
+                    <div class="card-body">
+                        <h3>VIP</h3>
+                        <div class="plan-price">$24.99 <span>/month</span></div>
+                        <p class="text-muted">The ultimate culinary journey</p>
+                        <ul class="plan-features">
+                            <li>All Premium features</li>
+                            <li>1-on-1 Q&A with Chef James</li>
+                            <li>Exclusive Masterclass courses</li>
+                            <li>Downloadable resources</li>
+                        </ul>
+                        <a href="/register" class="btn btn-outline btn-block">Get VIP</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Benefits -->
+        <section class="mt-section">
+            <h2 class="section-title text-center">Membership Benefits</h2>
+            <div class="benefits-grid mt-section">
+                <div class="benefit-card text-center">
+                    <div class="icon-placeholder">ICON</div>
+                    <h3>Exclusive Recipes</h3>
+                    <p class="text-muted">Access hundreds of premium, tested recipes unavailable to the public.</p>
+                </div>
+                <div class="benefit-card text-center">
+                    <div class="icon-placeholder">ICON</div>
+                    <h3>Video Tutorials</h3>
+                    <p class="text-muted">Watch high-quality, step-by-step video guides for complex dishes.</p>
+                </div>
+                <div class="benefit-card text-center">
+                    <div class="icon-placeholder">ICON</div>
+                    <h3>Private Community</h3>
+                    <p class="text-muted">Connect, share, and learn with other passionate food lovers.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Membership Comparison -->
+        <section class="mt-section">
+            <h2 class="section-title text-center">Compare Plans</h2>
+            <div class="table-responsive mt-section">
+                <table class="table table-center">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Features</th>
+                            <th>Free</th>
+                            <th>Premium</th>
+                            <th>VIP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: left;">Recipes</td>
+                            <td>Basic</td>
+                            <td>All</td>
+                            <td>All</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Videos</td>
+                            <td>-</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Courses</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>Full Access</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Private Community</td>
+                            <td>Read-only</td>
+                            <td>Yes</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Contests</td>
+                            <td>-</td>
+                            <td>Yes</td>
+                            <td>Priority Entry</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Download Materials</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Priority Support</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section 5: FAQ -->
+        <section class="mt-section">
+            <h2 class="section-title text-center">Frequently Asked Questions</h2>
+            <div class="accordion mt-section">
+                <div class="accordion-item active">
+                    <div class="accordion-header">
+                        <span>Can I cancel my subscription at any time?</span>
+                        <span>-</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p class="text-muted">Yes, you can easily cancel your premium or VIP subscription from your account dashboard at any point. No hidden fees.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Are the masterclasses live or pre-recorded?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p class="text-muted">Masterclasses are pre-recorded in high definition so you can watch and learn at your own pace.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>How often are new recipes added?</span>
+                        <span>+</span>
+                    </div>
+                    <div class="accordion-body">
+                        <p class="text-muted">We update the platform with new exclusive recipes every week, and release a new masterclass monthly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Call To Action -->
+        <section class="cta-banner mt-section">
+            <h2 class="section-title">Ready to elevate your cooking?</h2>
+            <p>Join thousands of members mastering the art of fine dining.</p>
+            <div class="mt-15">
+                <a href="/register" class="btn btn-outline">Join Membership Now</a>
+            </div>
+        </section>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

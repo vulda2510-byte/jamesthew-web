@@ -1,2 +1,55 @@
 <!-- src/views/home.ejs -->
-<h1>Home Page</h1>
+<!-- Updating Featured section cards to link to /recipe-detail -->
+<%- include('partials/header') %>
+
+<main>
+    <section class="hero-section container">
+        <div class="hero-content">
+            <h1>Chef James Thew</h1>
+            <p>Renowned culinary innovator blending classical techniques with modern gastronomy. Explore exclusive recipes, masterclasses, and behind-the-scenes insights into the world of fine dining.</p>
+            <div class="gap-buttons">
+                <a href="/membership" class="btn btn-primary">Explore Membership</a>
+                <a href="/recipes" class="btn btn-outline">Explore Recipes</a>
+            </div>
+        </div>
+        <div class="image-placeholder">
+            <span>IMAGE PLACEHOLDER</span>
+        </div>
+    </section>
+
+    <section class="container mt-section">
+        <h2 class="section-title">Featured Recipes</h2>
+        
+        <div class="featured-grid">
+            <!-- Cột trái lớn -->
+            <a href="/recipe-detail" class="card card-large">
+                <div class="image-placeholder"><span>IMAGE PLACEHOLDER</span></div>
+                <div class="card-body">
+                    <h3>Grilled Salmon with Lemon Butter</h3>
+                    <p>A perfectly grilled salmon paired with a rich and tangy lemon butter sauce. Quick, healthy, and incredibly delicious.</p>
+                </div>
+            </a>
+
+            <!-- Cột phải 2 card nhỏ -->
+            <div class="featured-right">
+                <a href="/recipe-detail" class="card card-small">
+                    <div class="image-placeholder"><span>IMAGE PLACEHOLDER</span></div>
+                    <div class="card-body">
+                        <h3>Classic Beef Wellington</h3>
+                        <p>Tender beef wrapped in mushroom duxelles and flaky pastry.</p>
+                    </div>
+                </a>
+                
+                <a href="/recipe-detail" class="card card-small">
+                    <div class="image-placeholder"><span>IMAGE PLACEHOLDER</span></div>
+                    <div class="card-body">
+                        <h3>Creamy Tomato Soup</h3>
+                        <p>A comforting bowl of rich, creamy tomato goodness.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('partials/footer') %>

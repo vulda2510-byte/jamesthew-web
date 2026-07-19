@@ -1,0 +1,13 @@
+/* public/css/dashboard.css */
+/* Dashboard Page Specific Layouts */
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}

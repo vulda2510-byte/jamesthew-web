@@ -1,0 +1,77 @@
+/* public/css/recipe-detail.css */
+/* Recipe Detail Page Layout */
+
+.recipe-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.recipe-hero-image .image-placeholder {
+    height: 400px;
+    border-radius: 8px;
+}
+
+.recipe-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.recipe-hero-info .recipe-meta {
+    margin-bottom: 20px;
+}
+
+.recipe-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* Stats Section */
+.recipe-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    background: #fff;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.stat-box strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+/* Content Grid (Ingredients & Instructions) */
+.recipe-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+}
+
+.ingredient-item {
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ingredient-item:last-child {
+    border-bottom: none;
+}
+
+.instructions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Specific Adjustments */
+.mt-15 {
+    margin-top: 15px;
+}
+
+.chef-info {
+    flex: 1;
+}

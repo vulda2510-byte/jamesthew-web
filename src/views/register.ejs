@@ -1,2 +1,62 @@
 <!-- src/views/register.ejs -->
-<h1>Register Page</h1>
+<%- include('partials/header') %>
+
+<main class="register-wrapper">
+    <div class="card register-card">
+        <div class="register-header">
+            <h1 class="register-title">Create an Account</h1>
+        </div>
+        
+        <form action="/api/v1/auth/register" method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" id="firstName" name="firstName" class="form-input" placeholder="First Name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Last Name" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-input" placeholder="Choose a username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Create a password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-checkbox-group">
+                    <input type="checkbox" name="agreeTerms" id="agreeTerms" required>
+                    <span>I agree to the <a href="/terms" class="text-link">Terms & Conditions</a></span>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+        
+        <div class="divider"></div>
+        
+        <div class="register-footer">
+            <span>Already have an account?</span>
+            <a href="/login" class="text-link">Login</a>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

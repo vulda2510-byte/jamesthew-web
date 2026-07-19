@@ -1,0 +1,167 @@
+<!-- src/views/recipes.ejs -->
+<%- include('partials/header') %>
+
+<main class="container mt-section recipes-page">
+    <!-- Section 1: Header & Filters -->
+    <section class="recipes-header text-center">
+        <h1 class="section-title">Free Recipes Gallery</h1>
+        <p class="text-muted">Explore our collection of culinary delights. High-quality, tested recipes accessible to everyone.</p>
+    </section>
+
+    <section class="recipes-filters">
+        <div class="filter-search">
+            <input type="text" class="form-input" placeholder="Search recipes...">
+        </div>
+        
+        <div class="filter-categories gap-buttons">
+            <button class="btn btn-primary btn-sm">ALL</button>
+            <button class="btn btn-outline btn-sm">APPETIZERS</button>
+            <button class="btn btn-outline btn-sm">MAINS</button>
+            <button class="btn btn-outline btn-sm">DESSERTS</button>
+            <button class="btn btn-outline btn-sm">VEGAN</button>
+        </div>
+
+        <div class="filter-dropdowns gap-buttons">
+            <select class="form-input btn-sm">
+                <option value="">Any Difficulty</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+            <select class="form-input btn-sm">
+                <option value="newest">Sort By: Newest</option>
+                <option value="popular">Sort By: Popular</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Section 2: Recipe Grid -->
+    <section class="recipes-grid mt-section">
+        <!-- Card 1 -->
+        <div class="card recipe-card">
+            <div class="image-placeholder card-img">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+            <div class="card-body">
+                <h3>Classic Bruschetta</h3>
+                <p>Crispy toasted bread rubbed with garlic and topped with olive oil and salt.</p>
+                <div class="recipe-meta flex-row">
+                    <span class="badge">Easy</span>
+                    <span class="meta-text">15 mins</span>
+                </div>
+            </div>
+            <div class="card-footer flex-between">
+                <span class="category-label text-muted">APPETIZERS</span>
+                <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card recipe-card">
+            <div class="image-placeholder card-img">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+            <div class="card-body">
+                <h3>Roasted Herb Chicken</h3>
+                <p>A succulent whole chicken roasted to perfection with fresh seasonal herbs.</p>
+                <div class="recipe-meta flex-row">
+                    <span class="badge">Medium</span>
+                    <span class="meta-text">90 mins</span>
+                </div>
+            </div>
+            <div class="card-footer flex-between">
+                <span class="category-label text-muted">MAINS</span>
+                <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card recipe-card">
+            <div class="image-placeholder card-img">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+            <div class="card-body">
+                <h3>Chocolate Lava Cake</h3>
+                <p>Decadent chocolate cake with a warm, gooey center. A classic favorite.</p>
+                <div class="recipe-meta flex-row">
+                    <span class="badge">Hard</span>
+                    <span class="meta-text">45 mins</span>
+                </div>
+            </div>
+            <div class="card-footer flex-between">
+                <span class="category-label text-muted">DESSERTS</span>
+                <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card recipe-card">
+            <div class="image-placeholder card-img">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+            <div class="card-body">
+                <h3>Quinoa Power Bowl</h3>
+                <p>Nutrient-packed bowl featuring quinoa, roasted sweet potatoes, and tahini dressing.</p>
+                <div class="recipe-meta flex-row">
+                    <span class="badge">Easy</span>
+                    <span class="meta-text">20 mins</span>
+                </div>
+            </div>
+            <div class="card-footer flex-between">
+                <span class="category-label text-muted">VEGAN</span>
+                <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card recipe-card">
+            <div class="image-placeholder card-img">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+            <div class="card-body">
+                <h3>Spaghetti Aglio e Olio</h3>
+                <p>Traditional Italian pasta dish with garlic, olive oil, and red pepper flakes.</p>
+                <div class="recipe-meta flex-row">
+                    <span class="badge">Easy</span>
+                    <span class="meta-text">15 mins</span>
+                </div>
+            </div>
+            <div class="card-footer flex-between">
+                <span class="category-label text-muted">MAINS</span>
+                <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+            </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card recipe-card">
+            <div class="image-placeholder card-img">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+            <div class="card-body">
+                <h3>Seasonal Fruit Tart</h3>
+                <p>A buttery crust filled with rich pastry cream and topped with fresh, seasonal fruits.</p>
+                <div class="recipe-meta flex-row">
+                    <span class="badge">Medium</span>
+                    <span class="meta-text">60 mins</span>
+                </div>
+            </div>
+            <div class="card-footer flex-between">
+                <span class="category-label text-muted">DESSERTS</span>
+                <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Pagination -->
+    <section class="pagination-wrapper mt-section flex-center">
+        <ul class="pagination flex-row">
+            <li><a href="#" class="btn btn-outline btn-sm">Previous</a></li>
+            <li><a href="#" class="btn btn-primary btn-sm">1</a></li>
+            <li><a href="#" class="btn btn-outline btn-sm">2</a></li>
+            <li><a href="#" class="btn btn-outline btn-sm">3</a></li>
+            <li><a href="#" class="btn btn-outline btn-sm">Next</a></li>
+        </ul>
+    </section>
+</main>
+
+<%- include('partials/footer') %>

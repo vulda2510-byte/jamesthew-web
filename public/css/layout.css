@@ -1,0 +1,60 @@
+/* public/css/layout.css */
+/* Grid & Container Utilities */
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Flexbox Layout Utilities */
+.flex-row {
+    display: flex;
+    align-items: center;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* General Structural Elements */
+.header {
+    background: #fff;
+    border-bottom: 1px solid var(--border-color);
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.footer {
+    background: #222;
+    color: #fff;
+    padding: 40px 0;
+    text-align: center;
+    margin-top: 60px;
+}
+
+/* Spacing Utilities */
+.mt-section {
+    margin-top: 60px;
+}
+
+.gap-buttons {
+    display: flex;
+    gap: 15px;
+}

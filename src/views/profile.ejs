@@ -1,0 +1,266 @@
+<!-- src/views/profile.ejs -->
+<%- include('partials/header') %>
+
+<main class="profile-page pb-section">
+    <!-- Section 1: Profile Hero (Enhanced Hierarchy) -->
+    <section class="profile-hero mb-section">
+        <div class="profile-cover"></div>
+        <div class="container">
+            <div class="card p-40 profile-header-card">
+                <div class="flex-row align-start profile-header-inner">
+                    <div class="avatar-placeholder profile-avatar-large">
+                        <span>AVATAR</span>
+                    </div>
+                    <div class="profile-info flex-1">
+                        <div class="flex-between flex-wrap">
+                            <div>
+                                <h1 class="mb-10">James Thew <span class="badge badge-premium">VIP Chef</span></h1>
+                                <p class="text-muted font-bold">@jamesthew</p>
+                            </div>
+                            <div class="gap-buttons profile-actions">
+                                <button class="btn btn-primary">Edit Profile</button>
+                                <button class="btn btn-outline">Share Profile</button>
+                            </div>
+                        </div>
+                        <p class="mt-15 text-lg">Passionate culinary innovator and executive chef focusing on bringing fine dining techniques to the home kitchen. Lover of bold flavors and seasonal ingredients.</p>
+                        
+                        <!-- Improved Meta Row -->
+                        <div class="profile-meta flex-row mt-15 text-muted flex-wrap gap-15 align-center">
+                            <span class="flex-row align-center gap-5"><div class="icon-placeholder icon-xs"><span>📍</span></div> Hanoi, Vietnam</span>
+                            <span class="flex-row align-center gap-5"><div class="icon-placeholder icon-xs"><span>🌐</span></div> <a href="#" class="text-link">jamesthew.com</a></span>
+                            <span class="flex-row align-center gap-5"><div class="icon-placeholder icon-xs"><span>📅</span></div> Joined Jan 2024</span>
+                        </div>
+                        
+                        <!-- Socials -->
+                        <div class="social-links flex-row mt-15">
+                            <div class="icon-placeholder icon-sm"><span>IN</span></div>
+                            <div class="icon-placeholder icon-sm"><span>FB</span></div>
+                            <div class="icon-placeholder icon-sm"><span>TW</span></div>
+                            <div class="icon-placeholder icon-sm"><span>YT</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Section 2: Profile Statistics -->
+        <section class="profile-stats-grid mb-section-lg">
+            <div class="card text-center p-20 stat-card">
+                <h2 class="font-bold">142</h2>
+                <p class="text-muted text-sm font-bold text-uppercase">Recipes</p>
+            </div>
+            <div class="card text-center p-20 stat-card">
+                <h2 class="font-bold">12.5k</h2>
+                <p class="text-muted text-sm font-bold text-uppercase">Followers</p>
+            </div>
+            <div class="card text-center p-20 stat-card">
+                <h2 class="font-bold">340</h2>
+                <p class="text-muted text-sm font-bold text-uppercase">Following</p>
+            </div>
+            <div class="card text-center p-20 stat-card">
+                <h2 class="font-bold">24</h2>
+                <p class="text-muted text-sm font-bold text-uppercase">Awards</p>
+            </div>
+            <div class="card text-center p-20 stat-card">
+                <h2 class="font-bold">58k</h2>
+                <p class="text-muted text-sm font-bold text-uppercase">Likes</p>
+            </div>
+            <div class="card text-center p-20 stat-card">
+                <h2 class="font-bold">1.2m</h2>
+                <p class="text-muted text-sm font-bold text-uppercase">Views</p>
+            </div>
+        </section>
+
+        <!-- Section 2.5: Chef Signature (Moved up & Enhanced) -->
+        <section class="mb-section-lg">
+            <h2 class="section-title">Chef Signature</h2>
+            <div class="card card-horizontal signature-card">
+                <div class="image-placeholder signature-img"><span>SIGNATURE DISH</span></div>
+                <div class="card-body p-40 flex-column flex-center-vertical">
+                    <div class="mb-10"><span class="badge badge-premium">Signature Masterpiece</span></div>
+                    <h3 class="signature-title mb-15">The Ultimate Beef Wellington</h3>
+                    <p class="text-muted mb-15">My award-winning recipe that started it all. A perfect harmony of tender filet mignon, rich mushroom duxelles, and prosciutto, wrapped in a golden, flaky puff pastry crust. This dish represents my core philosophy of elevating classic techniques.</p>
+                    <div>
+                        <a href="/recipe-detail" class="btn btn-primary">View Full Recipe</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Asymmetric Grid -->
+        <div class="grid-2-col-asymmetric">
+            
+            <!-- Left Column: About & Skills -->
+            <div class="profile-left-col">
+                <!-- Section 8 (formerly 3): About (Scannable grouping) -->
+                <section class="card p-40 mb-section-lg">
+                    <h2 class="section-title">About</h2>
+                    <div class="about-group mb-15">
+                        <strong class="text-uppercase text-sm text-muted block mb-5">Biography</strong>
+                        <p>Dedicated to exploring the intersection of traditional culinary arts and modern gastronomy. I believe everyone can cook like a chef with the right guidance.</p>
+                    </div>
+                    <div class="about-group mb-15">
+                        <strong class="text-uppercase text-sm text-muted block mb-5">Cooking Style</strong>
+                        <p>Modern Gastronomy, Fusion, Precision Plating</p>
+                    </div>
+                    <div class="about-group mb-15">
+                        <strong class="text-uppercase text-sm text-muted block mb-5">Favorite Cuisine</strong>
+                        <p>European, Pan-Asian</p>
+                    </div>
+                    <div class="about-group mb-15">
+                        <strong class="text-uppercase text-sm text-muted block mb-5">Experience</strong>
+                        <p>15+ Years Executive Chef, Michelin-Starred Environments</p>
+                    </div>
+                    <div class="about-group">
+                        <strong class="text-uppercase text-sm text-muted block mb-5">Languages</strong>
+                        <p>English, Vietnamese, French</p>
+                    </div>
+                </section>
+
+                <!-- Section 5: Cooking Skills (Enhanced with icons & spacing) -->
+                <section class="card p-40 mb-section-lg">
+                    <h2 class="section-title">Culinary Arsenal</h2>
+                    <div class="skills-list">
+                        <div class="skill-item mb-20">
+                            <div class="flex-between align-center mb-10">
+                                <span class="flex-row align-center gap-10 font-bold"><div class="icon-placeholder icon-xs"><span>🔥</span></div> Grilling</span>
+                                <span class="text-muted font-bold text-sm">95%</span>
+                            </div>
+                            <div class="progress-container"><div class="progress-fill" style="width: 95%;"></div></div>
+                        </div>
+                        <div class="skill-item mb-20">
+                            <div class="flex-between align-center mb-10">
+                                <span class="flex-row align-center gap-10 font-bold"><div class="icon-placeholder icon-xs"><span>🍞</span></div> Baking</span>
+                                <span class="text-muted font-bold text-sm">85%</span>
+                            </div>
+                            <div class="progress-container"><div class="progress-fill" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="skill-item mb-20">
+                            <div class="flex-between align-center mb-10">
+                                <span class="flex-row align-center gap-10 font-bold"><div class="icon-placeholder icon-xs"><span>🍰</span></div> Desserts</span>
+                                <span class="text-muted font-bold text-sm">90%</span>
+                            </div>
+                            <div class="progress-container"><div class="progress-fill" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="skill-item mb-20">
+                            <div class="flex-between align-center mb-10">
+                                <span class="flex-row align-center gap-10 font-bold"><div class="icon-placeholder icon-xs"><span>🍝</span></div> Italian</span>
+                                <span class="text-muted font-bold text-sm">98%</span>
+                            </div>
+                            <div class="progress-container"><div class="progress-fill" style="width: 98%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="flex-between align-center mb-10">
+                                <span class="flex-row align-center gap-10 font-bold"><div class="icon-placeholder icon-xs"><span>🐟</span></div> Seafood</span>
+                                <span class="text-muted font-bold text-sm">92%</span>
+                            </div>
+                            <div class="progress-container"><div class="progress-fill" style="width: 92%;"></div></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Section 6: Contest History (Redesigned Timeline) -->
+                <section class="card p-40 mb-section-lg">
+                    <h2 class="section-title">Contest History</h2>
+                    <div class="timeline enhanced-timeline">
+                        <div class="timeline-item">
+                            <span class="timeline-year text-muted font-bold">2026</span>
+                            <p class="font-bold text-lg">Master Chef Champion</p>
+                            <p class="text-sm"><span class="badge mb-5 mt-5">1st Place</span></p>
+                            <p class="text-muted text-sm mt-5">Global Culinary Showdown featuring top international chefs.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-year text-muted font-bold">2025</span>
+                            <p class="font-bold text-lg">European Baking Championship</p>
+                            <p class="text-sm"><span class="badge mb-5 mt-5">Gold Medal</span></p>
+                            <p class="text-muted text-sm mt-5">Awarded for innovation in modern French pastry design.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="timeline-year text-muted font-bold">2024</span>
+                            <p class="font-bold text-lg">World Street Food Challenge</p>
+                            <p class="text-sm"><span class="badge mb-5 mt-5">Finalist</span></p>
+                            <p class="text-muted text-sm mt-5">Elevated traditional Asian street food techniques.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Achievements, Categories, Gallery -->
+            <div class="profile-right-col">
+                
+                <!-- Section 3 (formerly 4): Achievements (Premium redesign) -->
+                <section class="mb-section-lg">
+                    <h2 class="section-title">Honors & Achievements</h2>
+                    <div class="grid-2-col">
+                        <div class="card p-20 flex-column align-center text-center achievement-card">
+                            <div class="icon-placeholder icon-lg mx-auto mb-15"><span>🏆</span></div>
+                            <h3 class="font-bold mb-5">Master Chef</h3>
+                            <p class="text-muted text-sm mb-10">Global Champion 2026</p>
+                            <span class="badge">Elite</span>
+                        </div>
+                        <div class="card p-20 flex-column align-center text-center achievement-card">
+                            <div class="icon-placeholder icon-lg mx-auto mb-15"><span>⭐</span></div>
+                            <h3 class="font-bold mb-5">Top Contributor</h3>
+                            <p class="text-muted text-sm mb-10">Community Leader</p>
+                            <span class="badge">Verified</span>
+                        </div>
+                        <div class="card p-20 flex-column align-center text-center achievement-card">
+                            <div class="icon-placeholder icon-lg mx-auto mb-15"><span>📝</span></div>
+                            <h3 class="font-bold mb-5">100+ Recipes</h3>
+                            <p class="text-muted text-sm mb-10">Prolific Creator</p>
+                            <span class="badge">Milestone</span>
+                        </div>
+                        <div class="card p-20 flex-column align-center text-center achievement-card">
+                            <div class="icon-placeholder icon-lg mx-auto mb-15"><span>👑</span></div>
+                            <h3 class="font-bold mb-5">VIP Chef</h3>
+                            <p class="text-muted text-sm mb-10">Premium Status</p>
+                            <span class="badge badge-premium">VIP</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4 (formerly 6): Favorite Categories (Pill UI) -->
+                <section class="mb-section-lg">
+                    <h2 class="section-title">Gastronomic Focus</h2>
+                    <div class="flex-row flex-wrap gap-10">
+                        <span class="tag-pill">Italian</span>
+                        <span class="tag-pill">Dessert</span>
+                        <span class="tag-pill">Healthy</span>
+                        <span class="tag-pill">BBQ</span>
+                        <span class="tag-pill">Asian</span>
+                        <span class="tag-pill">French</span>
+                        <span class="tag-pill">Molecular</span>
+                    </div>
+                </section>
+
+                <!-- Section 7 (formerly 9): Photo Gallery (Masonry/Mosaic layout) -->
+                <section class="mb-section-lg">
+                    <h2 class="section-title">Culinary Portfolio</h2>
+                    <div class="gallery-mosaic">
+                        <div class="image-placeholder gallery-item gallery-large"><span>HERO SHOT</span></div>
+                        <div class="image-placeholder gallery-item"><span>PLATE</span></div>
+                        <div class="image-placeholder gallery-item"><span>PREP</span></div>
+                        <div class="image-placeholder gallery-item gallery-wide"><span>KITCHEN</span></div>
+                        <div class="image-placeholder gallery-item gallery-tall"><span>PORTRAIT</span></div>
+                        <div class="image-placeholder gallery-item"><span>DISH</span></div>
+                        <div class="image-placeholder gallery-item"><span>EVENT</span></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Section 10: Bottom CTA -->
+        <section class="cta-banner mt-section">
+            <h2 class="section-title">Hungry for more?</h2>
+            <p>Explore my entire collection of recipes and culinary experiments.</p>
+            <div class="mt-15">
+                <a href="/recipes" class="btn btn-outline">Explore My Recipes</a>
+            </div>
+        </section>
+        
+    </div>
+</main>
+
+<%- include('partials/footer') %>

@@ -6,7 +6,8 @@ const apiRoutes = require('./routes');
 const healthController = require('./controllers/health.controller');
 const notFoundMiddleware = require('./middlewares/notFound.middleware');
 const errorMiddleware = require('./middlewares/error.middleware');
-
+// Inside src/app.js
+const logger = require('./config/logger');
 const app = express();
 
 // Configure View Engine
@@ -22,6 +23,40 @@ app.use(express.urlencoded({ extended: true }));
 // View Routes
 app.get('/', (req, res) => {
     res.render('home');
+});
+
+// Auth View Routes
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+// Pages View Routes
+app.get('/recipes', (req, res) => {
+    res.render('recipes');
+});
+
+app.get('/recipe-detail', (req, res) => {
+    res.render('recipe-detail');
+});
+
+app.get('/membership', (req, res) => {
+    res.render('membership');
+});
+
+app.get('/contests', (req, res) => {
+    res.render('contests');
+});
+
+app.get('/profile', (req, res) => {
+    res.render('profile');
+});
+
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard');
 });
 
 // API Routes

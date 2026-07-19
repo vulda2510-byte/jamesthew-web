@@ -1,0 +1,198 @@
+<!-- src/views/dashboard.ejs -->
+<%- include('partials/header') %>
+
+<main class="dashboard-page">
+    <div class="container mt-section mb-section">
+        
+        <!-- Section 1: Welcome Banner -->
+        <section class="card p-40 profile-header">
+            <div class="flex-row align-start profile-header-inner">
+                <div class="avatar-placeholder profile-avatar">
+                    <span>AVATAR</span>
+                </div>
+                <div class="profile-info flex-1">
+                    <h1 class="mb-10">Welcome back, James! <span class="badge badge-premium">VIP Member</span></h1>
+                    <p class="text-muted mt-5">Ready to cook something amazing today?</p>
+                    <div class="gap-buttons mt-15">
+                        <a href="/profile" class="btn btn-primary">Edit Profile</a>
+                        <a href="/membership" class="btn btn-outline">Upgrade Membership</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Quick Statistics -->
+        <section class="mt-section">
+            <h2 class="section-title">Overview</h2>
+            <div class="stats-grid">
+                <div class="card text-center p-20">
+                    <h2 class="font-bold">142</h2>
+                    <p class="text-muted text-sm">Recipes Created</p>
+                </div>
+                <div class="card text-center p-20">
+                    <h2 class="font-bold">89</h2>
+                    <p class="text-muted text-sm">Saved Recipes</p>
+                </div>
+                <div class="card text-center p-20">
+                    <h2 class="font-bold">34</h2>
+                    <p class="text-muted text-sm">Bookmarks</p>
+                </div>
+                <div class="card text-center p-20">
+                    <h2 class="font-bold">15</h2>
+                    <p class="text-muted text-sm">Contests Joined</p>
+                </div>
+                <div class="card text-center p-20">
+                    <h2 class="font-bold">12.5k</h2>
+                    <p class="text-muted text-sm">Followers</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Quick Actions -->
+        <section class="mt-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="actions-grid">
+                <a href="/recipes" class="btn btn-outline btn-block">Browse Recipes</a>
+                <a href="/dashboard" class="btn btn-primary btn-block">Create Recipe</a>
+                <a href="/profile" class="btn btn-outline btn-block">View Profile</a>
+                <a href="/membership" class="btn btn-outline btn-block">Membership</a>
+                <a href="/contests" class="btn btn-outline btn-block">Contests</a>
+                <a href="/dashboard" class="btn btn-outline btn-block">Bookmarks</a>
+            </div>
+        </section>
+
+        <div class="grid-2-col mt-section">
+            <!-- Section 4: Recent Activity -->
+            <section class="card p-40">
+                <h2 class="section-title">Recent Activity</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <p class="font-bold">Recipe Saved</p>
+                        <p class="text-muted text-sm">You saved "Seasonal Fruit Tart"</p>
+                        <span class="text-muted text-sm">Just now</span>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-bold">Recipe Published</p>
+                        <p class="text-muted text-sm">Uploaded "Classic Beef Wellington"</p>
+                        <span class="text-muted text-sm">2 days ago</span>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-bold">Contest Joined</p>
+                        <p class="text-muted text-sm">Entered Summer Grill Master</p>
+                        <span class="text-muted text-sm">1 week ago</span>
+                    </div>
+                    <div class="timeline-item">
+                        <p class="font-bold">Membership Upgraded</p>
+                        <p class="text-muted text-sm">Upgraded to VIP Membership</p>
+                        <span class="text-muted text-sm">1 month ago</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8: Membership Status -->
+            <section class="card p-40 flex-column flex-between">
+                <div>
+                    <h2 class="section-title">Membership Status</h2>
+                    <div class="mb-15">
+                        <span class="badge badge-premium">VIP Plan</span>
+                    </div>
+                    <p class="mb-10"><strong>Renewal Date:</strong> August 17, 2026</p>
+                    <p class="text-muted mb-15">You have full access to exclusive recipes, masterclasses, and priority contest entries.</p>
+                </div>
+                <div>
+                    <a href="/membership" class="btn btn-primary btn-block mt-15">Manage Subscription</a>
+                </div>
+            </section>
+        </div>
+
+        <!-- Section 5: My Recipes -->
+        <section class="mt-section">
+            <h2 class="section-title">My Recipes</h2>
+            <div class="recipes-grid">
+                <!-- Reuse Recipe Card -->
+                <div class="card recipe-card">
+                    <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                    <div class="card-body">
+                        <h3>Classic Beef Wellington</h3>
+                        <p class="text-muted text-sm">Tender beef wrapped in mushroom duxelles and flaky pastry.</p>
+                    </div>
+                    <div class="card-footer flex-between">
+                        <a href="/dashboard" class="btn btn-outline btn-sm">Edit</a>
+                        <a href="/recipe-detail" class="btn btn-primary btn-sm">View</a>
+                    </div>
+                </div>
+                <div class="card recipe-card">
+                    <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                    <div class="card-body">
+                        <h3>Creamy Tomato Soup</h3>
+                        <p class="text-muted text-sm">A comforting bowl of rich, creamy tomato goodness.</p>
+                    </div>
+                    <div class="card-footer flex-between">
+                        <a href="/dashboard" class="btn btn-outline btn-sm">Edit</a>
+                        <a href="/recipe-detail" class="btn btn-primary btn-sm">View</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Saved Recipes -->
+        <section class="mt-section">
+            <h2 class="section-title">Saved Recipes</h2>
+            <div class="recipes-grid">
+                <div class="card recipe-card">
+                    <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                    <div class="card-body">
+                        <h3>Grilled Salmon with Lemon Butter</h3>
+                        <p class="text-muted text-sm">Quick, healthy, and incredibly delicious.</p>
+                    </div>
+                    <div class="card-footer flex-between">
+                        <a href="/recipe-detail" class="btn btn-outline btn-sm btn-block">View Recipe</a>
+                    </div>
+                </div>
+                <div class="card recipe-card">
+                    <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                    <div class="card-body">
+                        <h3>Spaghetti Aglio e Olio</h3>
+                        <p class="text-muted text-sm">Traditional Italian pasta dish with garlic, olive oil, and red pepper flakes.</p>
+                    </div>
+                    <div class="card-footer flex-between">
+                        <a href="/recipe-detail" class="btn btn-outline btn-sm btn-block">View Recipe</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Upcoming Contests -->
+        <section class="mt-section">
+            <h2 class="section-title">Upcoming Contests</h2>
+            <div class="contests-grid">
+                <div class="card contest-card">
+                    <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                    <div class="card-body">
+                        <h3>Master Chef 2026 Championship</h3>
+                        <div class="recipe-meta flex-row mt-15">
+                            <span class="badge">Hard</span>
+                            <span class="meta-text font-bold">Prize: $10,000</span>
+                        </div>
+                        <p class="text-sm mt-15"><strong>Deadline:</strong> August 15, 2026</p>
+                    </div>
+                    <div class="card-footer flex-between">
+                        <a href="/contests" class="btn btn-primary btn-sm btn-block">Join Contest</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 9: Bottom CTA -->
+        <section class="cta-banner mt-section">
+            <h2 class="section-title">Explore More Recipes</h2>
+            <p>Discover thousands of culinary delights crafted by experts and community members.</p>
+            <div class="mt-15">
+                <a href="/recipes" class="btn btn-outline">Browse Recipes</a>
+            </div>
+        </section>
+        
+    </div>
+</main>
+
+<%- include('partials/footer') %>

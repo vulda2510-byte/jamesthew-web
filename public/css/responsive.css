@@ -1,0 +1,245 @@
+/* public/css/responsive.css */
+
+/* =========================================
+   TABLET RESPONSIVE (Max Width: 992px)
+========================================= */
+@media (max-width: 992px) {
+    /* Header & Nav */
+    .header {
+        height: auto;
+        padding: 15px 0;
+    }
+    .header-inner {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .nav {
+        flex-direction: column;
+        gap: 10px;
+        margin: 15px 0;
+    }
+    .nav a {
+        margin: 0;
+    }
+    .gap-buttons {
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Hero & Featured */
+    .hero-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        min-height: auto;
+        padding: 40px 15px;
+    }
+    .hero-content .gap-buttons {
+        justify-content: center;
+    }
+    .image-placeholder {
+        min-height: 300px;
+        margin-top: 20px;
+    }
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+    .featured-right {
+        grid-template-rows: auto;
+    }
+
+    /* Recipes & Detail */
+    .recipes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .recipes-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .recipe-hero {
+        grid-template-columns: 1fr;
+    }
+    .recipe-hero-image .image-placeholder {
+        height: 300px;
+    }
+    .recipe-content-grid {
+        grid-template-columns: 1fr;
+    }
+    .recipe-stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Membership */
+    .plans-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .plan-premium {
+        transform: scale(1);
+    }
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Dashboard & Profile Standard */
+    .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Profile Redesign Adjustments */
+    .profile-stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-2-col-asymmetric {
+        grid-template-columns: 1fr;
+    }
+    .achievements-mini-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .signature-card {
+        flex-direction: column;
+    }
+    .signature-img {
+        width: 100%;
+        min-height: 300px;
+    }
+    .gallery-mosaic {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .gallery-large {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+}
+
+/* =========================================
+   MOBILE RESPONSIVE (Max Width: 768px)
+========================================= */
+@media (max-width: 768px) {
+    /* Recipes & Detail */
+    .recipes-grid {
+        grid-template-columns: 1fr;
+    }
+    .filter-categories {
+        justify-content: center;
+    }
+    .filter-dropdowns {
+        flex-direction: column;
+    }
+    .recipe-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .chef-card .card-body {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    /* Membership */
+    .benefits-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .table th, .table td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    /* Dashboard & Profile Standard */
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    .profile-header-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .avatar-placeholder, 
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Profile Redesign Adjustments */
+    .profile-avatar-large {
+        margin-top: -80px;
+        margin-bottom: 20px;
+    }
+    .profile-meta {
+        flex-direction: column;
+        align-items: center;
+    }
+    .profile-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .achievements-mini-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .recipes-grid-2 {
+        grid-template-columns: 1fr;
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .profile-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .gallery-mosaic {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 200px;
+    }
+    .gallery-item {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+    }
+    .card-horizontal {
+        flex-direction: column;
+    }
+}
+
+/* =========================================
+   SMALL MOBILE RESPONSIVE (Max Width: 576px)
+========================================= */
+@media (max-width: 576px) {
+    /* Register Page Responsive */
+    .register-wrapper {
+        padding: 40px 15px;
+    }
+    .register-card {
+        padding: 30px 20px;
+        max-width: 100%;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+
+/* =========================================
+   EXTRA SMALL RESPONSIVE (Max Width: 480px)
+========================================= */
+@media (max-width: 480px) {
+    .recipe-stats-grid,
+    .stats-grid,
+    .profile-stats-grid,
+    .achievements-mini-grid,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}

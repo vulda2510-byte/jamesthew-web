@@ -1,0 +1,78 @@
+/* public/css/contests.css */
+/* Contests Page Layout Specifics */
+
+.contests-page {
+    padding-bottom: 40px;
+}
+
+.contests-hero {
+    padding: 60px 15px;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.contests-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+/* Featured Contest */
+.featured-contest-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
+.featured-contest-card .featured-img {
+    height: 100%;
+    min-height: 400px;
+    border: none;
+    border-right: 1px solid var(--border-color);
+}
+
+.contest-details {
+    list-style: none;
+    padding: 0;
+}
+
+.contest-details li {
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+/* Grids */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.categories-grid h3 {
+    font-size: 1.2rem;
+}
+
+.contests-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.contest-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.contest-card .card-img {
+    height: 220px;
+    min-height: 220px;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.winners-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}

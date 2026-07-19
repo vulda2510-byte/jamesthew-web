@@ -1,0 +1,204 @@
+<!-- src/views/recipe-detail.ejs -->
+<%- include('partials/header') %>
+
+<main class="container mt-section recipe-detail-page">
+    <!-- Section 1: Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="/">Home</a> / 
+        <a href="/recipes">Recipes</a> / 
+        <span class="text-muted">Grilled Salmon with Lemon Butter</span>
+    </nav>
+
+    <!-- Section 2: Recipe Hero -->
+    <section class="recipe-hero mt-section">
+        <div class="recipe-hero-image">
+            <div class="image-placeholder">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+        </div>
+        <div class="recipe-hero-info">
+            <h1 class="recipe-title">Grilled Salmon with Lemon Butter</h1>
+            <div class="recipe-meta flex-row">
+                <span class="badge">Medium</span>
+                <span class="category-label text-muted">MAINS</span>
+                <span class="meta-text">45 mins</span>
+            </div>
+            <p class="recipe-description">A perfectly grilled salmon paired with a rich and tangy lemon butter sauce. Quick, healthy, and incredibly delicious for a weeknight dinner or special occasion.</p>
+            <div class="gap-buttons mt-section">
+                <button class="btn btn-primary">Save Recipe</button>
+                <button class="btn btn-outline">Share</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Recipe Information Stats -->
+    <section class="recipe-stats-grid mt-section">
+        <div class="stat-box text-center">
+            <strong>Prep Time</strong>
+            <p class="text-muted">15 mins</p>
+        </div>
+        <div class="stat-box text-center">
+            <strong>Cook Time</strong>
+            <p class="text-muted">30 mins</p>
+        </div>
+        <div class="stat-box text-center">
+            <strong>Servings</strong>
+            <p class="text-muted">4</p>
+        </div>
+        <div class="stat-box text-center">
+            <strong>Calories</strong>
+            <p class="text-muted">420 kcal</p>
+        </div>
+        <div class="stat-box text-center">
+            <strong>Difficulty</strong>
+            <p class="text-muted">Medium</p>
+        </div>
+        <div class="stat-box text-center">
+            <strong>Cuisine</strong>
+            <p class="text-muted">European</p>
+        </div>
+    </section>
+
+    <div class="recipe-content-grid mt-section">
+        <!-- Left Column: Ingredients -->
+        <div class="recipe-ingredients">
+            <h2 class="section-title">Ingredients</h2>
+            <div class="ingredient-list">
+                <label class="form-checkbox-group ingredient-item">
+                    <input type="checkbox"> <span>4 Salmon fillets (6 oz each)</span>
+                </label>
+                <label class="form-checkbox-group ingredient-item">
+                    <input type="checkbox"> <span>2 tbsp Olive oil</span>
+                </label>
+                <label class="form-checkbox-group ingredient-item">
+                    <input type="checkbox"> <span>Salt and freshly ground black pepper</span>
+                </label>
+                <label class="form-checkbox-group ingredient-item">
+                    <input type="checkbox"> <span>4 tbsp Unsalted butter, melted</span>
+                </label>
+                <label class="form-checkbox-group ingredient-item">
+                    <input type="checkbox"> <span>Juice of 1 lemon</span>
+                </label>
+                <label class="form-checkbox-group ingredient-item">
+                    <input type="checkbox"> <span>Fresh parsley, chopped</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Right Column: Instructions -->
+        <div class="recipe-instructions">
+            <h2 class="section-title">Instructions</h2>
+            <div class="instructions-list">
+                <div class="step-card card">
+                    <div class="card-body flex-row align-start">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <strong>Preheat Grill</strong>
+                            <p class="text-muted">Preheat your grill or grill pan to medium-high heat. Brush the salmon fillets with olive oil and season generously with salt and pepper.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-card card">
+                    <div class="card-body flex-row align-start">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <strong>Prepare Sauce</strong>
+                            <p class="text-muted">In a small bowl, whisk together the melted butter, lemon juice, and chopped parsley. Set aside.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-card card">
+                    <div class="card-body flex-row align-start">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <strong>Grill Salmon</strong>
+                            <p class="text-muted">Place salmon on the grill skin-side down. Grill for 6-8 minutes, then carefully flip and grill for another 2-4 minutes until cooked through.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-card card">
+                    <div class="card-body flex-row align-start">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <strong>Serve</strong>
+                            <p class="text-muted">Remove salmon from grill. Drizzle immediately with the lemon butter sauce and serve hot.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6: Chef Information -->
+    <section class="chef-section mt-section">
+        <h2 class="section-title">About the Chef</h2>
+        <div class="chef-card card">
+            <div class="card-body flex-row">
+                <div class="avatar-placeholder">
+                    <span>AVATAR</span>
+                </div>
+                <div class="chef-info">
+                    <h3>James Thew</h3>
+                    <p class="text-muted">Renowned culinary innovator blending classical techniques with modern gastronomy. Passionate about bringing fine dining to home kitchens.</p>
+                    <a href="/profile" class="btn btn-outline btn-sm mt-15">View Profile</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Related Recipes -->
+    <section class="related-recipes mt-section">
+        <h2 class="section-title">Related Recipes</h2>
+        <div class="recipes-grid">
+            <!-- Reuse Recipe Card 1 -->
+            <div class="card recipe-card">
+                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                <div class="card-body">
+                    <h3>Roasted Herb Chicken</h3>
+                    <div class="recipe-meta flex-row">
+                        <span class="badge">Medium</span>
+                        <span class="meta-text">90 mins</span>
+                    </div>
+                </div>
+                <div class="card-footer flex-between">
+                    <span class="category-label text-muted">MAINS</span>
+                    <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Reuse Recipe Card 2 -->
+            <div class="card recipe-card">
+                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                <div class="card-body">
+                    <h3>Quinoa Power Bowl</h3>
+                    <div class="recipe-meta flex-row">
+                        <span class="badge">Easy</span>
+                        <span class="meta-text">20 mins</span>
+                    </div>
+                </div>
+                <div class="card-footer flex-between">
+                    <span class="category-label text-muted">VEGAN</span>
+                    <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Reuse Recipe Card 3 -->
+            <div class="card recipe-card">
+                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                <div class="card-body">
+                    <h3>Spaghetti Aglio e Olio</h3>
+                    <div class="recipe-meta flex-row">
+                        <span class="badge">Easy</span>
+                        <span class="meta-text">15 mins</span>
+                    </div>
+                </div>
+                <div class="card-footer flex-between">
+                    <span class="category-label text-muted">MAINS</span>
+                    <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('partials/footer') %>

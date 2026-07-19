@@ -1,0 +1,107 @@
+/* public/css/membership.css */
+/* Membership Page Layout Specifics */
+
+.membership-hero {
+    padding: 80px 15px;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.membership-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.membership-hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    align-items: center;
+}
+
+.plan-card {
+    padding: 20px 10px;
+}
+
+.plan-premium {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 2;
+}
+
+.plan-price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: var(--text-color);
+}
+
+.plan-price span {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #666;
+}
+
+.plan-features {
+    list-style: none;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.plan-features li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.plan-features li:last-child {
+    border-bottom: none;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.benefit-card {
+    padding: 30px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cta-banner {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 60px;
+}
+
+.cta-banner .section-title {
+    color: #fff;
+}
+
+.cta-banner .btn-outline {
+    border-color: #fff;
+    color: #fff;
+}
+
+.cta-banner .btn-outline:hover {
+    background-color: #fff;
+    color: var(--primary-color);
+}

@@ -1,0 +1,240 @@
+<!-- src/views/contests.ejs -->
+<%- include('partials/header') %>
+
+<main class="contests-page">
+    <!-- Section 1: Hero -->
+    <section class="contests-hero text-center mt-section">
+        <div class="container">
+            <h1>Upcoming Cooking Contests</h1>
+            <p class="text-muted">Test your skills, compete with the best, and win amazing prizes.</p>
+            <div class="mt-15">
+                <a href="#upcoming" class="btn btn-primary">Browse Competitions</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Featured Contest -->
+    <section class="container mt-section">
+        <h2 class="section-title">Featured Contest</h2>
+        <div class="card featured-contest-card">
+            <div class="image-placeholder featured-img">
+                <span>IMAGE PLACEHOLDER</span>
+            </div>
+            <div class="card-body p-40">
+                <h3>Master Chef 2026 Championship</h3>
+                <p class="text-muted mt-15">The ultimate test of culinary excellence. Prepare a three-course meal for our panel of expert judges and prove you have what it takes to be a master.</p>
+                <ul class="contest-details mt-15">
+                    <li><strong>Deadline:</strong> August 15, 2026</li>
+                    <li><strong>Event Date:</strong> September 1, 2026</li>
+                    <li><strong>Prize:</strong> $10,000 + VIP Membership</li>
+                </ul>
+                <div class="mt-15">
+                    <a href="/register" class="btn btn-primary">Join Contest</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Contest Categories -->
+    <section class="container mt-section">
+        <h2 class="section-title text-center">Contest Categories</h2>
+        <div class="categories-grid mt-section">
+            <div class="card text-center p-20">
+                <div class="card-body">
+                    <h3>Live Competition</h3>
+                </div>
+            </div>
+            <div class="card text-center p-20">
+                <div class="card-body">
+                    <h3>Online Challenge</h3>
+                </div>
+            </div>
+            <div class="card text-center p-20">
+                <div class="card-body">
+                    <h3>Community Event</h3>
+                </div>
+            </div>
+            <div class="card text-center p-20">
+                <div class="card-body">
+                    <h3>Premium Contest</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Upcoming Contests Grid -->
+    <section id="upcoming" class="container mt-section">
+        <h2 class="section-title text-center">Upcoming Contests</h2>
+        <div class="contests-grid mt-section">
+            <!-- Contest Card 1 -->
+            <div class="card contest-card">
+                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                <div class="card-body">
+                    <h3>The Great Baking Showdown</h3>
+                    <p class="text-muted">Show off your best pastry skills in this high-stakes baking competition.</p>
+                    <div class="recipe-meta flex-row mt-15">
+                        <span class="badge">Hard</span>
+                        <span class="meta-text font-bold">Prize: $5,000</span>
+                    </div>
+                    <p class="text-sm mt-15"><strong>Deadline:</strong> July 25, 2026</p>
+                </div>
+                <div class="card-footer flex-between">
+                    <a href="/register" class="btn btn-primary btn-sm">Join</a>
+                    <a href="#" class="btn btn-outline btn-sm">Details</a>
+                </div>
+            </div>
+
+            <!-- Contest Card 2 -->
+            <div class="card contest-card">
+                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                <div class="card-body">
+                    <h3>Vegan Innovation Challenge</h3>
+                    <p class="text-muted">Create a mind-blowing plant-based dish that completely redefines vegan cuisine.</p>
+                    <div class="recipe-meta flex-row mt-15">
+                        <span class="badge">Medium</span>
+                        <span class="meta-text font-bold">Prize: Kitchen Set</span>
+                    </div>
+                    <p class="text-sm mt-15"><strong>Deadline:</strong> August 02, 2026</p>
+                </div>
+                <div class="card-footer flex-between">
+                    <a href="/register" class="btn btn-primary btn-sm">Join</a>
+                    <a href="#" class="btn btn-outline btn-sm">Details</a>
+                </div>
+            </div>
+
+            <!-- Contest Card 3 -->
+            <div class="card contest-card">
+                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
+                <div class="card-body">
+                    <h3>Street Food Global</h3>
+                    <p class="text-muted">Bring the best street food flavors from around the world to your kitchen.</p>
+                    <div class="recipe-meta flex-row mt-15">
+                        <span class="badge">Easy</span>
+                        <span class="meta-text font-bold">Prize: $1,000</span>
+                    </div>
+                    <p class="text-sm mt-15"><strong>Deadline:</strong> August 10, 2026</p>
+                </div>
+                <div class="card-footer flex-between">
+                    <a href="/register" class="btn btn-primary btn-sm">Join</a>
+                    <a href="#" class="btn btn-outline btn-sm">Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Past Winners -->
+    <section class="container mt-section">
+        <h2 class="section-title text-center">Past Winners</h2>
+        <div class="winners-grid mt-section">
+            <div class="card text-center p-20">
+                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
+                <h3 class="mt-15">Sarah Jenkins</h3>
+                <p class="text-muted text-sm">Winter Feast Challenge</p>
+                <div class="mt-15"><span class="badge">1st Place</span></div>
+            </div>
+            <div class="card text-center p-20">
+                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
+                <h3 class="mt-15">Michael Chen</h3>
+                <p class="text-muted text-sm">Pasta Masterclass</p>
+                <div class="mt-15"><span class="badge">Grand Prize</span></div>
+            </div>
+            <div class="card text-center p-20">
+                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
+                <h3 class="mt-15">Elena Rodriguez</h3>
+                <p class="text-muted text-sm">Baking Showdown 2025</p>
+                <div class="mt-15"><span class="badge">Gold Medal</span></div>
+            </div>
+            <div class="card text-center p-20">
+                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
+                <h3 class="mt-15">David Smith</h3>
+                <p class="text-muted text-sm">Grill Master Pro</p>
+                <div class="mt-15"><span class="badge">1st Place</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sections 6 & 7: Contest Rules & FAQ -->
+    <section class="container mt-section">
+        <div class="grid-2-col">
+            <!-- Contest Rules -->
+            <div>
+                <h2 class="section-title">Contest Rules</h2>
+                <div class="accordion">
+                    <div class="accordion-item active">
+                        <div class="accordion-header">
+                            <span>Eligibility</span>
+                            <span>-</span>
+                        </div>
+                        <div class="accordion-body">
+                            <p class="text-muted">All contests are open to amateur cooks worldwide unless specified otherwise. Premium contests require an active VIP membership.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <span>Submission Guidelines</span>
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-body">
+                            <p class="text-muted">Submit a high-resolution photo of your dish, the complete recipe, and a 2-minute video demonstrating your process.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <span>Judging Criteria</span>
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-body">
+                            <p class="text-muted">Dishes are judged on creativity (30%), presentation (30%), and perceived taste/technique based on video submission (40%).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div>
+                <h2 class="section-title">FAQ</h2>
+                <div class="accordion">
+                    <div class="accordion-item active">
+                        <div class="accordion-header">
+                            <span>How do I claim my prize?</span>
+                            <span>-</span>
+                        </div>
+                        <div class="accordion-body">
+                            <p class="text-muted">Winners will be contacted via email within 48 hours of the announcement. Cash prizes are transferred via wire or PayPal.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <span>Can I enter multiple contests?</span>
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-body">
+                            <p class="text-muted">Yes, you can participate in as many live and upcoming contests as you wish.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <span>What happens if I miss the deadline?</span>
+                            <span>+</span>
+                        </div>
+                        <div class="accordion-body">
+                            <p class="text-muted">Late submissions are automatically disqualified to ensure fairness for all participants.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Bottom CTA Banner -->
+    <section class="container mt-section mb-section">
+        <div class="cta-banner">
+            <h2 class="section-title">Join the next culinary competition today.</h2>
+            <div class="mt-15">
+                <a href="/register" class="btn btn-outline">Register Now</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('partials/footer') %>

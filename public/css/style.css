@@ -1,0 +1,15 @@
+/* public/css/style.css */
+@import url('base.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('home.css');
+@import url('login.css');
+@import url('register.css');
+@import url('membership.css');
+@import url('recipes.css');
+@import url('recipe-detail.css');
+@import url('contests.css');
+@import url('profile.css');
+@import url('dashboard.css');
+@import url('admin.css');
+@import url('responsive.css');
