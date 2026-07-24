@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <!-- Import CSS -->
+    <link rel="stylesheet" href="/css/checkout-success.css">
+</head>
+<body>
+    <!-- Import Header (Hãy chỉnh sửa đường dẫn 'partials/header' cho khớp với thư mục của bạn) -->
+    <%- include('partials/header') %> 
+
+    <main class="success-container">
+        <div class="success-card">
+            <!-- Hiệu ứng Checkmark -->
+            <div class="icon-wrapper">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            
+            <h1>Payment Successful!</h1>
+            <p>Welcome to the <strong style="text-transform: uppercase;"><%= plan %></strong> membership.</p>
+            <p>Your culinary journey just got a whole lot better. You now have access to exclusive masterclasses and premium recipes.</p>
+            
+            <div class="redirect-info">
+                Redirecting to homepage in <span id="countdown">5</span> seconds...
+            </div>
+
+            <div class="action-buttons">
+                <a href="/" class="btn btn-primary">Go to Home Now</a>
+                <a href="/recipes" class="btn btn-outline">Explore Recipes</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Import Footer -->
+    <%- include('partials/footer') %>
+
+    <!-- Import JS -->
+    <script src="/js/checkout-success.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!-- src/views/checkout.ejs -->
+<%- include('partials/header') %>
+
+<main class="checkout-page container flex-center mt-section" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">
+    <div class="card p-40" style="max-width: 500px; width: 100%;">
+        <h1 class="text-center mb-10">Checkout</h1>
+        <p class="text-muted text-center mb-20">You are one step away from unlocking premium culinary secrets.</p>
+        
+        <!-- Vùng hiển thị lỗi nếu có -->
+        <div id="checkoutAlert" style="display: none; padding: 12px; margin-bottom: 20px; border-radius: 4px; background: #f8d7da; color: #721c24;"></div>
+
+        <div class="order-summary p-20 mb-20" style="background: #f9f9f9; border: 1px solid #eee; border-radius: 8px;">
+            <div class="flex-between align-center mb-10">
+                <strong>Selected Plan:</strong>
+                <span id="displayPlanName" class="badge badge-premium" style="font-size: 14px;">Loading...</span>
+            </div>
+            <div class="flex-between align-center">
+                <strong>Total Price:</strong>
+                <h2 id="displayPlanPrice" class="text-primary" style="margin: 0;">$0.00</h2>
+            </div>
+            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
+            <p class="text-muted text-sm m-0">Subscription will be billed monthly. You can cancel securely at any time through your Profile Dashboard.</p>
+        </div>
+<form action="/membership/create-checkout-session" method="POST">
+    <!-- Trường ẩn để gửi tên gói (premium hoặc vip) lên server -->
+    <input type="hidden" name="plan" value="<%= plan %>">
+    
+    <button type="submit" class="btn btn-primary" style="width: 100%;">
+        Proceed to Secure Payment
+    </button>
+</form>
+        <div class="text-center mt-15">
+            <a href="/membership" class="text-link text-sm">Cancel and return to plans</a>
+        </div>
+    </div>
+</main>
+
+<!-- Nhúng JS xử lý logic Stripe -->
+<script src="/js/checkout.js"></script>
+
+<%- include('partials/footer') %>

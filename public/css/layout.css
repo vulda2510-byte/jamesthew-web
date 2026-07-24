@@ -1,37 +1,28 @@
 /* public/css/layout.css */
-/* Grid & Container Utilities */
+
 .container {
     width: 100%;
-    max-width: 1280px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 40px;
 }
 
-/* Flexbox Layout Utilities */
-.flex-row {
-    display: flex;
-    align-items: center;
-}
+.flex-row { display: flex; align-items: center; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-center { display: flex; justify-content: center; align-items: center; }
 
-.flex-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* General Structural Elements */
+/* =========================================
+   HEADER
+========================================= */
 .header {
-    background: #fff;
-    border-bottom: 1px solid var(--border-color);
-    height: 80px;
+    background: var(--black);
+    border-bottom: 1px solid #333;
+    height: 90px;
     display: flex;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .header-inner {
@@ -41,20 +32,102 @@
     width: 100%;
 }
 
-.footer {
-    background: #222;
-    color: #fff;
-    padding: 40px 0;
-    text-align: center;
-    margin-top: 60px;
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    flex: 1;
 }
 
-/* Spacing Utilities */
-.mt-section {
-    margin-top: 60px;
+.nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 2;
+}
+
+.nav a {
+    color: var(--white);
+    margin: 0 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+.nav a:hover, .nav a.active {
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
 .gap-buttons {
     display: flex;
-    gap: 15px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
 }
+.header-actions .btn-outline-light {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.header-actions .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #000000;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Nút Logout (Màu đỏ Burgundy / Đỏ rượu vang sang trọng) */
+.header-actions .btn-danger {
+    background-color: #8b0000; /* Đỏ rượu */
+    color: #ffffff;
+    border: 1px solid #8b0000;
+}
+
+.header-actions .btn-danger:hover {
+    background-color: #660000; /* Đỏ rượu đậm hơn khi hover */
+    border-color: #660000;
+}
+.header .text-link { color: var(--white); border-color: var(--white); }
+.header .text-link:hover { color: var(--primary-color); border-color: var(--primary-color); }
+.header .btn-primary { background: var(--white); color: var(--black); border-color: var(--white); }
+.header .btn-primary:hover { background: var(--primary-color); color: var(--white); border-color: var(--primary-color); }
+.header .btn-outline { color: var(--white); border-color: var(--white); }
+.header .btn-outline:hover { background: var(--primary-color); border-color: var(--primary-color); color: var(--white); }
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+.main-content {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+}
+.mt-section { margin-top: 80px; }
+
+/* =========================================
+   FOOTER (Cố định chuẩn tỷ lệ ảnh)
+========================================= */
+.footer {
+    background: var(--black);
+    color: var(--white);
+    padding: 40px 0; /* Thu nhỏ padding để tạo thành dải hẹp như trên ảnh */
+    margin-top: 0; 
+    border-top: 1px solid #1a1a1a; /* Đường kẻ mờ siêu mỏng */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { color: var(--primary-color); border-color: transparent; }
+.footer-links a:hover { border-color: var(--primary-color); }

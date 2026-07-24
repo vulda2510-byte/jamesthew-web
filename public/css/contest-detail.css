@@ -1,0 +1,39 @@
+/* Fix Breadcrumb (Hiển thị ngang thay vì list dọc) */
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: transparent;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    padding: 0 0.5rem;
+    color: #6c757d;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+}
+
+.breadcrumb-item.active {
+    color: #212529;
+    font-weight: 700;
+}
+
+/* Comment Section Styles */
+.comment-bubble {
+    background-color: #f8f9fa;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.contest-hero-card {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 1.5rem;
+}

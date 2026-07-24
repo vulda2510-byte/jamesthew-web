@@ -1,114 +1,77 @@
 /* public/css/profile.css */
-/* Profile Page Visual Hierarchy Polish */
 
-.profile-page {
-    background-color: var(--bg-color);
+.profile-banner {
+    background-color: var(--black, #111111);
+    height: 200px;
+    width: 100%;
+    position: relative;
 }
 
-.profile-cover {
-    width: 100%;
-    height: 320px;
-    background: linear-gradient(135deg, #111 0%, #333 100%);
+.profile-main-container {
+    margin-top: -70px;
     position: relative;
+    z-index: 10;
 }
 
 .profile-header-card {
-    margin-top: -100px;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    background: var(--white, #ffffff);
 }
 
-.profile-avatar-large {
-    width: 180px;
-    height: 180px;
-    font-size: 1.2rem;
-    border: 8px solid #fff;
-    background-color: var(--placeholder-color);
-    margin-top: -80px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.profile-avatar {
+    width: 110px; 
+    height: 110px; 
+    font-size: 3rem; 
+    font-weight: bold;
+    border: 4px solid #ffffff;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    background: var(--bg-alt, #f8f9fa);
+    color: var(--black, #111111);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
-.profile-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
+/* Nav Pills Sync với tông thiết kế Fine Dining */
+.nav-pills .nav-link {
+    color: var(--text-muted, #6c757d);
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    background: transparent;
 }
 
-.stat-card {
-    border: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+.nav-pills .nav-link:hover {
+    background-color: var(--bg-alt, #f8f9fa);
+    color: var(--black, #111111);
 }
 
-.grid-2-col-asymmetric {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
+.nav-pills .nav-link.active {
+    background-color: var(--black, #111111);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-/* Chef Signature Featured Component */
-.signature-card {
-    border: none;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-    overflow: hidden;
+/* Dynamic Banners cho 4 Role */
+.role-banner {
+    border: 1px solid var(--border-color, #e9ecef);
 }
 
-.signature-img {
-    width: 50%;
-    min-height: 400px;
-    border: none;
+.banner-free {
+    background-color: #f8f9fa;
+    border-left: 4px solid #6c757d;
 }
 
-.signature-title {
-    font-size: 2.2rem;
-    line-height: 1.2;
+.banner-premium {
+    background-color: #fff8e6;
+    border-left: 4px solid #ffc107;
 }
 
-/* Achievements */
-.achievement-card {
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    background: #fff;
-    transition: transform 0.2s ease;
+.banner-vip {
+    background: linear-gradient(135deg, #111111 0%, #222222 100%);
+    border-left: 4px solid #ffc107;
 }
 
-.achievement-card:hover {
-    transform: translateY(-3px);
-}
-
-/* Timeline Polish */
-.enhanced-timeline .timeline-item {
-    padding-bottom: 40px;
-}
-
-.timeline-year {
-    display: block;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
-}
-
-/* Masonry/Mosaic Gallery */
-.gallery-mosaic {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 150px;
-    gap: 15px;
-}
-
-.gallery-item {
-    border-radius: 12px;
-    border: none;
-}
-
-.gallery-large {
-    grid-column: span 2;
-    grid-row: span 2;
-}
-
-.gallery-wide {
-    grid-column: span 2;
-}
-
-.gallery-tall {
-    grid-row: span 2;
+.banner-admin {
+    background-color: #fff5f5;
+    border-left: 4px solid #dc3545;
 }

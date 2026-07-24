@@ -7,7 +7,10 @@
             <h1 class="register-title">Create an Account</h1>
         </div>
         
-        <form action="/api/v1/auth/register" method="POST">
+        <!-- Vùng hiển thị thông báo lỗi/thành công -->
+        <div id="alertMessage" style="display: none; padding: 10px; margin-bottom: 15px; border-radius: 4px; text-align: center;"></div>
+        
+        <form id="registerForm">
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstName" class="form-label">First Name</label>
@@ -47,7 +50,7 @@
                 </label>
             </div>
             
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
+            <button type="submit" id="btnSubmit" class="btn btn-primary btn-block">Register</button>
         </form>
         
         <div class="divider"></div>
@@ -58,5 +61,8 @@
         </div>
     </div>
 </main>
+
+<!-- Nhúng file JS xử lý logic cho trang đăng ký -->
+<script src="/js/register.js"></script>
 
 <%- include('partials/footer') %>

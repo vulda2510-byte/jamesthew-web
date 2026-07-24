@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Hỏi & Đáp (FAQ)</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="container my-4">
+        <h2>❓ Hỏi & Đáp - Cuộc Thi Ẩm Thực</h2>
+
+        <!-- Form Đặt Câu Hỏi -->
+        <% if (locals.user) { %>
+            <div class="card p-3 my-4">
+                <h5>Đặt câu hỏi mới</h5>
+                <form id="faqForm">
+                    <div class="mb-3">
+                        <textarea id="faqQuestion" class="form-control" placeholder="Nhập thắc mắc của bạn..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gửi Câu Hỏi</button>
+                </form>
+            </div>
+        <% } %>
+
+        <div class="accordion my-4" id="faqAccordion">
+            <!-- Render FAQ list -->
+        </div>
+    </div>
+
+    <script>
+        async function loadFAQs() {
+            const res = await fetch('/api/v1/faqs');
+            const result = await res.json();
+
+            if (result.success) {
+                const container = document.getElementById('faqAccordion');
+                container.innerHTML = result.data.map((faq, index) => `
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading${index}">
+                            <button class="accordion-button ${index !== 0 ? 'collapsed' : ''}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${index}">
+                                Q: ${faq.question}
+                            </button>
+                        </h2>
+                        <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                <strong>Trả lời:</strong> ${faq.answer || '<em>Câu hỏi này chưa được trả lời.</em>'}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('faqForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = document.getElementById('faqQuestion').value;
+
+            const res = await fetch('/api/v1/faqs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question })
+            });
+            const result = await res.json();
+
+            if (result.success) {
+                document.getElementById('faqQuestion').value = '';
+                alert('Câu hỏi của bạn đã được gửi thành công!');
+                loadFAQs();
+            } else {
+                alert(result.message);
+            }
+        });
+
+        loadFAQs();
+    </script>
+</body>
+</html>

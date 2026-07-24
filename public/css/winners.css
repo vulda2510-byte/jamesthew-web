@@ -1,0 +1,41 @@
+/* Ép Form Lọc nằm trên một hàng ngang ở Desktop */
+.winner-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.winner-filter-form > div {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Style cho Table */
+.winners-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.winners-table th {
+    background-color: #212529;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border: none;
+}
+
+.winners-table th:first-child { border-top-left-radius: 1rem; }
+.winners-table th:last-child { border-top-right-radius: 1rem; }
+
+.winners-table td {
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.winners-table tr:hover td {
+    background-color: #f8f9fa;
+}

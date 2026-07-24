@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tiêu đề động: Tự động thay đổi theo từng trang, nếu không truyền sẽ lấy tên mặc định -->
+    <title><%= typeof title !== 'undefined' ? title : 'Chef James Thew - Premium Culinary Gallery' %></title>
+    
+    <!-- Khai báo các Font chữ và CSS dùng chung hệ thống (nằm trong thư mục public của bạn) -->
+    <link rel="stylesheet" href="/css/style.css"> <!-- File CSS gốc của dự án -->
+    <link rel="stylesheet" href="/vendor/font-awesome/css/all.min.css"> <!-- Ví dụ nếu dùng thêm icon -->
+    
+    <!-- Vùng dự phòng dành riêng cho các file CSS đặc thù của từng trang đơn lẻ (nếu có) -->
+    <%- typeof extraStyles !== 'undefined' ? extraStyles : '' %>
+</head>
+<body>
+
+    <!-- 1. LAYOUT CỐ ĐỊNH PHẦN ĐỈNH TRANG (HEADER) -->
+    <%- include('../partials/header') %>
+
+    <!-- 2. VÙNG NỘI DUNG ĐỘNG (BODY BẤT BIẾN) -->
+    <!-- Tất cả ruột gan của home.ejs, recipes.ejs, profile.ejs... sẽ được tự động bơm vào đây -->
+    <div class="app-view-wrapper">
+        <%- body %>
+    </div>
+
+    <!-- 3. LAYOUT CỐ ĐỊNH PHẦN CHÂN TRANG (FOOTER) -->
+    <%- include('../partials/footer') %>
+
+    <!-- Vùng dự phòng dành riêng cho các file script JS đặc thù ở cuối trang -->
+    <%- typeof extraScripts !== 'undefined' ? extraScripts : '' %>
+</body>
+</html>

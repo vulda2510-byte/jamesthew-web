@@ -1,77 +1,184 @@
 /* public/css/recipe-detail.css */
-/* Recipe Detail Page Layout */
 
+.recipe-detail-page {
+    padding-bottom: 80px;
+}
+
+/* Breadcrumb */
+.premium-breadcrumb {
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    color: var(--text-muted);
+}
+.premium-breadcrumb a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+.premium-breadcrumb span {
+    margin: 0 10px;
+    color: var(--border-color);
+}
+
+/* Hero Section */
 .recipe-hero {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 60px;
     align-items: center;
 }
 
-.recipe-hero-image .image-placeholder {
-    height: 400px;
+.premium-image-box {
+    height: 500px;
     border-radius: 8px;
+    background-color: var(--bg-alt);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.recipe-title {
-    font-size: 2.5rem;
+.premium-title {
+    font-size: 3.5rem;
     font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.recipe-hero-info .recipe-meta {
-    margin-bottom: 20px;
+    line-height: 1.1;
+    margin: 20px 0;
+    color: var(--black);
 }
 
 .recipe-description {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     line-height: 1.8;
 }
 
-/* Stats Section */
-.recipe-stats-grid {
+.meta-dot {
+    margin: 0 12px;
+    color: var(--border-color);
+}
+
+.premium-badge {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.btn-premium-action {
+    padding: 12px 24px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* Stats Bar */
+.recipe-stats-bar {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 15px;
-    background: #fff;
-    padding: 25px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-}
-
-.stat-box strong {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 1.1rem;
-}
-
-/* Content Grid (Ingredients & Instructions) */
-.recipe-content-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
-}
-
-.ingredient-item {
-    padding: 15px 0;
+    background: var(--white);
+    padding: 30px 0;
+    border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
 }
 
+.stat-box {
+    border-right: 1px solid var(--border-color);
+}
+.stat-box:last-child {
+    border-right: none;
+}
+.stat-icon {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 12px;
+}
+.stat-box strong {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Content Grid */
+.recipe-content-grid {
+    display: grid;
+    /* Chia đều 2 cột 1:1, kết hợp align-items: start để 2 cột không bị cố kéo dãn bằng nhau nếu nội dung ít */
+    grid-template-columns: 1fr 1fr; 
+    gap: 40px;
+    align-items: start;
+}
+
+.premium-box {
+    background-color: var(--bg-alt);
+    padding: 40px 50px;
+    border-radius: 12px;
+    height: 100%; /* Giữ chiều cao linh hoạt */
+}
+
+/* Tinh chỉnh UI Checkbox do JS sinh ra */
+.ingredient-list {
+    display: flex;
+    flex-direction: column;
+}
+.ingredient-item {
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border-color);
+    transition: opacity 0.3s ease;
+}
 .ingredient-item:last-child {
     border-bottom: none;
 }
-
-.instructions-list {
+/* Định dạng Icon SVG */
+.stat-icon svg {
+    color: var(--primary-color);
+}
+.btn-premium-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+/* Chef Box */
+.premium-chef-box {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.02);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center; /* Canh giữa phần tử */
+    justify-content: center;
+    max-width: 800px; /* Bóp thuôn lại cho gọn gàng */
+    margin: 0 auto; /* Đẩy ra giữa màn hình */
+}
+.premium-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px; /* Đẩy khoảng cách xuống chữ thay vì sang ngang như cũ */
 }
 
-/* Specific Adjustments */
-.mt-15 {
-    margin-top: 15px;
+.chef-name {
+    font-size: 2rem;
+    color: var(--black);
+    margin-top: 5px;
 }
 
-.chef-info {
-    flex: 1;
+/* Thừa kế lưới Card từ trang Recipes */
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
 }

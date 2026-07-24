@@ -1,29 +1,32 @@
-<!-- src/views/partials/header.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JamesThew - Cooking Recipe</title>
+    <title>JamesThew | High-End Culinary</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <header class="header">
         <div class="container header-inner">
-            <a href="/" class="logo">JAMES THEW</a>
-            
+            <a href="/" class="logo">JamesThew</a>
             <nav class="nav">
                 <a href="/">Home</a>
-                <a href="/dashboard" class="active">Dashboard</a>
-                <a href="/membership">Membership</a>
                 <a href="/recipes">Recipes</a>
                 <a href="/contests">Contests</a>
-                <a href="/profile">Profile</a>
+                <a href="/membership">Membership</a>
             </nav>
-            
-            <div class="gap-buttons">
-                <a href="/login" class="btn btn-outline">Login</a>
-                <a href="/book" class="btn btn-primary">Book Now</a>
+            <div class="header-actions">
+    <% if (locals.user) { %>
+        <!-- Nếu đã đăng nhập: Hiện nút Profile và Logout -->
+        <a href="/profile" class="btn btn-outline-light">PROFILE</a>
+        <a href="/logout" class="btn btn-danger ms-2">LOGOUT</a>
+    <% } else { %>
+        <!-- Nếu chưa đăng nhập: Hiện nút Login -->
+        <a href="/login" class="btn btn-outline-light">Login</a>
+                    <a href="/register" class="btn btn-primary">Sign Up</a>
+                <% } %>
             </div>
         </div>
     </header>
+    <main class="main-content">

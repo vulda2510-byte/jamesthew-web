@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh Sách Cuộc Thi Cuisine</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- File CSS của dự án -->
+</head>
+<body>
+    <%- include('partials/header') %> <!-- Layout Header chung -->
+
+    <div class="container my-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>🏆 Các Cuộc Thi Ẩm Thực</h2>
+            
+            <!-- Phân quyền nút Tạo Cuộc Thi -->
+            <% if (locals.user && ['premium', 'vip', 'admin'].includes(user.role)) { %>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createContestModal">
+                    + Tạo Cuộc Thi New
+                </button>
+            <% } %>
+        </div>
+
+        <!-- Thanh Lọc (Filter) -->
+        <div class="card p-3 mb-4">
+            <form id="filterForm" class="row g-3">
+                <div class="col-md-3">
+                    <select name="type" class="form-select">
+                        <option value="">-- Hình thức --</option>
+                        <option value="online">Online</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="scale" class="form-select">
+                        <option value="">-- Quy mô --</option>
+                        <option value="small">Small (Mini)</option>
+                        <option value="large">Large (Lớn)</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="search" class="form-control" placeholder="Tìm kiếm tên cuộc thi...">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-secondary w-100">Lọc</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Danh sách Contest -->
+        <div class="row" id="contestListContainer">
+            <!-- Dữ liệu Contest sẽ được render bằng JS qua API /api/v1/contests -->
+        </div>
+    </div>
+
+    <script>
+        async function loadContests() {
+            const formData = new FormData(document.getElementById('filterForm'));
+            const params = new URLSearchParams(formData).toString();
+            
+            const res = await fetch(`/api/v1/contests?${params}`);
+            const result = await res.json();
+
+            if (result.success) {
+                const container = document.getElementById('contestListContainer');
+                container.innerHTML = result.data.map(contest => `
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <span class="badge bg-${contest.type === 'online' ? 'info' : 'warning'}">${contest.type.toUpperCase()}</span>
+                                <span class="badge bg-secondary">${contest.scale.toUpperCase()}</span>
+                                <h5 class="card-title mt-2">${contest.title}</h5>
+                                <p class="card-text text-muted">${contest.description ? contest.description.substring(0, 80) + '...' : ''}</p>
+                            </div>
+                            <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Bắt đầu: ${new Date(contest.start_date).toLocaleDateString('vi-VN')}</small>
+                                <a href="/contests/detail/${contest.id}" class="btn btn-sm btn-outline-primary">Xem Chi Tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.getElementById('filterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            loadContests();
+        });
+
+        loadContests();
+    </script>
+    <!-- Modal Tạo Cuộc Thi -->
+<div class="modal fade" id="createContestModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">🏆 Tạo Cuộc Thi Mới</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="createContestForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Tên cuộc thi</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Hình thức</label>
+              <select name="type" id="contestTypeSelect" class="form-select" onchange="toggleLocationInput()">
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Quy mô</label>
+              <select name="scale" class="form-select">
+                <option value="small">Small (Mini Contest)</option>
+                <option value="large">Large (Chỉ VIP / Admin)</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3 d-none" id="locationGroup">
+            <label class="form-label">Địa điểm tổ chức (Dành cho Offline)</label>
+            <input type="text" name="location" class="form-control" placeholder="Nhập địa chỉ tổ chức...">
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Ngày bắt đầu</label>
+              <input type="date" name="start_date" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Ngày kết thúc</label>
+              <input type="date" name="end_date" class="form-control" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Mô tả ngắn</label>
+            <textarea name="description" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Thể lệ cuộc thi</label>
+            <textarea name="rules" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Chi tiết giải thưởng</label>
+            <input type="text" name="prize_details" class="form-control" placeholder="Ví dụ: 5.000.000 VNĐ + Bằng khen">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="submit" class="btn btn-primary">Xác Nhận Tạo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleLocationInput() {
+    const type = document.getElementById('contestTypeSelect').value;
+    const locGroup = document.getElementById('locationGroup');
+    if (type === 'offline') {
+      locGroup.classList.remove('d-none');
+    } else {
+      locGroup.classList.add('d-none');
+    }
+  }
+
+  document.getElementById('createContestForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    const res = await fetch('/api/v1/contests', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+
+    if (result.success) {
+      alert('Tạo cuộc thi thành công!');
+      window.location.reload();
+    } else {
+      alert(result.message);
+    }
+  });
+</script>
+</body>
+</html>

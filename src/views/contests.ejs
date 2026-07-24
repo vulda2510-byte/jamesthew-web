@@ -29,7 +29,8 @@
                     <li><strong>Prize:</strong> $10,000 + VIP Membership</li>
                 </ul>
                 <div class="mt-15">
-                    <a href="/register" class="btn btn-primary">Join Contest</a>
+                    <!-- SỬA: Đổi từ /register sang trang Detail thực tế -->
+                    <a href="/contests/detail/master-chef-2026-championship" class="btn btn-primary">View & Join Contest</a>
                 </div>
             </div>
         </div>
@@ -39,26 +40,10 @@
     <section class="container mt-section">
         <h2 class="section-title text-center">Contest Categories</h2>
         <div class="categories-grid mt-section">
-            <div class="card text-center p-20">
-                <div class="card-body">
-                    <h3>Live Competition</h3>
-                </div>
-            </div>
-            <div class="card text-center p-20">
-                <div class="card-body">
-                    <h3>Online Challenge</h3>
-                </div>
-            </div>
-            <div class="card text-center p-20">
-                <div class="card-body">
-                    <h3>Community Event</h3>
-                </div>
-            </div>
-            <div class="card text-center p-20">
-                <div class="card-body">
-                    <h3>Premium Contest</h3>
-                </div>
-            </div>
+            <div class="card text-center p-20"><div class="card-body"><h3>Live Competition</h3></div></div>
+            <div class="card text-center p-20"><div class="card-body"><h3>Online Challenge</h3></div></div>
+            <div class="card text-center p-20"><div class="card-body"><h3>Community Event</h3></div></div>
+            <div class="card text-center p-20"><div class="card-body"><h3>Premium Contest</h3></div></div>
         </div>
     </section>
 
@@ -66,7 +51,7 @@
     <section id="upcoming" class="container mt-section">
         <h2 class="section-title text-center">Upcoming Contests</h2>
         <div class="contests-grid mt-section">
-            <!-- Contest Card 1 -->
+            <!-- Card 1 -->
             <div class="card contest-card">
                 <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
                 <div class="card-body">
@@ -79,12 +64,13 @@
                     <p class="text-sm mt-15"><strong>Deadline:</strong> July 25, 2026</p>
                 </div>
                 <div class="card-footer flex-between">
-                    <a href="/register" class="btn btn-primary btn-sm">Join</a>
-                    <a href="#" class="btn btn-outline btn-sm">Details</a>
+                    <!-- SỬA: Trỏ về đúng đường dẫn Detail -->
+                    <a href="/contests/detail/the-great-baking-showdown" class="btn btn-primary btn-sm">Join</a>
+                    <a href="/contests/detail/the-great-baking-showdown" class="btn btn-outline btn-sm">Details</a>
                 </div>
             </div>
 
-            <!-- Contest Card 2 -->
+            <!-- Card 2 -->
             <div class="card contest-card">
                 <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
                 <div class="card-body">
@@ -97,141 +83,48 @@
                     <p class="text-sm mt-15"><strong>Deadline:</strong> August 02, 2026</p>
                 </div>
                 <div class="card-footer flex-between">
-                    <a href="/register" class="btn btn-primary btn-sm">Join</a>
-                    <a href="#" class="btn btn-outline btn-sm">Details</a>
+                    <a href="/contests/detail/vegan-innovation-challenge" class="btn btn-primary btn-sm">Join</a>
+                    <a href="/contests/detail/vegan-innovation-challenge" class="btn btn-outline btn-sm">Details</a>
                 </div>
             </div>
-
-            <!-- Contest Card 3 -->
-            <div class="card contest-card">
-                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
-                <div class="card-body">
-                    <h3>Street Food Global</h3>
-                    <p class="text-muted">Bring the best street food flavors from around the world to your kitchen.</p>
-                    <div class="recipe-meta flex-row mt-15">
-                        <span class="badge">Easy</span>
-                        <span class="meta-text font-bold">Prize: $1,000</span>
-                    </div>
-                    <p class="text-sm mt-15"><strong>Deadline:</strong> August 10, 2026</p>
-                </div>
-                <div class="card-footer flex-between">
-                    <a href="/register" class="btn btn-primary btn-sm">Join</a>
-                    <a href="#" class="btn btn-outline btn-sm">Details</a>
-                </div>
-            </div>
+            
+            <!-- (Thêm các Card khác tương tự...) -->
+        </div>
+        
+        <!-- Nút Xem Tất Cả trỏ sang File Số 7 (Danh Sách Đầy Đủ) -->
+        <div class="text-center mt-section">
+            <a href="/contests/list" class="btn btn-primary">View All Contests</a>
         </div>
     </section>
 
-    <!-- Section 5: Past Winners -->
-    <section class="container mt-section">
-        <h2 class="section-title text-center">Past Winners</h2>
-        <div class="winners-grid mt-section">
-            <div class="card text-center p-20">
-                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
-                <h3 class="mt-15">Sarah Jenkins</h3>
-                <p class="text-muted text-sm">Winter Feast Challenge</p>
-                <div class="mt-15"><span class="badge">1st Place</span></div>
-            </div>
-            <div class="card text-center p-20">
-                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
-                <h3 class="mt-15">Michael Chen</h3>
-                <p class="text-muted text-sm">Pasta Masterclass</p>
-                <div class="mt-15"><span class="badge">Grand Prize</span></div>
-            </div>
-            <div class="card text-center p-20">
-                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
-                <h3 class="mt-15">Elena Rodriguez</h3>
-                <p class="text-muted text-sm">Baking Showdown 2025</p>
-                <div class="mt-15"><span class="badge">Gold Medal</span></div>
-            </div>
-            <div class="card text-center p-20">
-                <div class="avatar-placeholder margin-auto"><span>AVATAR</span></div>
-                <h3 class="mt-15">David Smith</h3>
-                <p class="text-muted text-sm">Grill Master Pro</p>
-                <div class="mt-15"><span class="badge">1st Place</span></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sections 6 & 7: Contest Rules & FAQ -->
+    <!-- Sections 6 & 7: Tóm tắt Rules & FAQ -->
     <section class="container mt-section">
         <div class="grid-2-col">
-            <!-- Contest Rules -->
+            <!-- Tóm tắt Rules -->
             <div>
                 <h2 class="section-title">Contest Rules</h2>
-                <div class="accordion">
-                    <div class="accordion-item active">
-                        <div class="accordion-header">
-                            <span>Eligibility</span>
-                            <span>-</span>
-                        </div>
-                        <div class="accordion-body">
-                            <p class="text-muted">All contests are open to amateur cooks worldwide unless specified otherwise. Premium contests require an active VIP membership.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <div class="accordion-header">
-                            <span>Submission Guidelines</span>
-                            <span>+</span>
-                        </div>
-                        <div class="accordion-body">
-                            <p class="text-muted">Submit a high-resolution photo of your dish, the complete recipe, and a 2-minute video demonstrating your process.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <div class="accordion-header">
-                            <span>Judging Criteria</span>
-                            <span>+</span>
-                        </div>
-                        <div class="accordion-body">
-                            <p class="text-muted">Dishes are judged on creativity (30%), presentation (30%), and perceived taste/technique based on video submission (40%).</p>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-muted mb-15">Review our standard rules for eligibility, submission guidelines, and judging criteria before entering.</p>
+                <!-- SỬA: Thêm nút trỏ tới trang Rules (File số 10) -->
+                <a href="/contests/rules" class="btn btn-outline">Read Full Rules</a>
             </div>
 
-            <!-- FAQ -->
+            <!-- Tóm tắt FAQ -->
             <div>
                 <h2 class="section-title">FAQ</h2>
-                <div class="accordion">
-                    <div class="accordion-item active">
-                        <div class="accordion-header">
-                            <span>How do I claim my prize?</span>
-                            <span>-</span>
-                        </div>
-                        <div class="accordion-body">
-                            <p class="text-muted">Winners will be contacted via email within 48 hours of the announcement. Cash prizes are transferred via wire or PayPal.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <div class="accordion-header">
-                            <span>Can I enter multiple contests?</span>
-                            <span>+</span>
-                        </div>
-                        <div class="accordion-body">
-                            <p class="text-muted">Yes, you can participate in as many live and upcoming contests as you wish.</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <div class="accordion-header">
-                            <span>What happens if I miss the deadline?</span>
-                            <span>+</span>
-                        </div>
-                        <div class="accordion-body">
-                            <p class="text-muted">Late submissions are automatically disqualified to ensure fairness for all participants.</p>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-muted mb-15">Have questions about prize claims, multiple entries, or deadlines? We've got answers.</p>
+                <!-- SỬA: Thêm nút trỏ tới trang FAQ (File số 9) -->
+                <a href="/contests/faq" class="btn btn-outline">Visit FAQ Page</a>
             </div>
         </div>
     </section>
 
-    <!-- Section 8: Bottom CTA Banner -->
+    <!-- Section 8: Bottom CTA -->
     <section class="container mt-section mb-section">
         <div class="cta-banner">
-            <h2 class="section-title">Join the next culinary competition today.</h2>
+            <h2 class="section-title">See our hall of fame.</h2>
             <div class="mt-15">
-                <a href="/register" class="btn btn-outline">Register Now</a>
+                <!-- SỬA: Dẫn tới trang Winners (File số 11) -->
+                <a href="/contests/winners" class="btn btn-outline">View Past Winners</a>
             </div>
         </div>
     </section>

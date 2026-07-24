@@ -1,0 +1,240 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/contest-detail.css">
+<main class="container my-5" style="max-width: 900px;">
+    <div id="contestData" 
+         data-contest-id="<%= contestId %>" 
+         data-logged-in="<%= locals.user ? 'true' : 'false' %>">
+    </div>
+
+    <!-- Nút quay lại & Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-dark">Home</a></li>
+            <li class="breadcrumb-item"><a href="/contests" class="text-decoration-none text-dark">Contests</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Chi tiết cuộc thi</li>
+        </ol>
+    </nav>
+
+    <!-- Thông tin tổng quan Contest (Render bằng JS) -->
+    <div id="contestDetailSection" class="card border-0 rounded-4 p-4 p-md-5 shadow-sm mb-4">
+        <div class="text-center text-muted py-5">
+            <div class="spinner-border text-warning" role="status"></div>
+            <p class="mt-2">Đang tải thông tin cuộc thi...</p>
+        </div>
+    </div>
+
+    <!-- Khung Đánh giá Kép (Dual-Rating Display) -->
+    <div class="card p-4 mb-4 border-0 shadow-sm rounded-4 border-bottom border-warning border-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <h5 class="mb-1">⭐ Đánh Giá Cuộc Thi</h5>
+                <small class="text-muted">Star Rate dựa trên tương tác thực tế & lượt Like</small>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <button id="likeBtn" class="btn btn-outline-danger px-4 rounded-pill shadow-sm">
+                    ❤️ Like Rate: <span id="likeCount" class="fw-bold">0</span>
+                </button>
+                <span id="starRate" class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-pill shadow-sm">0.0 / 5.0 ⭐</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- KHU VỰC TƯƠNG TÁC THI ĐẤU (Phân biệt Online / Offline) -->
+    <div id="actionArea" class="mb-4"></div>
+
+    <!-- DANH SÁCH BÀI DỰ THI (Chỉ hiển thị với Online) -->
+    <div id="submissionsSection" class="mb-5 d-none">
+        <h4 class="fw-bold mb-4">📸 Các Bài Dự Thi Đã Nộp</h4>
+        <div class="row g-4" id="submissionsList"></div>
+    </div>
+
+    <!-- BÌNH LUẬN CỘNG ĐỒNG -->
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4 p-md-5">
+            <h4 class="fw-bold mb-4">💬 Bình Luận Cộng Đồng</h4>
+            
+            <% if (locals.user) { %>
+                <form id="commentForm" class="mb-4 d-flex gap-2">
+                    <input type="text" id="commentInput" class="form-control bg-light border-0 py-3 px-4 rounded-pill" placeholder="Viết bình luận của bạn..." required>
+                    <button type="submit" class="btn btn-dark px-4 rounded-pill fw-bold shadow-sm">Gửi</button>
+                </form>
+            <% } else { %>
+                <div class="alert alert-warning py-3 rounded-4 border-0 shadow-sm">
+                    Bạn cần <a href="/login" class="fw-bold text-dark">Đăng nhập</a> để tham gia bình luận.
+                </div>
+            <% } %>
+
+            <div id="commentList" class="d-flex flex-column gap-3"></div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const contestDataSet = document.getElementById('contestData')?.dataset || {};
+    const contestId = contestDataSet.contestId;
+    const isUserLoggedIn = contestDataSet.loggedIn === 'true';
+
+    async function loadContestDetail() {
+        if (!contestId) return;
+        const res = await fetch(`/api/v1/contests/${contestId}`);
+        const result = await res.json();
+
+        if (result.success) {
+            const contest = result.data;
+            document.getElementById('contestDetailSection').innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="display-6 fw-bold mb-0">${contest.title}</h1>
+                    <span class="badge bg-${contest.type === 'online' ? 'primary' : 'warning text-dark'} fs-6 px-3 py-2 rounded-pill shadow-sm">${contest.type.toUpperCase()}</span>
+                </div>
+                <p class="text-muted fs-5 mb-4">${contest.description || 'Chưa có mô tả chi tiết cho cuộc thi này.'}</p>
+                <div class="row g-4 bg-light p-4 rounded-4">
+                    <div class="col-md-6">
+                        ${contest.type === 'offline' ? `<div class="mb-3"><span class="text-muted d-block small mb-1">📍 Địa điểm</span><strong class="text-danger fs-6">${contest.location || 'Chưa cập nhật'}</strong></div>` : ''}
+                        <div><span class="text-muted d-block small mb-1">📅 Thời gian</span><strong>${new Date(contest.start_date).toLocaleDateString('vi-VN')} - ${new Date(contest.end_date).toLocaleDateString('vi-VN')}</strong></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3"><span class="text-muted d-block small mb-1">📜 Thể lệ</span><strong>${contest.rules || 'Đang cập nhật'}</strong></div>
+                        <div><span class="text-muted d-block small mb-1">🎁 Giải thưởng</span><strong class="text-success fs-6">${contest.prize_details || 'Đang cập nhật'}</strong></div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('likeCount').innerText = contest.like_rate || 0;
+            document.getElementById('starRate').innerText = `${contest.star_rate || 0.0} / 5.0 ⭐`;
+
+            const actionArea = document.getElementById('actionArea');
+            if (contest.type === 'offline') {
+                actionArea.innerHTML = `
+                    <div class="card p-5 text-center bg-light border-0 shadow-sm rounded-4">
+                        <h4 class="fw-bold mb-3">Tham Gia Sự Kiện Offline</h4>
+                        <p class="text-muted mb-4">Địa điểm dự kiến: <strong>${contest.location || 'Chưa chốt'}</strong></p>
+                        ${isUserLoggedIn ? `<button onclick="registerOffline()" class="btn btn-dark btn-lg px-5 rounded-pill shadow-sm">Đăng Ký Tham Gia Ngay</button>` : `<a href="/login" class="btn btn-outline-dark btn-lg px-5 rounded-pill">Đăng nhập để đăng ký</a>`}
+                    </div>
+                `;
+            } else {
+                document.getElementById('submissionsSection').classList.remove('d-none');
+                actionArea.innerHTML = `
+                    <div class="card p-4 p-md-5 border-0 shadow-sm rounded-4 bg-light">
+                        <h4 class="fw-bold mb-4">📤 Nộp Bài Dự Thi (Online)</h4>
+                        ${isUserLoggedIn ? `
+                            <form id="submissionForm" onsubmit="submitOnlineEntry(event)">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Tên bài thi / Món ăn</label>
+                                    <input type="text" name="title" class="form-control py-2 px-3 rounded-3 border-0 shadow-sm" required placeholder="Ví dụ: Phở Bò Thấu Vị">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Link Hình ảnh</label>
+                                    <input type="url" name="image_url" class="form-control py-2 px-3 rounded-3 border-0 shadow-sm" placeholder="https://example.com/image.jpg">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Mô tả chi tiết</label>
+                                    <textarea name="content" class="form-control py-2 px-3 rounded-3 border-0 shadow-sm" rows="4" required placeholder="Chia sẻ quá trình chế biến và ý nghĩa món ăn..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-dark px-5 py-2 rounded-pill fw-bold shadow-sm">Gửi Bài Dự Thi</button>
+                            </form>
+                        ` : `<div class="alert alert-warning border-0 rounded-3 shadow-sm mb-0">Vui lòng <a href="/login" class="fw-bold text-dark">đăng nhập</a> để nộp bài thi của bạn.</div>`}
+                    </div>
+                `;
+                renderSubmissions(contest.submissions);
+            }
+            renderComments(contest.comments);
+        }
+    }
+
+    async function submitOnlineEntry(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        const res = await fetch(`/api/v1/contests/${contestId}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+            alert('Nộp bài thi thành công!');
+            loadContestDetail();
+        } else alert(result.message);
+    }
+
+    async function registerOffline() {
+        const res = await fetch(`/api/v1/contests/${contestId}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: 'Đăng ký tham gia Offline' })
+        });
+        const result = await res.json();
+        if (result.success) alert('Bạn đã đăng ký tham gia thành công!');
+        else alert(result.message);
+    }
+
+    function renderSubmissions(submissions) {
+        const container = document.getElementById('submissionsList');
+        if (!submissions || submissions.length === 0) {
+            container.innerHTML = '<div class="col-12"><div class="alert alert-light text-center border-0 shadow-sm py-4 text-muted rounded-4">Chưa có bài dự thi nào được nộp. Hãy là người đầu tiên!</div></div>';
+            return;
+        }
+        container.innerHTML = submissions.map(s => `
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+                    ${s.image_url ? `<img src="${s.image_url}" class="card-img-top" style="height:200px; object-fit:cover;">` : '<div class="bg-light d-flex align-items-center justify-content-center text-muted" style="height:200px;"><i class="bi bi-image fs-1"></i></div>'}
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-2">${s.title}</h5>
+                        <p class="card-text small text-muted mb-3">${s.content ? s.content.substring(0, 80) + '...' : ''}</p>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="bg-dark rounded-circle text-white d-flex align-items-center justify-content-center fw-bold" style="width: 30px; height: 30px; font-size: 12px;">${(s.participant?.username || 'U').charAt(0).toUpperCase()}</div>
+                            <small class="text-dark fw-bold">@${s.participant?.username || 'AnDanh'}</small>
+                        </div>
+                    </div>
+                    ${s.judge_score > 0 ? `<div class="card-footer bg-warning border-0 text-dark fw-bold text-center py-2">Điểm Giám Khảo: ${s.judge_score}/10</div>` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('likeBtn')?.addEventListener('click', async () => {
+        const res = await fetch('/api/v1/contests/like', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ targetId: contestId, targetType: 'contest' })
+        });
+        const result = await res.json();
+        if (result.success) loadContestDetail();
+    });
+
+    document.getElementById('commentForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const content = document.getElementById('commentInput').value;
+        const res = await fetch('/api/v1/contests/comments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ target_id: contestId, target_type: 'contest', content })
+        });
+        const result = await res.json();
+        if (result.success) {
+            document.getElementById('commentInput').value = '';
+            loadContestDetail();
+        } else alert(result.message);
+    });
+
+    function renderComments(comments) {
+        const container = document.getElementById('commentList');
+        if (!comments || comments.length === 0) {
+            container.innerHTML = '<div class="text-center text-muted py-4 bg-light rounded-4">Chưa có bình luận nào.</div>';
+            return;
+        }
+        container.innerHTML = comments.map(c => `
+            <div class="p-3 bg-light rounded-4">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <strong class="text-dark">@${c.author?.username || 'AnDanh'}</strong>
+                    <span class="badge bg-secondary text-light fw-normal rounded-pill" style="font-size: 10px;">${c.author?.role || 'User'}</span>
+                </div>
+                <p class="mb-0 text-muted">${c.content}</p>
+            </div>
+        `).join('');
+    }
+
+    loadContestDetail();
+</script>
+<script src="/js/contest-detail.js"></script>
+<%- include('partials/footer') %>

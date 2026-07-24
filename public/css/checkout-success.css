@@ -1,0 +1,126 @@
+/* Reset và căn giữa layout */
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    background-color: #fafafa;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+.success-card {
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.success-card h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.success-card p {
+    color: #555;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+/* CSS cho Animation Tick xanh */
+.icon-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 4;
+    stroke: #000; /* Dùng màu đen cho đồng bộ tông website */
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #000;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark-circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 4;
+    stroke-miterlimit: 10;
+    stroke: #000;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% { stroke-dashoffset: 0; }
+}
+@keyframes scale {
+    0%, 100% { transform: none; }
+    50% { transform: scale3d(1.1, 1.1, 1); }
+}
+@keyframes fill {
+    100% { box-shadow: inset 0px 0px 0px 30px transparent; }
+}
+
+/* Các thành phần text và nút bấm */
+.redirect-info {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 2rem;
+}
+
+#countdown {
+    font-weight: bold;
+    color: #000;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+.btn-primary:hover {
+    background-color: #333;
+}
+
+.btn-outline {
+    background-color: #fff;
+    border: 1px solid #000;
+    color: #000;
+}
+
+.btn-outline:hover {
+    background-color: #f0f0f0;
+}

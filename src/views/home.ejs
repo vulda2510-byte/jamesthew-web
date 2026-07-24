@@ -1,55 +1,59 @@
-<!-- src/views/home.ejs -->
-<!-- Updating Featured section cards to link to /recipe-detail -->
 <%- include('partials/header') %>
 
-<main>
-    <section class="hero-section container">
-        <div class="hero-content">
-            <h1>Chef James Thew</h1>
-            <p>Renowned culinary innovator blending classical techniques with modern gastronomy. Explore exclusive recipes, masterclasses, and behind-the-scenes insights into the world of fine dining.</p>
-            <div class="gap-buttons">
-                <a href="/membership" class="btn btn-primary">Explore Membership</a>
-                <a href="/recipes" class="btn btn-outline">Explore Recipes</a>
-            </div>
+<!-- Hero Section -->
+<section class="hero-split">
+    <div class="hero-text-col">
+        <h1 class="hero-title">Master the Art<br>of Fine Dining</h1>
+        <p class="hero-subtitle">Join JamesThew to discover exclusive recipes, participate in elite contests, and elevate your culinary skills to a professional level.</p>
+        <div class="gap-buttons mt-30">
+            <a href="/recipes" class="btn btn-primary">Explore Recipes</a>
+            <a href="/membership" class="btn btn-outline">Join Premium</a>
         </div>
-        <div class="image-placeholder">
-            <span>IMAGE PLACEHOLDER</span>
-        </div>
-    </section>
+    </div>
+    <div class="hero-img-col">
+        <!-- Đặt tạm 1 ảnh tĩnh để test layout, sau này bạn có thể nối API thay đổi ảnh sau -->
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="JamesThew Excellence">
+    </div>
+</section>
 
-    <section class="container mt-section">
-        <h2 class="section-title">Featured Recipes</h2>
-        
-        <div class="featured-grid">
-            <!-- Cột trái lớn -->
-            <a href="/recipe-detail" class="card card-large">
-                <div class="image-placeholder"><span>IMAGE PLACEHOLDER</span></div>
-                <div class="card-body">
-                    <h3>Grilled Salmon with Lemon Butter</h3>
-                    <p>A perfectly grilled salmon paired with a rich and tangy lemon butter sauce. Quick, healthy, and incredibly delicious.</p>
-                </div>
-            </a>
+<!-- Website Introduction Section -->
+<section class="intro-section container mt-section text-center">
+    <h2 class="section-title">The JamesThew Experience</h2>
+    <div class="intro-content">
+        <p>Welcome to the pinnacle of culinary excellence. At JamesThew, we believe that cooking is not just a daily task—it is an art form. Our exclusive platform brings together world-class chefs, passionate home cooks, and elite gastronomy enthusiasts.</p>
+        <p>Whether you are seeking a Michelin-star recipe or looking to challenge yourself in our grand culinary contests, you have arrived at the ultimate destination for luxury dining.</p>
+    </div>
+    <div class="divider mt-30"></div>
+</section>
 
-            <!-- Cột phải 2 card nhỏ -->
-            <div class="featured-right">
-                <a href="/recipe-detail" class="card card-small">
-                    <div class="image-placeholder"><span>IMAGE PLACEHOLDER</span></div>
-                    <div class="card-body">
-                        <h3>Classic Beef Wellington</h3>
-                        <p>Tender beef wrapped in mushroom duxelles and flaky pastry.</p>
-                    </div>
-                </a>
-                
-                <a href="/recipe-detail" class="card card-small">
-                    <div class="image-placeholder"><span>IMAGE PLACEHOLDER</span></div>
-                    <div class="card-body">
-                        <h3>Creamy Tomato Soup</h3>
-                        <p>A comforting bowl of rich, creamy tomato goodness.</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-</main>
+<!-- Phân mục 1: Featured Recipes -->
+<section class="container mt-section">
+    <h2 class="section-title text-center">Featured Masterpieces</h2>
+    <!-- Chỉ để lại ID, xóa class grid-3-col để nội dung JS bên trong được bung 100% -->
+    <div id="featuredRecipesContainer" class="mt-30 w-100">
+        <p class="text-muted text-center">Loading featured culinary masterpieces...</p>
+    </div>
+</section>
+
+<!-- Phân mục 2: Latest Recipes -->
+<section class="container mt-section">
+    <h2 class="section-title text-center">Latest Recipes</h2>
+    <!-- Tương tự, xóa class grid-3-col ở đây -->
+    <div id="latestRecipesContainer" class="mt-30 w-100">
+        <p class="text-muted text-center">Loading the newest creations...</p>
+    </div>
+</section>
+
+<!-- Call to Action (Contest) -->
+<section class="home-cta mt-section">
+    <div class="container text-center">
+        <h2 class="section-title">The Grand Culinary Contest</h2>
+        <p class="cta-subtitle text-muted">Showcase your skills and win the JamesThew Excellence Award.</p>
+        <a href="/contests" class="btn btn-outline" style="color:var(--primary-color); border-color:var(--primary-color);">Enter Contest</a>
+    </div>
+</section>
+
+<!-- KÍCH HOẠT LẠI FILE JAVASCRIPT ĐỂ TẢI DỮ LIỆU TỪ API -->
+<script src="/js/home.js"></script>
 
 <%- include('partials/footer') %>

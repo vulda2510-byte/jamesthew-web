@@ -1,204 +1,122 @@
-<!-- src/views/recipe-detail.ejs -->
 <%- include('partials/header') %>
+<link rel="stylesheet" href="/css/recipe-detail.css">
 
 <main class="container mt-section recipe-detail-page">
     <!-- Section 1: Breadcrumb -->
-    <nav class="breadcrumb">
-        <a href="/">Home</a> / 
-        <a href="/recipes">Recipes</a> / 
-        <span class="text-muted">Grilled Salmon with Lemon Butter</span>
+    <nav class="breadcrumb premium-breadcrumb">
+        <a href="/">Home</a> <span>/</span> 
+        <a href="/recipes">Recipes</a> <span>/</span> 
+        <span id="breadcrumbCurrent" class="text-muted">Loading...</span>
     </nav>
 
     <!-- Section 2: Recipe Hero -->
-    <section class="recipe-hero mt-section">
+    <section class="recipe-hero mt-30">
         <div class="recipe-hero-image">
-            <div class="image-placeholder">
-                <span>IMAGE PLACEHOLDER</span>
+            <div class="image-placeholder premium-image-box">
+                <span id="recipeHeroImageLabel" class="text-muted">Loading Media...</span>
             </div>
         </div>
         <div class="recipe-hero-info">
-            <h1 class="recipe-title">Grilled Salmon with Lemon Butter</h1>
-            <div class="recipe-meta flex-row">
-                <span class="badge">Medium</span>
-                <span class="category-label text-muted">MAINS</span>
-                <span class="meta-text">45 mins</span>
+            <div class="recipe-meta flex-row mt-10">
+                <span id="recipeCategory" class="category-label text-muted">...</span>
+                <span class="meta-dot">•</span>
+                <span id="recipeDuration" class="meta-text">...</span>
+                <span class="meta-dot">•</span>
+                <span id="recipeBadge" class="badge premium-badge">...</span>
             </div>
-            <p class="recipe-description">A perfectly grilled salmon paired with a rich and tangy lemon butter sauce. Quick, healthy, and incredibly delicious for a weeknight dinner or special occasion.</p>
-            <div class="gap-buttons mt-section">
-                <button class="btn btn-primary">Save Recipe</button>
-                <button class="btn btn-outline">Share</button>
+            
+            <h1 id="recipeTitle" class="recipe-title premium-title">Loading Recipe Title...</h1>
+            <p id="recipeDescription" class="recipe-description text-muted">...</p>
+            
+            <div class="gap-buttons action-buttons mt-30">
+                <button id="btnSaveRecipe" class="btn btn-outline btn-premium-action">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                    Save Recipe
+                </button>
+                <button id="btnShareRecipe" class="btn btn-outline btn-premium-action">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"></path></svg>
+                    Share
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Section 3: Recipe Information Stats -->
-    <section class="recipe-stats-grid mt-section">
+    <div class="divider mt-section"></div>
+
+    <!-- Section 3: Recipe Stats Bar (Thay Emoji bằng SVG) -->
+    <section class="recipe-stats-bar mt-30">
         <div class="stat-box text-center">
+            <span class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span>
             <strong>Prep Time</strong>
-            <p class="text-muted">15 mins</p>
+            <p id="statPrepTime" class="text-muted">--</p>
         </div>
         <div class="stat-box text-center">
+            <span class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg></span>
             <strong>Cook Time</strong>
-            <p class="text-muted">30 mins</p>
+            <p id="statCookTime" class="text-muted">--</p>
         </div>
         <div class="stat-box text-center">
+            <span class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></span>
             <strong>Servings</strong>
-            <p class="text-muted">4</p>
+            <p id="statServings" class="text-muted">--</p>
         </div>
         <div class="stat-box text-center">
+            <span class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg></span>
             <strong>Calories</strong>
-            <p class="text-muted">420 kcal</p>
+            <p id="statCalories" class="text-muted">--</p>
         </div>
         <div class="stat-box text-center">
+            <span class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg></span>
             <strong>Difficulty</strong>
-            <p class="text-muted">Medium</p>
+            <p id="statDifficulty" class="text-muted">--</p>
         </div>
         <div class="stat-box text-center">
+            <span class="stat-icon"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></span>
             <strong>Cuisine</strong>
-            <p class="text-muted">European</p>
+            <p id="statCuisine" class="text-muted">--</p>
         </div>
     </section>
 
+    <!-- Section 4: Content Grid (Đã đồng bộ giao diện 2 cột) -->
     <div class="recipe-content-grid mt-section">
         <!-- Left Column: Ingredients -->
-        <div class="recipe-ingredients">
-            <h2 class="section-title">Ingredients</h2>
-            <div class="ingredient-list">
-                <label class="form-checkbox-group ingredient-item">
-                    <input type="checkbox"> <span>4 Salmon fillets (6 oz each)</span>
-                </label>
-                <label class="form-checkbox-group ingredient-item">
-                    <input type="checkbox"> <span>2 tbsp Olive oil</span>
-                </label>
-                <label class="form-checkbox-group ingredient-item">
-                    <input type="checkbox"> <span>Salt and freshly ground black pepper</span>
-                </label>
-                <label class="form-checkbox-group ingredient-item">
-                    <input type="checkbox"> <span>4 tbsp Unsalted butter, melted</span>
-                </label>
-                <label class="form-checkbox-group ingredient-item">
-                    <input type="checkbox"> <span>Juice of 1 lemon</span>
-                </label>
-                <label class="form-checkbox-group ingredient-item">
-                    <input type="checkbox"> <span>Fresh parsley, chopped</span>
-                </label>
+        <div class="recipe-ingredients premium-box">
+            <h2 class="section-title text-center" style="font-size: 1.8rem;">INGREDIENTS</h2>
+            <div id="ingredientsListContainer" class="ingredient-list mt-15">
+                <p class="text-muted text-center">Processing ingredients list...</p>
             </div>
         </div>
 
-        <!-- Right Column: Instructions -->
-        <div class="recipe-instructions">
-            <h2 class="section-title">Instructions</h2>
-            <div class="instructions-list">
-                <div class="step-card card">
-                    <div class="card-body flex-row align-start">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <strong>Preheat Grill</strong>
-                            <p class="text-muted">Preheat your grill or grill pan to medium-high heat. Brush the salmon fillets with olive oil and season generously with salt and pepper.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-card card">
-                    <div class="card-body flex-row align-start">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <strong>Prepare Sauce</strong>
-                            <p class="text-muted">In a small bowl, whisk together the melted butter, lemon juice, and chopped parsley. Set aside.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-card card">
-                    <div class="card-body flex-row align-start">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <strong>Grill Salmon</strong>
-                            <p class="text-muted">Place salmon on the grill skin-side down. Grill for 6-8 minutes, then carefully flip and grill for another 2-4 minutes until cooked through.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="step-card card">
-                    <div class="card-body flex-row align-start">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <strong>Serve</strong>
-                            <p class="text-muted">Remove salmon from grill. Drizzle immediately with the lemon butter sauce and serve hot.</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- Right Column: Instructions (THÊM class premium-box để đồng bộ) -->
+        <div class="recipe-instructions premium-box">
+            <h2 class="section-title text-center" style="font-size: 1.8rem;">INSTRUCTIONS</h2>
+            <div id="instructionsListContainer" class="instructions-list mt-15">
+                <p class="text-muted text-center">Arranging steps...</p>
             </div>
         </div>
     </div>
 
-    <!-- Section 6: Chef Information -->
-    <section class="chef-section mt-section">
-        <h2 class="section-title">About the Chef</h2>
-        <div class="chef-card card">
-            <div class="card-body flex-row">
-                <div class="avatar-placeholder">
-                    <span>AVATAR</span>
-                </div>
-                <div class="chef-info">
-                    <h3>James Thew</h3>
-                    <p class="text-muted">Renowned culinary innovator blending classical techniques with modern gastronomy. Passionate about bringing fine dining to home kitchens.</p>
-                    <a href="/profile" class="btn btn-outline btn-sm mt-15">View Profile</a>
-                </div>
-            </div>
+    <div class="divider mt-section"></div>
+
+    <!-- Section 5: Chef Information (Thiết kế lại canh giữa) -->
+    <section class="chef-section mt-30 premium-chef-box text-center">
+        <div class="avatar-placeholder premium-avatar">
+            <span id="chefAvatarLabel">AV</span>
+        </div>
+        <div class="chef-info text-center">
+            <h4 class="text-muted text-uppercase" style="font-size: 0.85rem; letter-spacing: 2px;">Recipe Created By</h4>
+            <h3 id="chefName" class="chef-name">Chef Name</h3>
+            <p id="chefBio" class="text-muted mt-10" style="margin-left: auto; margin-right: auto; max-width: 600px; line-height: 1.6;">Chef biography information.</p>
+            <a id="chefProfileLink" href="/profile" class="btn btn-outline btn-sm mt-15 btn-premium-action">View Profile</a>
         </div>
     </section>
 
-    <!-- Section 7: Related Recipes -->
+    <!-- Section 6: Related Recipes -->
     <section class="related-recipes mt-section">
-        <h2 class="section-title">Related Recipes</h2>
-        <div class="recipes-grid">
-            <!-- Reuse Recipe Card 1 -->
-            <div class="card recipe-card">
-                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
-                <div class="card-body">
-                    <h3>Roasted Herb Chicken</h3>
-                    <div class="recipe-meta flex-row">
-                        <span class="badge">Medium</span>
-                        <span class="meta-text">90 mins</span>
-                    </div>
-                </div>
-                <div class="card-footer flex-between">
-                    <span class="category-label text-muted">MAINS</span>
-                    <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
-                </div>
-            </div>
-
-            <!-- Reuse Recipe Card 2 -->
-            <div class="card recipe-card">
-                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
-                <div class="card-body">
-                    <h3>Quinoa Power Bowl</h3>
-                    <div class="recipe-meta flex-row">
-                        <span class="badge">Easy</span>
-                        <span class="meta-text">20 mins</span>
-                    </div>
-                </div>
-                <div class="card-footer flex-between">
-                    <span class="category-label text-muted">VEGAN</span>
-                    <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
-                </div>
-            </div>
-
-            <!-- Reuse Recipe Card 3 -->
-            <div class="card recipe-card">
-                <div class="image-placeholder card-img"><span>IMAGE PLACEHOLDER</span></div>
-                <div class="card-body">
-                    <h3>Spaghetti Aglio e Olio</h3>
-                    <div class="recipe-meta flex-row">
-                        <span class="badge">Easy</span>
-                        <span class="meta-text">15 mins</span>
-                    </div>
-                </div>
-                <div class="card-footer flex-between">
-                    <span class="category-label text-muted">MAINS</span>
-                    <a href="/recipe-detail" class="btn btn-outline btn-sm">View Recipe</a>
-                </div>
-            </div>
-        </div>
+        <h2 class="section-title text-center">Related Masterpieces</h2>
+        <div id="relatedRecipesGrid" class="recipes-grid mt-30"></div>
     </section>
 </main>
 
+<script src="/js/recipe-detail.js"></script>
 <%- include('partials/footer') %>

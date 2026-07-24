@@ -1,6 +1,5 @@
 // src/repositories/auth.repository.js
-const User = require('../models/user.model');
-
+const { User } = require('../models');
 class AuthRepository {
     async findUserForLogin(email) {
         return null;

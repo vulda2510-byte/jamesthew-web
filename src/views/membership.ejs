@@ -1,4 +1,3 @@
-<!-- src/views/membership.ejs -->
 <%- include('partials/header') %>
 
 <main class="membership-page">
@@ -18,6 +17,7 @@
         <section id="pricing" class="mt-section">
             <h2 class="section-title text-center">Choose Your Plan</h2>
             <div class="plans-grid mt-section">
+                
                 <!-- Free Plan -->
                 <div class="card plan-card">
                     <div class="card-body">
@@ -29,11 +29,17 @@
                             <li>Community forum (Read-only)</li>
                             <li>Basic weekly newsletter</li>
                         </ul>
-                        <a href="/register" class="btn btn-outline btn-block">Sign Up Free</a>
+                        <% if (!locals.user) { %>
+                            <a href="/register" class="btn btn-outline btn-block">Sign Up Free</a>
+                        <% } else if (locals.user.role === 'free') { %>
+                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Current Plan</button>
+                        <% } else { %>
+                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Included</button>
+                        <% } %>
                     </div>
                 </div>
 
-                <!-- Premium Plan (Highlighted) -->
+                <!-- Premium Plan -->
                 <div class="card plan-card plan-premium">
                     <div class="card-body">
                         <h3>Premium</h3>
@@ -45,7 +51,15 @@
                             <li>Step-by-step video tutorials</li>
                             <li>Private community access</li>
                         </ul>
-                        <a href="/register" class="btn btn-primary btn-block">Get Premium</a>
+                        <% if (!locals.user) { %>
+                            <a href="/login?redirect=/membership" class="btn btn-primary btn-block">Login to Upgrade</a>
+                        <% } else if (locals.user.role === 'premium') { %>
+                            <button class="btn btn-primary btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Current Plan</button>
+                        <% } else if (locals.user.role === 'vip' || locals.user.role === 'admin') { %>
+                            <button class="btn btn-primary btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Included in your plan</button>
+                        <% } else { %>
+                            <a href="/membership/checkout?plan=premium" class="btn btn-primary btn-block">Get Premium</a>
+                        <% } %>
                     </div>
                 </div>
 
@@ -61,135 +75,30 @@
                             <li>Exclusive Masterclass courses</li>
                             <li>Downloadable resources</li>
                         </ul>
-                        <a href="/register" class="btn btn-outline btn-block">Get VIP</a>
+                        <% if (!locals.user) { %>
+                            <a href="/login?redirect=/membership" class="btn btn-outline btn-block">Login to Upgrade</a>
+                        <% } else if (locals.user.role === 'vip') { %>
+                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Current Plan</button>
+                        <% } else if (locals.user.role === 'admin') { %>
+                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Included in Admin</button>
+                        <% } else { %>
+                            <a href="/membership/checkout?plan=vip" class="btn btn-outline btn-block">Get VIP</a>
+                        <% } %>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 3: Benefits -->
-        <section class="mt-section">
-            <h2 class="section-title text-center">Membership Benefits</h2>
-            <div class="benefits-grid mt-section">
-                <div class="benefit-card text-center">
-                    <div class="icon-placeholder">ICON</div>
-                    <h3>Exclusive Recipes</h3>
-                    <p class="text-muted">Access hundreds of premium, tested recipes unavailable to the public.</p>
-                </div>
-                <div class="benefit-card text-center">
-                    <div class="icon-placeholder">ICON</div>
-                    <h3>Video Tutorials</h3>
-                    <p class="text-muted">Watch high-quality, step-by-step video guides for complex dishes.</p>
-                </div>
-                <div class="benefit-card text-center">
-                    <div class="icon-placeholder">ICON</div>
-                    <h3>Private Community</h3>
-                    <p class="text-muted">Connect, share, and learn with other passionate food lovers.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: Membership Comparison -->
-        <section class="mt-section">
-            <h2 class="section-title text-center">Compare Plans</h2>
-            <div class="table-responsive mt-section">
-                <table class="table table-center">
-                    <thead>
-                        <tr>
-                            <th style="text-align: left;">Features</th>
-                            <th>Free</th>
-                            <th>Premium</th>
-                            <th>VIP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align: left;">Recipes</td>
-                            <td>Basic</td>
-                            <td>All</td>
-                            <td>All</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Videos</td>
-                            <td>-</td>
-                            <td>Yes</td>
-                            <td>Yes</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Courses</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>Full Access</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Private Community</td>
-                            <td>Read-only</td>
-                            <td>Yes</td>
-                            <td>Yes</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Contests</td>
-                            <td>-</td>
-                            <td>Yes</td>
-                            <td>Priority Entry</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Download Materials</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>Yes</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Priority Support</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>Yes</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Section 5: FAQ -->
-        <section class="mt-section">
-            <h2 class="section-title text-center">Frequently Asked Questions</h2>
-            <div class="accordion mt-section">
-                <div class="accordion-item active">
-                    <div class="accordion-header">
-                        <span>Can I cancel my subscription at any time?</span>
-                        <span>-</span>
-                    </div>
-                    <div class="accordion-body">
-                        <p class="text-muted">Yes, you can easily cancel your premium or VIP subscription from your account dashboard at any point. No hidden fees.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <span>Are the masterclasses live or pre-recorded?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="accordion-body">
-                        <p class="text-muted">Masterclasses are pre-recorded in high definition so you can watch and learn at your own pace.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <span>How often are new recipes added?</span>
-                        <span>+</span>
-                    </div>
-                    <div class="accordion-body">
-                        <p class="text-muted">We update the platform with new exclusive recipes every week, and release a new masterclass monthly.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 6: Call To Action -->
-        <section class="cta-banner mt-section">
+        <!-- Section 3: Call To Action -->
+        <section class="cta-banner mt-section" style="margin-bottom: 60px;">
             <h2 class="section-title">Ready to elevate your cooking?</h2>
             <p>Join thousands of members mastering the art of fine dining.</p>
             <div class="mt-15">
-                <a href="/register" class="btn btn-outline">Join Membership Now</a>
+                <% if (!locals.user) { %>
+                    <a href="/register" class="btn btn-outline">Join Membership Now</a>
+                <% } else { %>
+                    <a href="#pricing" class="btn btn-outline">Review Plans</a>
+                <% } %>
             </div>
         </section>
     </div>

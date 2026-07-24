@@ -1,11 +1,14 @@
 /* public/css/base.css */
 :root {
-    --primary-color: #000000;
-    --text-color: #333333;
-    --bg-color: #f8f9fa;
-    --border-color: #e9ecef;
-    --placeholder-color: #ccc;
-    --placeholder-text: #888;
+    --primary-color: #C5A059; /* Vàng Gold sang trọng */
+    --primary-hover: #A88746;
+    --text-color: #111111;    /* Đen tuyền cho text */
+    --text-muted: #777777;    /* Xám tro cho text phụ */
+    --bg-color: #FFFFFF;      /* Trắng tinh khiết */
+    --bg-alt: #F9F9F9;        /* Xám siêu nhạt */
+    --border-color: #E5E5E5;  /* Viền xám mảnh */
+    --black: #000000;
+    --white: #FFFFFF;
 }
 
 * {
@@ -15,16 +18,21 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: var(--text-color);
     background-color: var(--bg-color);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    /* Cấu trúc ép Footer dính đáy, loại bỏ khoảng trắng thừa */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 a {
     text-decoration: none;
     color: inherit;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 img {
