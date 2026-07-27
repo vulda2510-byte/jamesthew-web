@@ -1,0 +1,265 @@
+/* =========================================================
+   CONTEST LIST PAGE - LIGHT LUXURY (BLACK / GOLD / WHITE)
+   ========================================================= */
+
+.contests-list-page {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    padding-bottom: 60px;
+}
+
+/* Khung chứa rộng rãi để vừa 4 cột */
+.container-wide {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero & Section Header */
+.contests-list-hero {
+    padding: 40px 20px 20px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.sub-gold-title {
+    color: #d4af37;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.contests-list-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 8px;
+}
+
+.contests-list-hero p {
+    font-size: 1rem;
+    color: #555555;
+    margin-top: 10px;
+}
+
+/* ------------------------------------------
+   FILTER BAR LIGHT LUXURY
+   ------------------------------------------ */
+.luxury-filter-bar {
+    display: flex;
+    gap: 15px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.filter-group {
+    flex: 1;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 10px 14px;
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: #d4af37 !important;
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.4);
+}
+
+/* ------------------------------------------
+   LƯỚI HIỂN THỊ 4 CỘT (4 ITEMS / DÒNG)
+   ------------------------------------------ */
+.contests-grid-4col {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important;
+}
+
+/* Responsive cho màn hình nhỏ hơn */
+@media (max-width: 1200px) {
+    .contests-grid-4col { grid-template-columns: repeat(3, 1fr) !important; }
+}
+@media (max-width: 900px) {
+    .contests-grid-4col { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 576px) {
+    .contests-grid-4col { grid-template-columns: 1fr !important; }
+}
+
+/* ------------------------------------------
+   CONTEST CARD (ĐỒNG BỘ CONTEST PAGE)
+   ------------------------------------------ */
+.contest-card-luxury {
+    background: #ffffff !important;
+    border: 1px solid #000000 !important;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.contest-card-luxury:hover {
+    border-color: #d4af37 !important;
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.18);
+    transform: translateY(-4px);
+}
+
+.contest-card-luxury .card-img {
+    height: 180px;
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777777;
+    font-weight: 600;
+    position: relative;
+}
+
+.contest-card-luxury .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Badge Trạng Thái */
+.status-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 8px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.status-tag.upcoming { background-color: #d4af37; color: #000000; }
+.status-tag.active, .status-tag.ongoing { background-color: #2e7d32; color: #ffffff; }
+.status-tag.ended { background-color: #000000; color: #ffffff; }
+
+/* Body Card */
+.contest-card-luxury .card-body {
+    padding: 18px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contest-card-luxury h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #000000 !important;
+    margin-bottom: 8px;
+}
+
+.contest-card-luxury .card-desc {
+    color: #555555 !important;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.recipe-meta-row {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.badge-black {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+}
+
+.meta-gold-text {
+    font-size: 0.85rem;
+    color: #d4af37;
+    font-weight: 700;
+}
+
+.deadline-info {
+    font-size: 0.82rem;
+    color: #000000;
+    margin-top: 12px;
+}
+
+/* Footer Card */
+.contest-card-luxury .card-footer {
+    padding: 12px 18px;
+    background-color: #fafafa;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Nút Bấm Chuẩn Contest Page */
+.btn-black-solid {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    padding: 8px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.btn-black-solid:hover {
+    background-color: #d4af37 !important;
+    border-color: #d4af37 !important;
+    color: #000000 !important;
+}
+
+.btn-black-outline {
+    background-color: transparent !important;
+    color: #000000 !important;
+    border: 1.5px solid #000000 !important;
+    padding: 8px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.btn-black-outline:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}

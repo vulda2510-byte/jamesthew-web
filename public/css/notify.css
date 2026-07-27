@@ -1,0 +1,130 @@
+/* --- APP NOTIFICATION MODAL SYSTEM --- */
+.app-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease-in-out;
+}
+
+.app-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.app-modal-card {
+    background: #181818;
+    border: 1px solid #d4af37;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 420px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.2);
+    transform: scale(0.85);
+    transition: transform 0.25s ease-in-out;
+    text-align: center;
+    color: #fff;
+}
+
+.app-modal-overlay.active .app-modal-card {
+    transform: scale(1);
+}
+
+.app-modal-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+/* Các loại Icon & Màu sắc */
+.app-modal-card.success .app-modal-icon {
+    background: rgba(40, 167, 69, 0.15);
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.app-modal-card.error .app-modal-icon {
+    background: rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+
+.app-modal-card.info .app-modal-icon {
+    background: rgba(23, 162, 184, 0.15);
+    color: #17a2b8;
+    border: 1px solid #17a2b8;
+}
+
+.app-modal-card.confirm .app-modal-icon {
+    background: rgba(212, 175, 55, 0.15);
+    color: #d4af37;
+    border: 1px solid #d4af37;
+}
+
+.app-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.app-modal-message {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.app-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.app-modal-btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+.app-modal-btn-primary {
+    background: #d4af37;
+    color: #000;
+}
+
+.app-modal-btn-primary:hover {
+    background: #f3ca40;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.app-modal-btn-secondary {
+    background: transparent;
+    color: #aaa;
+    border: 1px solid #444;
+}
+
+.app-modal-btn-secondary:hover {
+    color: #fff;
+    border-color: #777;
+}

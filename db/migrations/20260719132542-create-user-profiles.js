@@ -27,6 +27,7 @@ module.exports = {
         // THÊM MỚI: Phục vụ cho giao diện Profile
         cooking_style: { type: Sequelize.STRING(150), allowNull: true },
         focus: { type: Sequelize.STRING(255), allowNull: true },
+        location: { type: Sequelize.STRING(150),allowNull: true },
         is_public: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
 
         created_at: { type: Sequelize.DATE, allowNull: false },

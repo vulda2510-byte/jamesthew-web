@@ -1,31 +1,37 @@
 // public/js/recipe-detail.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Phân tách lấy ID của Recipe từ thanh địa chỉ URL (Ví dụ: /recipes/detail/123-abc)
     const pathParts = window.location.pathname.split('/');
     const recipeId = pathParts[pathParts.length - 1];
 
     if (!recipeId) return;
 
-    let currentCategory = ''; // Biến lưu tạm danh mục để tìm bài liên quan
+    let currentCategory = '';
 
-    // 2. Hàm gọi API bóc tách dữ liệu chi tiết của Công thức nấu ăn
+    // Hàm chuẩn hóa đường dẫn URL ảnh
+    function formatImageUrl(url) {
+        if (!url) return null;
+        url = url.trim();
+        if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/')) {
+            return url;
+        }
+        return '/' + url;
+    }
+
     async function loadRecipeDetails() {
         try {
-            // Sử dụng hàm getById trong RecipeController của bạn đã viết ở Turn 1
             const response = await fetch(`/api/v1/recipes/${recipeId}`);
             const data = await response.json();
 
             if (response.ok && data.success) {
                 const recipe = data.data;
-                currentCategory = recipe.category_name || 'MAINS';
+                currentCategory = recipe.category_name || recipe.category || 'MAINS';
                 
                 renderHeroAndStats(recipe);
-                renderIngredients(recipe.ingredients); // Chấp nhận dữ liệu mảng hoặc chuỗi tách rời
-                renderInstructions(recipe.instructions);
-                renderChefInfo(recipe.User || recipe.author);
+                renderIngredients(recipe.ingredients);
+                renderInstructions(recipe.instructions || recipe.steps || recipe.recipe_steps);
+                renderChefInfo(recipe.User || recipe.author || recipe.user);
                 
-                // Sau khi có danh mục bài này, kéo các bài liên quan cùng danh mục lên
                 loadRelatedRecipes(currentCategory);
             } else {
                 showErrorPage('Recipe not found in culinary system.');
@@ -36,49 +42,73 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Đổ dữ liệu vào Hero và Bảng Thống kê (Stats)
     function renderHeroAndStats(recipe) {
-        document.getElementById('breadcrumbCurrent').innerText = recipe.title;
-        document.getElementById('recipeTitle').innerText = recipe.title;
-        document.getElementById('recipeHeroImageLabel').innerText = `🍳 ${recipe.title}`;
+        // 1. Cập nhật Tiêu đề & Nội dung
+        document.getElementById('breadcrumbCurrent').innerText = recipe.title || 'Recipe Detail';
+        document.getElementById('recipeTitle').innerText = recipe.title || 'Untitled Recipe';
         document.getElementById('recipeBadge').innerText = recipe.difficulty || 'Medium';
-        document.getElementById('recipeCategory').innerText = (recipe.category_name || 'MAINS').toUpperCase();
-        document.getElementById('recipeDuration').innerText = recipe.cooking_time || '45 mins';
+        document.getElementById('recipeCategory').innerText = (recipe.category_name || recipe.category || 'MAINS').toUpperCase();
         document.getElementById('recipeDescription').innerText = recipe.description || 'No description available.';
 
-        // Đổ thông số kỹ thuật (Stats box)
-        document.getElementById('statPrepTime').innerText = recipe.prep_time || '15 mins';
-        document.getElementById('statCookTime').innerText = recipe.cooking_time || '30 mins';
-        document.getElementById('statServings').innerText = recipe.servings || '4 servings';
-        document.getElementById('statCalories').innerText = recipe.calories || '420 kcal';
+        // 2. Xử lý hiển thị Ảnh chính (Hero Image)
+        const imageBox = document.querySelector('.premium-image-box');
+        const rawImgUrl = recipe.thumbnail_url || recipe.image_url || recipe.imageUrl || recipe.image;
+        const formattedUrl = formatImageUrl(rawImgUrl);
+
+        if (imageBox) {
+            if (formattedUrl) {
+                imageBox.innerHTML = `
+                    <img src="${formattedUrl}" 
+                         alt="${recipe.title}" 
+                         style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" 
+                         onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'text-muted\\'>🍳 ${recipe.title}</span>';">
+                `;
+            } else {
+                imageBox.innerHTML = `<span class="text-muted">🍳 ${recipe.title}</span>`;
+            }
+        }
+
+        // 3. Xử lý thời gian & chỉ số (Đồng bộ với cột prep_time_minutes & cook_time_minutes trong DB)
+        const prepMins = recipe.prep_time_minutes || recipe.prep_time || 0;
+        const cookMins = recipe.cook_time_minutes || recipe.cooking_time || 0;
+        const totalTime = (parseInt(prepMins) || 0) + (parseInt(cookMins) || 0);
+
+        document.getElementById('recipeDuration').innerText = totalTime > 0 ? `${totalTime} mins` : '30 mins';
+        document.getElementById('statPrepTime').innerText = prepMins ? `${prepMins} mins` : '--';
+        document.getElementById('statCookTime').innerText = cookMins ? `${cookMins} mins` : '--';
+        document.getElementById('statServings').innerText = recipe.servings ? `${recipe.servings} servings` : '--';
+        document.getElementById('statCalories').innerText = recipe.calories ? `${recipe.calories} kcal` : 'N/A';
         document.getElementById('statDifficulty').innerText = recipe.difficulty || 'Medium';
-        document.getElementById('statCuisine').innerText = recipe.cuisine || 'European';
+        document.getElementById('statCuisine').innerText = recipe.cuisine || 'International';
     }
 
-    // 4. Render Danh sách nguyên liệu kèm tính năng UX "Gạch chéo khi đã chuẩn bị xong"
     function renderIngredients(ingredients) {
         const container = document.getElementById('ingredientsListContainer');
         if (!ingredients) {
-            container.innerHTML = '<p class="text-muted">No ingredient data available.</p>';
+            container.innerHTML = '<p class="text-muted text-center">No ingredient data available.</p>';
             return;
         }
 
-        // Xử lý thông minh: Nếu dữ liệu là chuỗi String phân tách bằng dấu xuống dòng hoặc mảng
-        const list = Array.isArray(ingredients) ? ingredients : ingredients.split('\n');
-        let html = '';
+        let list = [];
+        if (Array.isArray(ingredients)) {
+            list = ingredients.map(ing => typeof ing === 'object' ? (ing.name || ing.ingredient_name || JSON.stringify(ing)) : ing);
+        } else if (typeof ingredients === 'string') {
+            list = ingredients.split('\n');
+        }
 
-        list.forEach((item, index) => {
-            if (!item.trim()) return;
+        let html = '';
+        list.forEach((item) => {
+            if (!item || !item.trim()) return;
             html += `
                 <label class="form-checkbox-group ingredient-item" style="cursor: pointer; display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
                     <input type="checkbox" class="ingredient-check" style="width: 18px; height: 18px;"> 
-                    <span class="ingredient-text">${item}</span>
+                    <span class="ingredient-text">${item.trim()}</span>
                 </label>
             `;
         });
-        container.innerHTML = html;
 
-        // Tính năng UX: Click checkbox -> Làm mờ/Gạch chữ thể hiện đã chuẩn bị xong nguyên liệu đó
+        container.innerHTML = html || '<p class="text-muted text-center">No ingredient data available.</p>';
+
         container.querySelectorAll('.ingredient-check').forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
                 const textSpan = e.target.nextElementSibling;
@@ -93,20 +123,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Render Các bước thực hiện (Instructions) theo đúng thứ tự thiết kế Card của bạn
     function renderInstructions(steps) {
         const container = document.getElementById('instructionsListContainer');
         if (!steps) {
-            container.innerHTML = '<p class="text-muted">No step-by-step instructions provided.</p>';
+            container.innerHTML = '<p class="text-muted text-center">No step-by-step instructions provided.</p>';
             return;
         }
 
-        const stepList = Array.isArray(steps) ? steps : steps.split('\n');
-        let html = '';
+        let stepList = [];
+        if (Array.isArray(steps)) {
+            stepList = steps.map(s => typeof s === 'object' ? (s.instruction || s.description || s.step_instruction) : s);
+        } else if (typeof steps === 'string') {
+            stepList = steps.split('\n');
+        }
 
+        let html = '';
         stepList.forEach((step, index) => {
-            if (!step.trim()) return;
-            // Tách tiêu đề bước nếu định dạng kiểu "Bước 1: Nội dung"
+            if (!step || !step.trim()) return;
             const parts = step.split(':');
             const stepTitle = parts.length > 1 ? parts[0] : `Step ${index + 1}`;
             const stepBody = parts.length > 1 ? parts.slice(1).join(':') : step;
@@ -123,49 +156,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
-        container.innerHTML = html;
+
+        container.innerHTML = html || '<p class="text-muted text-center">No instructions provided.</p>';
     }
 
-    // 6. Gán liên kết Thông tin Tác giả (Chef Profile)
     function renderChefInfo(chef) {
         if (!chef) return;
-        document.getElementById('chefName').innerText = `${chef.firstName || 'Chef'} ${chef.lastName || 'Member'}`;
+        const firstName = chef.firstName || chef.first_name || 'Chef';
+        const lastName = chef.lastName || chef.last_name || 'Member';
+        const username = chef.username || 'chef';
+
+        document.getElementById('chefName').innerText = `${firstName} ${lastName}`;
         document.getElementById('chefBio').innerText = chef.bio || 'Professional creator and dedicated system culinary expert.';
-        document.getElementById('chefAvatarLabel').innerText = chef.username ? chef.username.substring(0,2).toUpperCase() : 'CF';
-        
-        // Điều hướng động sang đúng trang Profile của tác giả bài viết
-        document.getElementById('chefProfileLink').setAttribute('href', `/profile?user=${chef.id || chef.username}`);
+        document.getElementById('chefAvatarLabel').innerText = username.substring(0, 2).toUpperCase();
+        document.getElementById('chefProfileLink').setAttribute('href', `/profile?user=${chef.id || username}`);
     }
 
-    // 7. Tải danh sách Bài viết liên quan (Related Recipes Grid)
     async function loadRelatedRecipes(category) {
         const grid = document.getElementById('relatedRecipesGrid');
+        if (!grid) return;
+
         try {
             const response = await fetch(`/api/v1/recipes?category=${encodeURIComponent(category)}`);
             const data = await response.json();
 
-            if (response.ok && data.success && data.data.length > 0) {
-                // Lọc bỏ bài hiện tại ra khỏi danh sách gợi ý và lấy tối đa 3 bài bài
-                const filtered = data.data.filter(item => item.id !== recipeId).slice(0, 3);
+            if (response.ok && data.success && Array.isArray(data.data) && data.data.length > 0) {
+                const filtered = data.data.filter(item => String(item.id) !== String(recipeId)).slice(0, 3);
                 
                 if (filtered.length === 0) {
-                    grid.innerHTML = '<p class="text-muted">No related masterpieces in this segment yet.</p>';
+                    grid.innerHTML = '<p class="text-muted text-center" style="grid-column: 1 / -1;">No related masterpieces in this category yet.</p>';
                     return;
                 }
 
                 let html = '';
                 filtered.forEach(item => {
+                    const imgUrl = formatImageUrl(item.thumbnail_url || item.image_url || item.image);
+                    const cookTime = (item.cook_time_minutes || item.cooking_time || 30) + ' mins';
+                    
+                    const imgHtml = imgUrl 
+                        ? `<img src="${imgUrl}" alt="${item.title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.parentElement.innerHTML='<span>🍲 ${item.title}</span>';">`
+                        : `<span>🍲 ${item.title}</span>`;
+
                     html += `
                         <div class="card recipe-card">
-                            <div class="image-placeholder card-img"><span>🍲 ${item.title}</span></div>
+                            <div class="image-placeholder card-img">${imgHtml}</div>
                             <div class="card-body">
                                 <h3>${item.title}</h3>
-                                <div class="recipe-meta flex-row">
+                                <div class="recipe-meta flex-row mt-10">
                                     <span class="badge">${item.difficulty || 'Medium'}</span>
-                                    <span class="meta-text">${item.cooking_time || '30 mins'}</span>
+                                    <span class="meta-text">${cookTime}</span>
                                 </div>
                             </div>
-                            <div class="card-footer flex-between">
+                            <div class="card-footer flex-between mt-15">
                                 <span class="category-label text-muted">${(item.category_name || category).toUpperCase()}</span>
                                 <a href="/recipes/detail/${item.id}" class="btn btn-outline btn-sm">View Recipe</a>
                             </div>
@@ -173,6 +215,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 });
                 grid.innerHTML = html;
+            } else {
+                grid.innerHTML = '<p class="text-muted text-center" style="grid-column: 1 / -1;">No related recipes found.</p>';
             }
         } catch (err) {
             console.error('Error fetching related content:', err);
@@ -180,9 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 8. Xử lý các Sự kiện Nút bấm Tương tác (Save / Share)
-    
-    // Nút Lưu công thức (Save Recipe Toggle)
+    // Xử lý Sự kiện Nút Lưu & Chia sẻ
     const btnSave = document.getElementById('btnSaveRecipe');
     if (btnSave) {
         let isSaved = false;
@@ -192,16 +234,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnSave.innerHTML = '❤️ Saved to Box';
                 btnSave.style.backgroundColor = '#f8d7da';
                 btnSave.style.color = '#721c24';
-                alert('Recipe saved to your personal collection successfully!');
+                if (typeof AppNotify !== 'undefined') AppNotify.success('Recipe saved to your personal collection successfully!', 'COLLECTION');
             } else {
                 btnSave.innerHTML = '🔖 Save Recipe';
                 btnSave.style.backgroundColor = 'transparent';
                 btnSave.style.color = 'inherit';
+                if (typeof AppNotify !== 'undefined') AppNotify.info('Recipe removed from your saved box.', 'COLLECTION');
             }
         });
     }
 
-    // Nút chia sẻ (Share URL Link via Web Share API)
     const btnShare = document.getElementById('btnShareRecipe');
     if (btnShare) {
         btnShare.addEventListener('click', async () => {
@@ -213,19 +255,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 } catch (err) { console.log('Share canceled.'); }
             } else {
-                // Fallback nếu trình duyệt không hỗ trợ API Share: Tự động copy liên kết vào bộ nhớ đệm
                 try {
                     await navigator.clipboard.writeText(window.location.href);
-                    alert('Recipe link successfully copied to your clipboard!');
-                } catch (err) { alert('Unable to copy path link.'); }
+                    if (typeof AppNotify !== 'undefined') AppNotify.success('Recipe link copied to clipboard!', 'SHARE LINK');
+                } catch (err) { 
+                    if (typeof AppNotify !== 'undefined') AppNotify.error('Unable to copy path link.', 'SHARE ERROR'); 
+                }
             }
         });
     }
 
     function showErrorPage(message) {
-        document.body.innerHTML = `<div class="container text-center" style="padding: 100px 0;"><h2 class="text-danger">${message}</h2><a href="/recipes" class="btn btn-primary mt-15">Return to Gallery</a></div>`;
+        document.body.innerHTML = `
+            <div class="container text-center" style="padding: 100px 0;">
+                <h2 class="text-danger">${message}</h2>
+                <a href="/recipes" class="btn btn-primary mt-15">Return to Gallery</a>
+            </div>`;
     }
 
-    // Thực thi chạy ngay khi load trang
     loadRecipeDetails();
 });

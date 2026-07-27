@@ -26,7 +26,20 @@
     /* Thêm padding-top 120px để đẩy text xuống, padding-bottom 60px để không bị sát đáy */
     padding: 120px 5% 60px 5%; 
 }
-
+/* Căn chỉnh khung ảnh khi không hiển thị được đường dẫn image */
+.card-img span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary-color);
+    background-color: var(--bg-alt, #f8f8f8);
+    font-size: 0.95rem;
+}
 /* Ép các thành phần bên trong cách nhau đều đặn, không bị díu vào nhau */
 .hero-title {
     font-size: 4rem;

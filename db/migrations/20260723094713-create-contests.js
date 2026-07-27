@@ -7,10 +7,13 @@ module.exports = {
       id: {
         type: Sequelize.CHAR(100),
         primaryKey: true,
-        allowNull: false,
-        defaultValue: Sequelize.UUIDV4
+        allowNull: false
       },
       title: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
+      slug: {
         type: Sequelize.STRING(255),
         allowNull: false
       },
@@ -18,43 +21,74 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true
       },
-      deadline: {
-        type: Sequelize.DATE,
-        allowNull: false
+      type: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        defaultValue: 'online'
       },
-      event_date: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      prize: {
-        type: Sequelize.STRING(255),
-        allowNull: true
+      scale: {
+        type: Sequelize.STRING(50),
+        allowNull: false,
+        defaultValue: 'small'
       },
       status: {
         type: Sequelize.STRING(50),
         allowNull: false,
-        defaultValue: 'upcoming' // Các trạng thái: upcoming, ongoing, completed
+        defaultValue: 'upcoming'
+      },
+      start_date: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      end_date: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      location: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      rules: {
+        type: Sequelize.TEXT,
+        allowNull: true
+      },
+      prize_details: {
+        type: Sequelize.TEXT,
+        allowNull: true
       },
       is_featured: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false
       },
-      banner_image: {
-        type: Sequelize.STRING(255),
+      is_banned: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      ban_reason: {
+        type: Sequelize.TEXT,
         allowNull: true
+      },
+      author_id: {
+        type: Sequelize.CHAR(100),
+        allowNull: true,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       created_at: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updated_at: {
         type: Sequelize.DATE,
-        allowNull: false
-      },
-      deleted_at: {
-        type: Sequelize.DATE,
-        allowNull: true
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
       }
     }, {
       charset: 'utf8mb4',
@@ -62,13 +96,9 @@ module.exports = {
       engine: 'InnoDB'
     });
 
-    await queryInterface.addIndex('contests', ['status'], {
-      name: 'idx_contests_status'
-    });
-
-    await queryInterface.addIndex('contests', ['deleted_at'], {
-      name: 'idx_contests_deleted_at'
-    });
+    await queryInterface.addIndex('contests', ['slug'], { name: 'uk_contests_slug', unique: true });
+    await queryInterface.addIndex('contests', ['status'], { name: 'idx_contests_status' });
+    await queryInterface.addIndex('contests', ['author_id'], { name: 'idx_contests_author_id' });
   },
 
   async down(queryInterface, Sequelize) {

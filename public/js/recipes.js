@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
         difficulty: '',
         sort: 'newest',
         page: 1,
-        limit: 6 // Mỗi trang hiển thị 6 bài viết theo thiết kế mẫu
+        limit: 6 // Mỗi trang hiển thị 6 bài viết
     };
 
-    // Khai báo các Element cần tương tác
+    // Khai báo các Element tương tác
     const searchInput = document.getElementById('recipeSearchInput');
     const categoryButtons = document.querySelectorAll('.category-pill');
     const difficultyFilter = document.getElementById('difficultyFilter');
@@ -19,23 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const gridContainer = document.getElementById('recipesGridContainer');
     const paginationWrapper = document.getElementById('paginationWrapper');
 
-    // Đọc tham số `?search=` từ URL nếu người dùng chuyển sang từ trang chủ
+    // Đọc tham số ?search= từ URL nếu có
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('search')) {
         state.search = urlParams.get('search');
         if (searchInput) searchInput.value = state.search;
     }
 
-    // 2. Hàm Fetch dữ liệu từ API dựa trên trạng thái (Filter + Pagination)
+    // 2. Hàm Fetch dữ liệu từ API dựa trên trạng thái Filter + Pagination
     async function fetchFilteredRecipes() {
-        gridContainer.innerHTML = '<p class="text-muted text-center" style="grid-column: 1/-1;">Updating gallery list...</p>';
+        if (!gridContainer) return;
+        gridContainer.innerHTML = '<p class="text-muted text-center" style="grid-column: 1/-1;">Gathering culinary formulas...</p>';
         
-        // Xây dựng Query Parameters động gửi lên API Backend
+        // Chuyển Category về chữ thường để khớp với slug trong Database
+        const categoryParam = state.category !== 'ALL' ? state.category.toLowerCase() : '';
+
         const queryParams = new URLSearchParams({
             page: state.page,
             limit: state.limit,
             search: state.search,
-            category: state.category !== 'ALL' ? state.category : '',
+            category: categoryParam,
             difficulty: state.difficulty,
             sort: state.sort
         });
@@ -44,9 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`/api/v1/recipes?${queryParams.toString()}`);
             const data = await response.json();
 
-            if (response.ok && data.success && data.data && data.data.length > 0) {
+            if (response.ok && data.success && Array.isArray(data.data) && data.data.length > 0) {
                 renderRecipeGrid(data.data);
-                renderPagination(data.pagination || { totalPages: 1, currentPage: 1 });
+                
+                // Tính toán tổng số trang dựa trên data.total trả về từ Backend Controller
+                const totalItems = data.total || data.data.length;
+                const totalPages = Math.ceil(totalItems / state.limit);
+
+                renderPagination({
+                    totalPages: totalPages,
+                    currentPage: state.page
+                });
             } else {
                 gridContainer.innerHTML = `
                     <div class="text-center" style="grid-column: 1/-1; padding: 40px 0;">
@@ -61,17 +72,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Render lưới thẻ Card chi tiết, gán chính xác ID vào Link dẫn
+    // 3. Render lưới thẻ Recipe Card
     function renderRecipeGrid(recipes) {
         let html = '';
         recipes.forEach(recipe => {
             const difficulty = recipe.difficulty || 'Medium';
-            const duration = recipe.cooking_time || '30 mins';
-            const categoryName = recipe.category_name || 'GENERAL';
             
-            // Xử lý logic hiển thị ảnh mượt mà giống trang chủ
-            const imageHtml = recipe.image 
-                ? `<img src="${recipe.image}" alt="${recipe.title}">` 
+            // Xử lý thời gian nấu chuẩn từ DB
+            const cookTime = recipe.cook_time_minutes || recipe.prep_time_minutes;
+            const duration = cookTime ? `${cookTime} mins` : (recipe.cooking_time || '30 mins');
+
+            // Xử lý danh mục từ DB (sử dụng as: 'categories' từ Repository)
+            const categoryName = recipe.category_name 
+                || (recipe.categories && recipe.categories.length > 0 ? recipe.categories[0].name : null)
+                || 'GENERAL';
+            
+            // Lấy đường dẫn ảnh
+            const imageUrl = recipe.thumbnail_url || recipe.thumbnailUrl || recipe.image;
+
+            // Xử lý HTML hiển thị ảnh chuẩn chuỗi Template Literal
+            const imageHtml = imageUrl 
+                ? `<img src="${imageUrl}" alt="${recipe.title}" onerror="this.onerror=null; this.parentElement.innerHTML='<span>📸 ${recipe.title}</span>';">` 
                 : `<span>📸 ${recipe.title}</span>`;
 
             html += `
@@ -98,8 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         gridContainer.innerHTML = html;
     }
-    // 4. Khởi dựng hệ thống Phân trang Động (Pagination)
+
+    // 4. Khởi dựng hệ thống Phân trang
     function renderPagination(pagination) {
+        if (!paginationWrapper) return;
+
         const { totalPages, currentPage } = pagination;
         if (totalPages <= 1) {
             paginationWrapper.innerHTML = '';
@@ -111,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Nút Previous
         html += `<li><a href="#" class="btn btn-outline btn-sm ${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}">Previous</a></li>`;
 
-        // Các nút số trang cụ thể
+        // Các nút số trang
         for (let i = 1; i <= totalPages; i++) {
             html += `<li><a href="#" class="btn ${i === currentPage ? 'btn-primary' : 'btn-outline'} btn-sm" data-page="${i}">${i}</a></li>`;
         }
@@ -122,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         html += '</ul>';
         paginationWrapper.innerHTML = html;
 
-        // Bắt sự kiện chuyển trang cho các thẻ `a` vừa vẽ
+        // Bắt sự kiện chuyển trang
         paginationWrapper.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -130,26 +154,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (targetPage && targetPage !== state.page && targetPage >= 1 && targetPage <= totalPages) {
                     state.page = targetPage;
                     fetchFilteredRecipes();
-                    window.scrollTo({ top: 200, behavior: 'smooth' }); // Cuộn nhẹ màn hình lên đầu danh sách để tăng UX
+                    window.scrollTo({ top: 200, behavior: 'smooth' });
                 }
             });
         });
     }
 
-    // 5. Gắn Bộ lắng nghe Sự kiện (Event Listeners) cho các bộ lọc
-    
-    // Tìm kiếm với tính năng Debounce (Chờ người dùng gõ xong 400ms mới gọi API để tránh spam request)
+    // 5. Sự kiện Tìm kiếm & Bộ lọc
     let searchTimeout;
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
             state.search = e.target.value.trim();
-            state.page = 1; // Reset về trang 1 khi lọc
+            state.page = 1;
             searchTimeout = setTimeout(fetchFilteredRecipes, 400);
         });
     }
 
-    // Lọc theo Danh mục (Categories Pill Toggle)
     categoryButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             categoryButtons.forEach(b => {
@@ -165,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lọc theo Độ khó
     if (difficultyFilter) {
         difficultyFilter.addEventListener('change', (e) => {
             state.difficulty = e.target.value;
@@ -174,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Lọc theo Cơ chế Sắp xếp
     if (sortFilter) {
         sortFilter.addEventListener('change', (e) => {
             state.sort = e.target.value;
@@ -183,6 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Chạy tải dữ liệu lần đầu tiên khi mở trang
+    // Chạy tải dữ liệu lần đầu
     fetchFilteredRecipes();
 });

@@ -30,9 +30,15 @@ class ContestRepository {
     });
   }
 
-  async findById(id) {
+  // SỬA TẠI ĐÂY: Hỗ trợ tìm bằng ID hoặc Slug
+  async findById(idOrSlug) {
     return Contest.findOne({
-      where: { id },
+      where: {
+        [Op.or]: [
+          { id: idOrSlug },
+          { slug: idOrSlug }
+        ]
+      },
       include: [
         { model: User, as: 'author', attributes: ['id', 'username', 'email', 'role'] },
         { 
@@ -67,12 +73,10 @@ class ContestRepository {
     });
   }
 
-  // Dual Rating: Lấy số lượng Like của 1 target (Contest/Submission/User)
   async getLikeCount(targetId, targetType) {
     return Like.count({ where: { target_id: targetId, target_type: targetType } });
   }
 
-  // Dual Rating: Kiểm tra user đã like chưa & Toggle Like
   async toggleLike(userId, targetId, targetType) {
     const existing = await Like.findOne({ where: { user_id: userId, target_id: targetId, target_type: targetType } });
     if (existing) {
@@ -83,12 +87,10 @@ class ContestRepository {
     return { liked: true };
   }
 
-  // Thêm bình luận
   async addComment(data) {
     return Comment.create(data);
   }
 
-  // Lấy bình luận của một mục
   async getComments(targetId, targetType) {
     return Comment.findAll({
       where: { target_id: targetId, target_type: targetType, is_banned: false },
@@ -97,7 +99,6 @@ class ContestRepository {
     });
   }
 
-  // Bảng xếp hạng / Vinh danh (List Winners)
   async findWinners(filters = {}) {
     const { page = 1, limit = 10, search } = filters;
     const offset = (parseInt(page, 10) - 1) * parseInt(limit, 10);
@@ -114,7 +115,6 @@ class ContestRepository {
     });
   }
 
-  // Admin Toggle Ban
   async toggleBanContest(id, banReason = null) {
     const contest = await Contest.findByPk(id);
     if (!contest) return null;

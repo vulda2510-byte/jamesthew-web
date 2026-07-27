@@ -1,32 +1,193 @@
-/* public/css/register.css */
-/* Register Page Specific Layout */
+/* ==========================================
+   REGISTER PAGE - LIGHT LUXURY (WHITE / BLACK / GOLD)
+   ========================================== */
+
+/* Background chính: Màu Trắng */
 .register-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 200px);
-    padding: 60px 15px;
+    min-height: calc(100vh - 180px);
+    padding: 50px 20px;
+    background-color: #ffffff; /* Nền trắng */
 }
 
+/* Card chứa Form */
 .register-card {
     width: 100%;
-    max-width: 520px; /* Constrained width for Desktop as per requirements */
-    padding: 40px;
-    margin: 0 auto;
+    max-width: 520px;
+    background: #ffffff;
+    border: 1.5px solid #eaeaea;
+    border-radius: 12px;
+    padding: 48px 36px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+    border-color: #d4af37;
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.15);
 }
 
 .register-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
+/* Tiêu đề: Màu Đen */
 .register-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--text-color);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #000000;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label: Màu Đen */
+.form-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+/* Ô nhập dữ liệu (Box tương tác) */
+.form-input {
+    width: 100%;
+    padding: 13px 16px;
+    background: #f9f9f9;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 6px;
+    color: #000000;
+    font-size: 0.92rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+    outline: none;
+}
+
+.form-input::placeholder {
+    color: #888888;
+}
+
+/* Hiệu ứng Focus vào ô Input: Viền Vàng Gold */
+.form-input:focus {
+    border-color: #d4af37;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.18);
+}
+
+.form-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    color: #000000;
+    font-size: 0.85rem;
+}
+
+.form-checkbox-group input[type="checkbox"] {
+    accent-color: #d4af37;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Link tương tác: Màu Vàng Gold */
+.text-link {
+    color: #d4af37;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.text-link:hover {
+    color: #b8860b;
+    text-decoration: underline;
+}
+
+/* Nút Bấm Register (Nút tương tác) */
+.btn {
+    display: inline-block;
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 6px;
+}
+
+.btn-primary {
+    background-color: #d4af37;
+    color: #000000;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+}
+
+.btn-primary:hover {
+    background-color: #b8860b;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(184, 134, 11, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.divider {
+    height: 1px;
+    background: #e5e5e5;
+    margin: 28px 0;
 }
 
 .register-footer {
     text-align: center;
-    font-size: 0.95rem;
+    font-size: 0.88rem;
+    color: #000000; /* Chữ đen cố định */
+}
+
+#alertMessage {
+    border-radius: 6px !important;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+@media (max-width: 576px) {
+    .register-wrapper {
+        padding: 25px 15px;
+    }
+    .register-card {
+        padding: 32px 22px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
 }

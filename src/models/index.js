@@ -1,31 +1,31 @@
 'use strict';
 
-const Sequelize = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const userProfile = require('./userProfile');
 
-// Các model cũ
-const User = require('./user')(sequelize, Sequelize.DataTypes);
-const Recipe = require('./recipe')(sequelize, Sequelize.DataTypes);
-const Category = require('./category')(sequelize, Sequelize.DataTypes);
-const Ingredient = require('./ingredient')(sequelize, Sequelize.DataTypes);
-const Tag = require('./tag')(sequelize, Sequelize.DataTypes);
-const RecipeStep = require('./recipeStep')(sequelize, Sequelize.DataTypes);
-const RecipeImage = require('./recipeImage')(sequelize, Sequelize.DataTypes);
-const RecipeIngredient = require('./recipeIngredient')(sequelize, Sequelize.DataTypes);
-const RecipeTag = require('./recipeTag')(sequelize, Sequelize.DataTypes);
-const RecipeCategory = require('./recipe_categories')(sequelize, Sequelize.DataTypes);
-const UserProfile = require('./userProfile')(sequelize, Sequelize.DataTypes);
-// Các model mới cho Contest & Tương tác
-const Contest = require('./contest')(sequelize, Sequelize.DataTypes);
-const ContestSubmission = require('./contestSubmission')(sequelize, Sequelize.DataTypes);
-const ContestWinner = require('./contestWinner')(sequelize, Sequelize.DataTypes);
-const Comment = require('./comment')(sequelize, Sequelize.DataTypes);
-const Like = require('./like')(sequelize, Sequelize.DataTypes);
-const FAQ = require('./faq')(sequelize, Sequelize.DataTypes);
-const DailyLimit = require('./dailyLimit')(sequelize, Sequelize.DataTypes);
+// 1. Khởi tạo các Models
+const User = require('./user')(sequelize, DataTypes);
+const Recipe = require('./recipe')(sequelize, DataTypes);
+const Category = require('./category')(sequelize, DataTypes);
+const Ingredient = require('./ingredient')(sequelize, DataTypes);
+const Tag = require('./tag')(sequelize, DataTypes);
+const RecipeStep = require('./recipeStep')(sequelize, DataTypes);
+const RecipeImage = require('./recipeImage')(sequelize, DataTypes);
+const RecipeIngredient = require('./recipeIngredient')(sequelize, DataTypes);
+const RecipeTag = require('./recipeTag')(sequelize, DataTypes);
+const RecipeCategory = require('./recipe_categories')(sequelize, DataTypes);
+const UserProfile = require('./userProfile')(sequelize, DataTypes);
 
-// Gom tất cả model
+// Các model cho Contest & Tương tác
+const Contest = require('./contest')(sequelize, DataTypes);
+const ContestSubmission = require('./contestSubmission')(sequelize, DataTypes);
+const ContestWinner = require('./contestWinner')(sequelize, DataTypes);
+const Comment = require('./comment')(sequelize, DataTypes);
+const Like = require('./like')(sequelize, DataTypes);
+const FAQ = require('./faq')(sequelize, DataTypes);
+const DailyLimit = require('./dailyLimit')(sequelize, DataTypes);
+const Contact = require('./contact')(sequelize, DataTypes);
+
 const db = {
   sequelize,
   Sequelize,
@@ -46,10 +46,11 @@ const db = {
   Like,
   FAQ,
   UserProfile,
-  DailyLimit
+  DailyLimit,
+  Contact
 };
 
-// Gọi associate()
+// 2. Tự động gọi hàm associate() bên trong từng model (Nếu có)
 Object.values(db).forEach((model) => {
   if (model && typeof model.associate === 'function') {
     model.associate(db);

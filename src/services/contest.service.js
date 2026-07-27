@@ -11,11 +11,10 @@ class ContestService {
     const contest = await contestRepository.findById(id);
     if (!contest) throw new Error('Contest not found');
 
-    const likesCount = await contestRepository.getLikeCount(id, 'contest');
-    const comments = await contestRepository.getComments(id, 'contest');
+    // SỬA TẠI ĐÂY: Dùng contest.id (UUID thực sự) thay vì tham số id (có thể là Slug)
+    const likesCount = await contestRepository.getLikeCount(contest.id, 'contest');
+    const comments = await contestRepository.getComments(contest.id, 'contest');
 
-    // Thuật toán tính Star Rate (Thang điểm 5)
-    // Star Rate = 1.0 (cơ bản) + (Likes * 0.2) + (Comments * 0.3), tối đa 5.0
     const calculatedStarRate = Math.min(5.0, Number((1.0 + (likesCount * 0.2) + (comments.length * 0.3)).toFixed(1)));
 
     return {
@@ -27,7 +26,6 @@ class ContestService {
   }
 
   async createContest(data, user, dailyLimitMeta) {
-    // Logic kiểm tra scale theo Role
     if (user.role === 'premium' && data.scale === 'large') {
       throw new Error('Tài khoản Premium chỉ được phép tạo cuộc thi quy mô Small (Mini Contest).');
     }
@@ -39,7 +37,6 @@ class ContestService {
       author_id: user.id
     });
 
-    // Cập nhật số đếm hạn mức hành động trong ngày
     if (dailyLimitMeta) {
       await incrementDailyLimit(user.id, 'contest_create', dailyLimitMeta.todayDate, dailyLimitMeta.record);
     }

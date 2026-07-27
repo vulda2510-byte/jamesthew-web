@@ -13,3 +13,8 @@
 @import url('dashboard.css');
 @import url('admin.css');
 @import url('responsive.css');
+@import url(contest-list.css);
+@import url(contest-detail.css);
+@import url(checkout-success.css);
+@import url(notify.css);
+@import url(winners.css);

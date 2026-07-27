@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+
+<!-- Thêm link CSS nếu bạn tách file contest-list.css riêng -->
+<link rel="stylesheet" href="/css/contest-list.css">
+
+<main class="contests-list-page">
+    <!-- Hero Section -->
+    <section class="contests-list-hero">
+        <div class="container-wide">
+            <span class="sub-gold-title">EXCLUSIVE COMPETITIONS</span>
+            <h1>Culinary Contest Directory</h1>
+            <p>Explore our prestigious lineup of live challenges, online contests, and elite culinary showdowns.</p>
+        </div>
+    </section>
+
+    <!-- Filter & Search Bar Section -->
+    <section class="container-wide mt-section">
+        <div class="luxury-filter-bar">
+            <div class="filter-group search-box">
+                <input type="text" id="searchInput" placeholder="Search contest title, key terms..." autocomplete="off">
+            </div>
+            
+            <div class="filter-group">
+                <select id="statusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="active">Active / Ongoing</option>
+                    <option value="ended">Ended</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <select id="difficultyFilter">
+                    <option value="all">All Levels</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard / Master</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contest Grid Listing (4 Items / Dòng) -->
+    <section class="container-wide mb-section">
+        <div class="contests-grid-4col" id="allContestsGrid">
+            <div class="text-center w-100 py-5" style="grid-column: 1 / -1;">
+                <p style="color: #d4af37; font-weight: 700;">Loading prestigious contests...</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="/js/contest-list.js"></script>
+<%- include('partials/footer') %>

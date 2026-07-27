@@ -13,7 +13,6 @@ module.exports = {
           allowNull: false,
           defaultValue: 'pending'
         },
-        // THÊM MỚI: Cột role để đồng bộ với Middleware Auth và thanh toán Stripe
         role: {
           type: Sequelize.STRING(50),
           allowNull: false,
