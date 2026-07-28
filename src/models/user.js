@@ -5,16 +5,20 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.hasMany(models.Recipe, {
+      // Liên kết 1:1 với UserProfile
+      User.hasOne(models.UserProfile, {
         foreignKey: 'user_id',
-        as: 'recipes'
+        as: 'profile',
+        onDelete: 'CASCADE'
       });
+      
+      User.hasMany(models.Recipe, { foreignKey: 'user_id', as: 'recipes' });
       User.hasMany(models.Contest, { foreignKey: 'author_id', as: 'created_contests' });
-    User.hasMany(models.ContestSubmission, { foreignKey: 'user_id', as: 'contest_submissions' });
-    User.hasMany(models.Comment, { foreignKey: 'user_id', as: 'comments' });
-    User.hasMany(models.Like, { foreignKey: 'user_id', as: 'likes' });
-    User.hasMany(models.FAQ, { foreignKey: 'author_id', as: 'faqs' });
-    User.hasMany(models.DailyLimit, { foreignKey: 'user_id', as: 'daily_limits' });
+      User.hasMany(models.ContestSubmission, { foreignKey: 'user_id', as: 'contest_submissions' });
+      User.hasMany(models.Comment, { foreignKey: 'user_id', as: 'comments' });
+      User.hasMany(models.Like, { foreignKey: 'user_id', as: 'likes' });
+      User.hasMany(models.FAQ, { foreignKey: 'author_id', as: 'faqs' });
+      User.hasMany(models.DailyLimit, { foreignKey: 'user_id', as: 'daily_limits' });
     }
   }
   
@@ -40,23 +44,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    role: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      defaultValue: 'free'
+    },
     account_status: {
       type: DataTypes.ENUM('pending', 'active', 'suspended', 'banned'),
       allowNull: false,
       defaultValue: 'pending'
     },
-    email_verified_at: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    last_login_at: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    stripe_customer_id: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    }
+    email_verified_at: { type: DataTypes.DATE, allowNull: true },
+    last_login_at: { type: DataTypes.DATE, allowNull: true },
+    stripe_customer_id: { type: DataTypes.STRING(255), allowNull: true }
   }, {
     sequelize,
     modelName: 'User',

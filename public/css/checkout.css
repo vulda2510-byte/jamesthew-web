@@ -1,0 +1,251 @@
+/* ==========================================================================
+   CHECKOUT PAGE STYLES - LUXURY GOLD & EXTENDED UI
+   ========================================================================== */
+
+/* --- PAGE CONTAINER --- */
+.checkout-page {
+    background-color: var(--bg-alt);
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    box-sizing: border-box;
+}
+
+.checkout-container {
+    width: 100%;
+    max-width: 850px; /* Mở rộng kích thước gấp đôi so với ban đầu (500px -> 850px) */
+    margin: 0 auto;
+}
+
+/* --- MAIN CARD --- */
+.checkout-card {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 60px 65px; /* Tăng padding tạo không gian thở rộng rãi */
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+/* --- HEADER SECTION --- */
+.checkout-header {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.checkout-badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 2.5px; /* Tăng khoảng cách chữ cho tiêu đề phụ */
+    text-transform: uppercase;
+    color: var(--primary-color);
+    background-color: rgba(197, 160, 89, 0.1);
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin-bottom: 18px;
+}
+
+.checkout-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--text-color);
+    letter-spacing: 1.5px; /* Khoảng cách chữ tiêu đề chính */
+    line-height: 1.25;
+    margin: 0 0 14px 0;
+    text-transform: uppercase;
+}
+
+.checkout-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    letter-spacing: 0.6px;
+    line-height: 1.6;
+    margin: 0 auto;
+    max-width: 620px;
+}
+
+/* --- ALERT BOX --- */
+.checkout-alert {
+    padding: 16px 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    font-size: 0.95rem;
+    letter-spacing: 0.4px;
+    line-height: 1.5;
+}
+
+/* --- ORDER SUMMARY BOX --- */
+.order-summary {
+    background-color: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 40px; /* Tăng không gian hiển thị thông tin gói */
+    margin-bottom: 40px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.summary-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    letter-spacing: 1.2px; /* Khoảng cách chữ nhãn */
+    text-transform: uppercase;
+}
+
+.plan-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.plan-badge-premium {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.plan-badge-vip {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.summary-price {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: black;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.summary-divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 24px 0;
+}
+
+.summary-divider.dashed {
+    background-color: transparent;
+    border-top: 1px dashed var(--border-color);
+}
+
+.summary-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 0.4px;
+    line-height: 1.6;
+}
+
+.note-icon {
+    flex-shrink: 0;
+    color: var(--primary-color);
+    margin-top: 2px;
+}
+
+/* --- BUTTON & FORM --- */
+.checkout-form {
+    margin-bottom: 25px;
+}
+
+.btn-checkout {
+    display: block;
+    width: 100%;
+    padding: 20px 30px; /* Button siêu to dễ bấm */
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 2px; /* Tăng letter-spacing nút bấm */
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(197, 160, 89, 0.25);
+}
+
+.btn-checkout:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(197, 160, 89, 0.35);
+}
+
+.btn-checkout:disabled {
+    background-color: var(--border-color);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* --- FOOTER LINK --- */
+.checkout-footer-link {
+    text-align: center;
+}
+
+.cancel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 1.2px; /* Khoảng cách chữ cho link hủy */
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+}
+
+.cancel-link:hover {
+    color: var(--text-color);
+}
+
+/* --- RESPONSIVE ADAPTATIONS --- */
+@media (max-width: 768px) {
+    .checkout-card {
+        padding: 35px 25px;
+        border-radius: 16px;
+    }
+
+    .order-summary {
+        padding: 25px 20px;
+    }
+
+    .checkout-title {
+        font-size: 1.75rem;
+    }
+
+    .summary-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .summary-price {
+        font-size: 1.8rem;
+    }
+
+    .btn-checkout {
+        padding: 16px 20px;
+        font-size: 0.95rem;
+    }
+}

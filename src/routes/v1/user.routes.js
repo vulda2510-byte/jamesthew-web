@@ -1,13 +1,11 @@
 // src/routes/v1/user.routes.js
 const express = require('express');
 const userController = require('../../controllers/user.controller');
+const { requireAuth } = require('../../middlewares/auth.middleware');
 
 const router = express.Router();
 
-// Lấy danh sách users (Dùng cho test GET)
-router.get('/', userController.getUsers);
-
-// Thêm route POST này để tạo user mới
-router.post('/', userController.createUser);
+router.put('/profile', requireAuth, userController.updateProfile);
+router.put('/change-password', requireAuth, userController.changePassword);
 
 module.exports = router;

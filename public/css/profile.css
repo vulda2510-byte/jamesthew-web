@@ -1,77 +1,143 @@
 /* public/css/profile.css */
 
+/* Banner phong cách Minimal Dark */
 .profile-banner {
-    background-color: var(--black, #111111);
-    height: 200px;
+    background: linear-gradient(180deg, #000000 0%, #111111 100%);
+    height: 220px;
     width: 100%;
     position: relative;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
 }
 
 .profile-main-container {
-    margin-top: -70px;
+    margin-top: -80px;
     position: relative;
     z-index: 10;
 }
 
+/* Thẻ thông tin chính */
 .profile-header-card {
-    background: var(--white, #ffffff);
+    background: #0d0d0d !important;
+    border: 1px solid #222222 !important;
+    color: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
+/* Avatar đại diện dạng Đĩa Vàng Gold Fine-Dining */
 .profile-avatar {
     width: 110px; 
     height: 110px; 
-    font-size: 3rem; 
-    font-weight: bold;
-    border: 4px solid #ffffff;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    background: var(--bg-alt, #f8f9fa);
-    color: var(--black, #111111);
+    font-size: 2.8rem; 
+    font-weight: 700;
+    border: 3px solid var(--primary-color, #C5A059);
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.25);
+    background: #181818;
+    color: var(--primary-color, #C5A059);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    text-transform: uppercase;
 }
 
-/* Nav Pills Sync với tông thiết kế Fine Dining */
+/* Style cho các Tab Navigation bên Trái */
+.profile-sidebar-card {
+    background: #0d0d0d !important;
+    border: 1px solid #222222 !important;
+}
+
 .nav-pills .nav-link {
-    color: var(--text-muted, #6c757d);
-    border-radius: 10px;
-    transition: all 0.25s ease;
+    color: #a1a1aa !important;
+    border-radius: 12px;
+    transition: all 0.3s ease;
     background: transparent;
+    border: 1px solid transparent;
 }
 
 .nav-pills .nav-link:hover {
-    background-color: var(--bg-alt, #f8f9fa);
-    color: var(--black, #111111);
+    background-color: #181818 !important;
+    color: #ffffff !important;
+    border-color: #2c2c2e !important;
 }
 
 .nav-pills .nav-link.active {
-    background-color: var(--black, #111111);
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    background: linear-gradient(135deg, #181818 0%, #222222 100%) !important;
+    color: var(--primary-color, #C5A059) !important;
+    border: 1px solid var(--primary-color, #C5A059) !important;
+    box-shadow: 0 4px 15px rgba(197, 160, 89, 0.15);
 }
 
-/* Dynamic Banners cho 4 Role */
+/* Khung hiển thị nội dung các Tab bên Phải */
+.profile-content-card {
+    background: #0d0d0d !important;
+    border: 1px solid #222222 !important;
+    color: #ffffff;
+}
+
+/* Form Inputs màu tối sang trọng */
+.luxury-input {
+    background-color: #141414 !important;
+    border: 1px solid #2a2a2a !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+.luxury-input:focus {
+    background-color: #1a1a1a !important;
+    border-color: var(--primary-color, #C5A059) !important;
+    box-shadow: 0 0 10px rgba(197, 160, 89, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* Gold Action Button */
+.btn-gold {
+    background: linear-gradient(135deg, #C5A059 0%, #A88746 100%) !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-gold:hover {
+    background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%) !important;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.4) !important;
+    transform: translateY(-1px);
+}
+
+/* Custom Role Banners */
 .role-banner {
-    border: 1px solid var(--border-color, #e9ecef);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
 }
 
 .banner-free {
-    background-color: #f8f9fa;
-    border-left: 4px solid #6c757d;
+    background: #141414;
+    border: 1px solid #333333;
+    border-left: 4px solid #71717a;
 }
 
 .banner-premium {
-    background-color: #fff8e6;
+    background: linear-gradient(90deg, #18150c 0%, #0d0d0d 100%);
+    border: 1px solid #3d3219;
     border-left: 4px solid #ffc107;
 }
 
 .banner-vip {
-    background: linear-gradient(135deg, #111111 0%, #222222 100%);
-    border-left: 4px solid #ffc107;
+    background: linear-gradient(135deg, #1c180e 0%, #080808 100%);
+    border: 1px solid var(--primary-color, #C5A059);
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.1);
 }
 
 .banner-admin {
-    background-color: #fff5f5;
+    background: #1a0f0f;
+    border: 1px solid #4a1d1d;
     border-left: 4px solid #dc3545;
+}
+
+/* Custom Badges */
+.badge-gold {
+    background: rgba(197, 160, 89, 0.15) !important;
+    color: #C5A059 !important;
+    border: 1px solid #C5A059 !important;
 }

@@ -1,107 +1,483 @@
 <%- include('partials/header') %>
+<link rel="stylesheet" href="/css/membership.css">
+
+<% 
+    const bannerImage = locals.heroBannerUrl || '/images/membership-banner.png';
+    const premiumBasePrice = parseFloat(locals.premiumPrice) || 9.99;
+    const vipBasePrice = parseFloat(locals.vipPrice) || 19.99;
+    const hasPremiumDiscount = locals.adminDiscount && locals.adminDiscount.premium;
+    const hasVipDiscount = locals.adminDiscount && locals.adminDiscount.vip;
+    const currentUserRole = (locals.user && locals.user.role) ? locals.user.role : null;
+%>
 
 <main class="membership-page">
-    <!-- Section 1: Hero -->
-    <section class="membership-hero">
-        <div class="container">
-            <h1>Membership</h1>
-            <p class="text-muted">Unlock exclusive culinary experiences, masterclasses, and a private community of food enthusiasts.</p>
-            <div class="mt-section">
-                <a href="#pricing" class="btn btn-primary">Join Membership</a>
+    <!-- Section 1: Hero Banner -->
+    <section class="membership-hero" style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.75) 100%), url('<%= bannerImage %>');">
+        <div class="hero-container">
+            <span class="hero-badge">PREMIUM CULINARY ACCESS</span>
+            <h1 class="hero-title">Membership Plans</h1>
+            <p class="hero-subtitle">Unlock exclusive culinary experiences, masterclasses, and a private community of food enthusiasts.</p>
+            <div class="hero-actions">
+                <a href="#pricing" class="btn btn-hero">EXPLORE PLANS</a>
             </div>
         </div>
     </section>
 
-    <div class="container">
-        <!-- Section 2: Membership Plans -->
-        <section id="pricing" class="mt-section">
-            <h2 class="section-title text-center">Choose Your Plan</h2>
-            <div class="plans-grid mt-section">
+    <div class="main-container">
+        <!-- Section 2: Membership Plans Grid -->
+        <section id="pricing" class="pricing-section">
+            <div class="section-header text-center">
+                <h2 class="section-title">CHOOSE YOUR PLAN</h2>
+                <p class="text-muted">Select the tier that best fits your culinary ambition.</p>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="plans-grid mt-40">
                 
-                <!-- Free Plan -->
-                <div class="card plan-card">
+                <!-- Free Plan Card -->
+                <div class="plan-card">
+                    <div class="card-header">
+                        <div class="card-header-top">
+                            <h3 class="plan-name">Free</h3>
+                        </div>
+                        <div class="price-container">
+                            <div class="price-wrapper">
+                                <span class="plan-price">FREE</span>
+                            </div>
+                        </div>
+                        <p class="plan-desc">Basic access to public recipes</p>
+                    </div>
+
                     <div class="card-body">
-                        <h3>Free</h3>
-                        <div class="plan-price">$0 <span>/month</span></div>
-                        <p class="text-muted">Basic access to recipes</p>
                         <ul class="plan-features">
-                            <li>Access to free recipes</li>
-                            <li>Community forum (Read-only)</li>
-                            <li>Basic weekly newsletter</li>
+                            <li>
+                                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Browse all public recipes</span>
+                            </li>
+                            <li>
+                                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Community support</span>
+                            </li>
+                            <li>
+                                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Save favorite recipes</span>
+                            </li>
                         </ul>
-                        <% if (!locals.user) { %>
-                            <a href="/register" class="btn btn-outline btn-block">Sign Up Free</a>
-                        <% } else if (locals.user.role === 'free') { %>
-                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Current Plan</button>
+                    </div>
+
+                    <div class="card-footer">
+                        <% if (!currentUserRole) { %>
+                            <a href="/register" class="btn btn-plan-outline btn-block">Get Started</a>
+                        <% } else if (currentUserRole === 'free') { %>
+                            <button class="btn btn-plan-disabled btn-block" disabled>CURRENT PLAN</button>
                         <% } else { %>
-                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Included</button>
+                            <button class="btn btn-plan-disabled btn-block" disabled>INCLUDED</button>
                         <% } %>
                     </div>
                 </div>
 
-                <!-- Premium Plan -->
-                <div class="card plan-card plan-premium">
+                <!-- Premium Plan Card -->
+                <div class="plan-card plan-premium" id="card-premium" data-base-price="<%= premiumBasePrice %>">
+                    <div class="popular-tag">RECOMMENDED</div>
+                    <div class="card-header">
+                        <div class="card-header-top">
+                            <h3 class="plan-name">Premium</h3>
+                            
+                            <!-- Multiplier Toggle -->
+                            <div class="multiplier-toggle" data-plan="premium">
+                                <button type="button" class="multiplier-btn active" data-mult="1">1x</button>
+                                <button type="button" class="multiplier-btn" data-mult="5">5x</button>
+                                <button type="button" class="multiplier-btn" data-mult="10">10x</button>
+                            </div>
+                        </div>
+
+                        <div class="discount-container" id="discount-box-premium" <% if (!hasPremiumDiscount) { %> style="display: none;" <% } %>>
+                            <span class="discount-badge">SAVE <%= (locals.adminDiscount && locals.adminDiscount.premiumPercent) || 15 %>%</span>
+                        </div>
+
+                        <div class="price-container">
+                            <div class="price-wrapper">
+                                <span class="original-price" id="orig-price-premium" <% if (!hasPremiumDiscount) { %> style="display: none;" <% } %>>$11.99</span>
+                                <span class="plan-price" id="display-price-premium">$<%= premiumBasePrice.toFixed(2) %></span>
+                                <span class="price-period" id="display-period-premium">/month</span>
+                            </div>
+                        </div>
+                        <p class="plan-desc">For aspiring home chefs</p>
+                    </div>
+
                     <div class="card-body">
-                        <h3>Premium</h3>
-                        <div class="plan-price">$9.99 <span>/month</span></div>
-                        <p class="text-muted">For aspiring home chefs</p>
                         <ul class="plan-features">
-                            <li>All Free features</li>
-                            <li>Unlock Premium recipes</li>
-                            <li>Step-by-step video tutorials</li>
-                            <li>Private community access</li>
+                            <li>
+                                <svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Everything in Free, plus:</span>
+                            </li>
+                            <li>
+                                <svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Unlimited recipe collections</span>
+                            </li>
+                            <li>
+                                <svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Ad-free experience</span>
+                            </li>
                         </ul>
-                        <% if (!locals.user) { %>
-                            <a href="/login?redirect=/membership" class="btn btn-primary btn-block">Login to Upgrade</a>
-                        <% } else if (locals.user.role === 'premium') { %>
-                            <button class="btn btn-primary btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Current Plan</button>
-                        <% } else if (locals.user.role === 'vip' || locals.user.role === 'admin') { %>
-                            <button class="btn btn-primary btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Included in your plan</button>
+                    </div>
+
+                    <div class="card-footer">
+                        <% if (!currentUserRole) { %>
+                            <a href="/login?redirect=/membership" class="btn btn-plan-primary btn-block">Upgrade to Premium</a>
+                        <% } else if (currentUserRole === 'premium') { %>
+                            <button class="btn btn-plan-disabled btn-block" disabled>CURRENT PLAN</button>
+                        <% } else if (currentUserRole === 'vip' || currentUserRole === 'admin') { %>
+                            <button class="btn btn-plan-disabled btn-block" disabled>INCLUDED IN YOUR PLAN</button>
                         <% } else { %>
-                            <a href="/membership/checkout?plan=premium" class="btn btn-primary btn-block">Get Premium</a>
+                            <a href="/membership/checkout?plan=premium&mult=1" id="btn-checkout-premium" class="btn btn-plan-primary btn-block">Upgrade to Premium</a>
                         <% } %>
                     </div>
                 </div>
 
-                <!-- VIP Plan -->
-                <div class="card plan-card">
+                <!-- VIP Plan Card -->
+                <div class="plan-card" id="card-vip" data-base-price="<%= vipBasePrice %>">
+                    <div class="card-header">
+                        <div class="card-header-top">
+                            <h3 class="plan-name">VIP</h3>
+
+                            <!-- Multiplier Toggle -->
+                            <div class="multiplier-toggle" data-plan="vip">
+                                <button type="button" class="multiplier-btn active" data-mult="1">1x</button>
+                                <button type="button" class="multiplier-btn" data-mult="5">5x</button>
+                                <button type="button" class="multiplier-btn" data-mult="10">10x</button>
+                            </div>
+                        </div>
+
+                        <div class="discount-container" id="discount-box-vip" <% if (!hasVipDiscount) { %> style="display: none;" <% } %>>
+                            <span class="discount-badge">SAVE <%= (locals.adminDiscount && locals.adminDiscount.vipPercent) || 20 %>%</span>
+                        </div>
+
+                        <div class="price-container">
+                            <div class="price-wrapper">
+                                <span class="original-price" id="orig-price-vip" <% if (!hasVipDiscount) { %> style="display: none;" <% } %>>$29.99</span>
+                                <span class="plan-price" id="display-price-vip">$<%= vipBasePrice.toFixed(2) %></span>
+                                <span class="price-period" id="display-period-vip">/month</span>
+                            </div>
+                        </div>
+                        <p class="plan-desc">For passionate food creators</p>
+                    </div>
+
                     <div class="card-body">
-                        <h3>VIP</h3>
-                        <div class="plan-price">$24.99 <span>/month</span></div>
-                        <p class="text-muted">The ultimate culinary journey</p>
                         <ul class="plan-features">
-                            <li>All Premium features</li>
-                            <li>1-on-1 Q&A with Chef James</li>
-                            <li>Exclusive Masterclass courses</li>
-                            <li>Downloadable resources</li>
+                            <li>
+                                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Everything in Premium, plus:</span>
+                            </li>
+                            <li>
+                                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>Priority recipe promotion</span>
+                            </li>
+                            <li>
+                                <svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>VIP badge on profile</span>
+                            </li>
                         </ul>
-                        <% if (!locals.user) { %>
-                            <a href="/login?redirect=/membership" class="btn btn-outline btn-block">Login to Upgrade</a>
-                        <% } else if (locals.user.role === 'vip') { %>
-                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Current Plan</button>
-                        <% } else if (locals.user.role === 'admin') { %>
-                            <button class="btn btn-outline btn-block" disabled style="opacity: 0.5; cursor: not-allowed;">Included in Admin</button>
+                    </div>
+
+                    <div class="card-footer">
+                        <% if (!currentUserRole) { %>
+                            <a href="/login?redirect=/membership" class="btn btn-plan-outline btn-block">Become VIP</a>
+                        <% } else if (currentUserRole === 'vip') { %>
+                            <button class="btn btn-plan-disabled btn-block" disabled>CURRENT PLAN</button>
+                        <% } else if (currentUserRole === 'admin') { %>
+                            <button class="btn btn-plan-disabled btn-block" disabled>INCLUDED IN ADMIN</button>
                         <% } else { %>
-                            <a href="/membership/checkout?plan=vip" class="btn btn-outline btn-block">Get VIP</a>
+                            <a href="/membership/checkout?plan=vip&mult=1" id="btn-checkout-vip" class="btn btn-plan-outline btn-block">Become VIP</a>
                         <% } %>
                     </div>
+                </div>
+
+            </div>
+
+            <!-- SECTION 2.5: PLAN REVIEW & DETAILS -->
+            <div class="plan-review-section mt-60">
+                <div class="plan-review-container">
+                    
+                    <div class="review-header">
+                        <div class="review-header-title">
+                            <h3>PLAN REVIEW & DETAILS</h3>
+                            <p>Select a plan below to explore full features, benefits, and target audience.</p>
+                        </div>
+                        <div class="plan-selector-tabs" role="tablist">
+                            <button type="button" class="review-tab-btn active" role="tab" aria-selected="true" data-target="free">Free Plan</button>
+                            <button type="button" class="review-tab-btn" role="tab" aria-selected="false" data-target="premium">Premium Plan</button>
+                            <button type="button" class="review-tab-btn" role="tab" aria-selected="false" data-target="vip">VIP Plan</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 1: FREE PLAN -->
+                    <div class="plan-review-content active" id="review-free" role="tabpanel">
+                        <div class="review-card-body">
+                            <div class="review-card-main">
+                                <div class="review-badge-row">
+                                    <span class="plan-type-pill">BASIC ACCESS</span>
+                                </div>
+                                <h2 class="review-plan-title">FREE PLAN</h2>
+                                <h4 class="review-plan-tagline">Perfect for Exploring</h4>
+                                <p class="review-plan-summary">
+                                    Start your cooking journey with unlimited inspiration from our community. Designed for casual home cooks and food lovers who want to explore curated recipes and organize their favorite dishes.
+                                </p>
+
+                                <div class="review-grid-info">
+                                    <div class="info-box">
+                                        <h5><svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Who is it for?</h5>
+                                        <p>Beginner home cooks, everyday food enthusiasts, and anyone looking for daily dinner inspiration without commitment.</p>
+                                    </div>
+                                    <div class="info-box">
+                                        <h5><svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Support & Community</h5>
+                                        <p>Standard community support with access to general forums and public discussion boards.</p>
+                                    </div>
+                                </div>
+
+                                <div class="review-features-block">
+                                    <h4 class="block-title">Included Features</h4>
+                                    <ul class="detailed-features-list">
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Browse all public recipes:</strong> Full access to thousands of community-submitted dishes.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Search recipes by category:</strong> Filter easily by cuisine, meal type, or dietary preference.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>View recipe details & ingredients:</strong> Step-by-step guidance and exact ingredient measurements.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Save favorite recipes:</strong> Bookmark your go-to meals for quick cooking access.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Create one personal collection:</strong> Keep up to 1 custom recipe collection organized.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Community support:</strong> Get answers from friendly community members in public threads.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="review-card-sidebar">
+                                <div class="sidebar-price-card">
+                                    <span class="price-label">Pricing</span>
+                                    <div class="price-amount">FREE</div>
+                                    <p class="price-subtext">Always free, no credit card required.</p>
+                                    <a href="/register" class="btn btn-plan-outline btn-block mt-20">Get Started</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: PREMIUM PLAN -->
+                    <div class="plan-review-content" id="review-premium" role="tabpanel">
+                        <div class="review-card-body">
+                            <div class="review-card-main">
+                                <div class="review-badge-row">
+                                    <span class="plan-type-pill pill-recommended">MOST POPULAR CHOICE</span>
+                                </div>
+                                <h2 class="review-plan-title">PREMIUM PLAN</h2>
+                                <h4 class="review-plan-tagline">Cook Without Limits</h4>
+                                <p class="review-plan-summary">
+                                    Unlock powerful tools to organize, create, and share your culinary creations. Experience zero distractions with ad-free cooking and gain access to Masterclass-level exclusive content.
+                                </p>
+
+                                <div class="review-grid-info">
+                                    <div class="info-box">
+                                        <h5><svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Who is it for?</h5>
+                                        <p>Aspiring home chefs, active foodies, and creators who want to publish their own recipes with high-res photos.</p>
+                                    </div>
+                                    <div class="info-box">
+                                        <h5><svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Enhanced Experience</h5>
+                                        <p>Faster priority email support, advanced filters, and 100% ad-free cooking workflow.</p>
+                                    </div>
+                                </div>
+
+                                <div class="review-features-block">
+                                    <h4 class="block-title">Everything in Free, plus:</h4>
+                                    <ul class="detailed-features-list">
+                                        <li><svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Unlimited recipe collections:</strong> Organize breakfast, holiday meals, or fitness plans without restrictions.</span></li>
+                                        <li><svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Create and publish your own recipes:</strong> Share your signature dishes with our growing food community.</span></li>
+                                        <li><svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Upload high-quality recipe images:</strong> Showcase beautiful photos of your culinary achievements.</span></li>
+                                        <li><svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Advanced recipe search & filters:</strong> Filter by prep time, calories, skill level, or rare ingredients.</span></li>
+                                        <li><svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Exclusive premium recipes:</strong> Access chef-crafted pro recipes and secret techniques.</span></li>
+                                        <li><svg class="check-icon icon-primary" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Faster support & Ad-free:</strong> Premium customer assistance with zero intrusive popups.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="review-card-sidebar">
+                                <div class="sidebar-price-card sidebar-premium">
+                                    <span class="price-label">Pricing</span>
+                                    <div class="price-amount">$<%= premiumBasePrice.toFixed(2) %> <span class="unit">/ month</span></div>
+                                    <p class="price-subtext">Billed monthly or save with 5x/10x multi-month passes.</p>
+                                    <a href="/membership/checkout?plan=premium&mult=1" class="btn btn-plan-primary btn-block mt-20">Upgrade to Premium</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: VIP PLAN -->
+                    <div class="plan-review-content" id="review-vip" role="tabpanel">
+                        <div class="review-card-body">
+                            <div class="review-card-main">
+                                <div class="review-badge-row">
+                                    <span class="plan-type-pill pill-vip">ULTIMATE EXPERIENCE</span>
+                                </div>
+                                <h2 class="review-plan-title">VIP PLAN</h2>
+                                <h4 class="review-plan-tagline">For Passionate Food Creators</h4>
+                                <p class="review-plan-summary">
+                                    Designed for professional chefs, food bloggers, and serious culinary enthusiasts. Take center stage in our ecosystem with featured exposure, priority promotion, and direct VIP channels.
+                                </p>
+
+                                <div class="review-grid-info">
+                                    <div class="info-box">
+                                        <h5><svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> Who is it for?</h5>
+                                        <p>Culinary professionals, food influencers, culinary business owners, and hardcore food creators aiming for maximum audience reach.</p>
+                                    </div>
+                                    <div class="info-box">
+                                        <h5><svg class="info-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg> VIP Perks</h5>
+                                        <p>1-on-1 direct access, early beta feature releases, and highlighted profile placement across the entire site.</p>
+                                    </div>
+                                </div>
+
+                                <div class="review-features-block">
+                                    <h4 class="block-title">Everything in Premium, plus:</h4>
+                                    <ul class="detailed-features-list">
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Unlimited premium recipe publishing:</strong> Monetize and spotlight your best culinary guides.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Featured creator profile:</strong> Highlighted banner and profile card in the community directory.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Priority recipe promotion:</strong> Your recipes appear at the top of search results and homepage feeds.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>Early access & Exclusive content:</strong> Try new creator tools first plus seasonal Masterclass content.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>VIP Customer Support:</strong> 24/7 priority help desk with dedicated assistance.</span></li>
+                                        <li><svg class="check-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span><strong>VIP Badge on Profile:</strong> Gold verification badge recognizing your high-tier status.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="review-card-sidebar">
+                                <div class="sidebar-price-card sidebar-vip">
+                                    <span class="price-label">Pricing</span>
+                                    <div class="price-amount">$<%= vipBasePrice.toFixed(2) %> <span class="unit">/ month</span></div>
+                                    <p class="price-subtext">Unlock complete creator tools and total VIP privileges.</p>
+                                    <a href="/membership/checkout?plan=vip&mult=1" class="btn btn-plan-outline btn-block mt-20">Become VIP</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
+            <!-- SECTION 2.6: QUICK COMPARISON TABLE -->
+            <div class="comparison-section mt-60">
+                <div class="section-header text-center mb-30">
+                    <h3 class="comparison-title">QUICK COMPARISON</h3>
+                    <p class="text-muted">Compare all plan features side-by-side to make the best choice.</p>
+                </div>
+
+                <div class="comparison-table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th class="col-feature">Feature</th>
+                                <th class="col-plan text-center">Free</th>
+                                <th class="col-plan text-center">Premium</th>
+                                <th class="col-plan text-center">VIP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature-name">Browse Recipes</td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Search Recipes</td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Save Favorites</td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Create Recipes</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Unlimited Collections</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Upload Images</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Premium Recipes</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Ad-Free Experience</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Featured Profile</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Priority Promotion</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Early Access Features</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">VIP Badge</td>
+                                <td class="text-center"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center highlight-col"><svg class="icon-cross-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></td>
+                                <td class="text-center"><svg class="icon-check-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Priority Support</td>
+                                <td class="text-center"><span class="support-text">Community</span></td>
+                                <td class="text-center highlight-col"><span class="support-text">Standard</span></td>
+                                <td class="text-center"><span class="support-text vip-text">VIP Priority</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </section>
 
-        <!-- Section 3: Call To Action -->
-        <section class="cta-banner mt-section" style="margin-bottom: 60px;">
-            <h2 class="section-title">Ready to elevate your cooking?</h2>
-            <p>Join thousands of members mastering the art of fine dining.</p>
-            <div class="mt-15">
-                <% if (!locals.user) { %>
-                    <a href="/register" class="btn btn-outline">Join Membership Now</a>
-                <% } else { %>
-                    <a href="#pricing" class="btn btn-outline">Review Plans</a>
-                <% } %>
+        <!-- Section 3: Call To Action Banner -->
+        <section class="cta-banner">
+            <div class="cta-content">
+                <h2>READY TO ELEVATE YOUR COOKING?</h2>
+                <p>Join thousands of members mastering the art of fine dining with Chef James.</p>
+                <div class="cta-action">
+                    <% if (!currentUserRole) { %>
+                        <a href="/register" class="btn btn-cta">JOIN MEMBERSHIP NOW</a>
+                    <% } else { %>
+                        <a href="#pricing" class="btn btn-cta">REVIEW PLANS</a>
+                    <% } %>
+                </div>
             </div>
         </section>
     </div>
 </main>
+
+<script src="/js/membership.js" defer></script>
 
 <%- include('partials/footer') %>

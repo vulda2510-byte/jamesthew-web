@@ -10,7 +10,35 @@
     --black: #000000;
     --white: #FFFFFF;
 }
+/* 1. Chuyển background các thẻ Card Info sang màu đen */
+.card-info, 
+.sub-card-info,
+.plan-review-container {
+  background-color: #000000 !important;
+  border: 1px solid #222222 !important;
+}
 
+/* 2. Đảm bảo chữ trên thẻ đen hiển thị rõ (nếu thẻ nền đen thì chữ màu trắng/xám nhạt) */
+.card-info-title {
+  color: #ffffff !important;
+}
+
+.card-info-text {
+  color: #a1a1aa !important;
+}
+
+/* 3. Cố định Icon màu đen & Xóa toàn bộ animation */
+.custom-icon,
+.custom-icon svg {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: #000000 !important;
+  
+  /* Xóa hiệu ứng xoay, nhấp nháy, hoạt hình */
+  /* animation: none !important;
+  transition: none !important;
+  transform: none !important; */
+}
 * {
     box-sizing: border-box;
     margin: 0;

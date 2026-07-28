@@ -18,12 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 const result = await res.json();
                 if (result.success) {
-                    AppNotify.success("Cập nhật thông tin thành công!", "PROFILE UPDATED");
+                    if (window.AppNotify) {
+                        AppNotify.success("Cập nhật thông tin hồ sơ thành công!", "PROFILE UPDATED");
+                    } else {
+                        alert("Cập nhật thông tin thành công!");
+                    }
+                    setTimeout(() => window.location.reload(), 1200);
                 } else {
-                    AppNotify.error(result.message || "Có lỗi xảy ra.", "UPDATE FAILED");
+                    if (window.AppNotify) {
+                        AppNotify.error(result.message || "Có lỗi xảy ra.", "UPDATE FAILED");
+                    } else {
+                        alert(result.message || "Lỗi cập nhật.");
+                    }
                 }
             } catch (err) {
-                AppNotify.error("Lỗi kết nối đến server.", "NETWORK ERROR");
+                console.error("Lỗi:", err);
             }
         });
     }
@@ -35,7 +44,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = Object.fromEntries(formData.entries());
 
             if (data.newPassword !== data.confirmNewPassword) {
-                return AppNotify.error("Mật khẩu xác nhận không khớp!", "VALIDATION ERROR");
+                if (window.AppNotify) {
+                    return AppNotify.error("Mật khẩu xác nhận không khớp!", "VALIDATION ERROR");
+                } else {
+                    return alert("Mật khẩu xác nhận không khớp!");
+                }
             }
 
             try {
@@ -46,13 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 const result = await res.json();
                 if (result.success) {
-                    AppNotify.success("Đổi mật khẩu thành công!", "PASSWORD CHANGED");
+                    if (window.AppNotify) {
+                        AppNotify.success("Đổi mật khẩu thành công!", "PASSWORD CHANGED");
+                    } else {
+                        alert("Đổi mật khẩu thành công!");
+                    }
                     formChangePassword.reset();
                 } else {
-                    AppNotify.error(result.message || "Có lỗi xảy ra.", "CHANGE FAILED");
+                    if (window.AppNotify) {
+                        AppNotify.error(result.message || "Có lỗi xảy ra.", "CHANGE FAILED");
+                    } else {
+                        alert(result.message || "Đổi mật khẩu thất bại.");
+                    }
                 }
             } catch (err) {
-                AppNotify.error("Lỗi kết nối đến server.", "NETWORK ERROR");
+                console.error("Lỗi:", err);
             }
         });
     }

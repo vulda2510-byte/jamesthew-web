@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // 1. IMPORT MODELS, CONTROLLERS & MIDDLEWARES (Tập trung ở đầu file)
-const { User, UserProfile } = require('./models');
+const { User, UserProfile, Recipe } = require('./models');
 const apiRoutes = require('./routes');
 const healthController = require('./controllers/health.controller');
 const notFoundMiddleware = require('./middlewares/notFound.middleware');
@@ -104,48 +104,63 @@ app.get('/api/v1/auth/logout', (req, res) => {
 app.get('/login', requireGuest, (req, res) => res.render('login'));
 app.get('/register', requireGuest, (req, res) => res.render('register'));
 
-// --- C. Protected User Pages (Yêu cầu phải đăng nhập) ---
 app.get('/profile', requireAuth, async (req, res) => {
     try {
-        const mockStats = { recipesCount: 142 };
-        const userId = res.locals.user.id; // Chỉ lấy ID từ Token để làm chìa khóa
+        const userId = res.locals.user.id;
 
-        // 1. TRUY VẤN DỮ LIỆU LIVE TỪ DATABASE
-        const currentUser = await User.findByPk(userId); // Lấy role mới nhất
-        const profile = await UserProfile.findOne({ where: { user_id: userId } });
-
-        if (!currentUser) {
-            return res.redirect('/logout'); // Đề phòng user đã bị xóa
+        // 1. Truy vấn thông tin User kèm Profile
+        let currentUser = null;
+        try {
+            currentUser = await User.findByPk(userId, {
+                include: [{ model: UserProfile, as: 'profile' }]
+            });
+        } catch (includeErr) {
+            console.warn("Chưa include được UserProfile, fallback truy vấn User đơn:", includeErr.message);
+            currentUser = await User.findByPk(userId);
         }
 
-        // 2. XỬ LÝ TRIỆT ĐỂ NULL VÀ MAP DỮ LIỆU
+        if (!currentUser) {
+            return res.redirect('/logout');
+        }
+
+        // 2. Đếm số lượng Recipe (Bọc try-catch riêng để tránh sập trang)
+        let recipesCount = 0;
+        try {
+            if (Recipe) {
+                recipesCount = await Recipe.count({ where: { user_id: userId } });
+            }
+        } catch (recipeErr) {
+            console.warn("Chưa đếm được Recipe:", recipeErr.message);
+        }
+
+        // 3. Chuẩn hóa dữ liệu hiển thị
+        const profile = currentUser.profile || {};
+
         const fullUserData = {
             id: currentUser.id,
             email: currentUser.email,
-            username: currentUser.username || 'chef_user',
-            // Đảm bảo role lấy trực tiếp từ DB và chuyển về chữ thường để EJS so sánh chính xác ('vip')
+            username: currentUser.username || 'chef_member',
             role: currentUser.role ? currentUser.role.toLowerCase() : 'free',
-            
-            // Dùng logic || '' để chặn đứng chữ 'null' hiển thị ra UI
-            firstName: (profile && profile.first_name) ? profile.first_name : '',
-            lastName: (profile && profile.last_name) ? profile.last_name : '',
-            bio: (profile && profile.biography) ? profile.biography : '',
-            cookingStyle: (profile && profile.cooking_style) ? profile.cooking_style : 'Modern Gastronomy',
-            location: (profile && profile.location) ? profile.location : 'Hanoi, Vietnam'
+            firstName: profile.first_name || currentUser.username || '',
+            lastName: profile.last_name || '',
+            bio: profile.biography || '',
+            cookingStyle: profile.cooking_style || 'Modern Gastronomy',
+            location: profile.location || 'Hanoi, Vietnam',
+            avatarUrl: profile.avatar_url || '',
+            website: profile.website || ''
         };
 
-        // 3. RENDER GIAO DIỆN
+        // 4. Render Giao diện
         res.render('profile', { 
             user: fullUserData, 
-            stats: mockStats 
+            stats: { recipesCount } 
         });
 
     } catch (error) {
-        console.error("Lỗi khi tải trang Profile:", error);
+        console.error("Lỗi chi tiết khi tải trang Profile:", error);
         res.status(500).send("Đã xảy ra lỗi khi tải dữ liệu người dùng.");
     }
 });
-
 app.get('/dashboard', requireAuth, (req, res) => res.render('dashboard'));
 
 // --- D. Membership & Stripe Checkout Routes ---
