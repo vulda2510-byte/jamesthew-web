@@ -1,143 +1,200 @@
-/* public/css/profile.css */
-
-/* Banner phong cách Minimal Dark */
-.profile-banner {
-    background: linear-gradient(180deg, #000000 0%, #111111 100%);
-    height: 220px;
-    width: 100%;
-    position: relative;
-    border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+:root {
+    --brand-gold: #C5A059;
+    --brand-gold-hover: #a88442;
+    --header-bg: #0B0B0B;
+    --body-bg: #F8F9FA;
+    --card-bg: #FFFFFF;
 }
 
-.profile-main-container {
-    margin-top: -80px;
-    position: relative;
-    z-index: 10;
+body {
+    background-color: var(--body-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #212529;
 }
 
-/* Thẻ thông tin chính */
-.profile-header-card {
-    background: #0d0d0d !important;
-    border: 1px solid #222222 !important;
-    color: #ffffff;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+/* Header Styling */
+.main-header {
+    background-color: var(--header-bg);
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Avatar đại diện dạng Đĩa Vàng Gold Fine-Dining */
-.profile-avatar {
-    width: 110px; 
-    height: 110px; 
-    font-size: 2.8rem; 
-    font-weight: 700;
-    border: 3px solid var(--primary-color, #C5A059);
-    box-shadow: 0 0 20px rgba(197, 160, 89, 0.25);
-    background: #181818;
-    color: var(--primary-color, #C5A059);
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    text-transform: uppercase;
 }
 
-/* Style cho các Tab Navigation bên Trái */
-.profile-sidebar-card {
-    background: #0d0d0d !important;
-    border: 1px solid #222222 !important;
+.brand-logo {
+    color: var(--brand-gold);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-decoration: none;
 }
 
-.nav-pills .nav-link {
-    color: #a1a1aa !important;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    background: transparent;
-    border: 1px solid transparent;
+.nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
 }
 
-.nav-pills .nav-link:hover {
-    background-color: #181818 !important;
-    color: #ffffff !important;
-    border-color: #2c2c2e !important;
+.nav-links a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: color 0.2s;
 }
 
-.nav-pills .nav-link.active {
-    background: linear-gradient(135deg, #181818 0%, #222222 100%) !important;
-    color: var(--primary-color, #C5A059) !important;
-    border: 1px solid var(--primary-color, #C5A059) !important;
-    box-shadow: 0 4px 15px rgba(197, 160, 89, 0.15);
+.nav-links a:hover, .nav-links a.active {
+    color: var(--brand-gold);
 }
 
-/* Khung hiển thị nội dung các Tab bên Phải */
-.profile-content-card {
-    background: #0d0d0d !important;
-    border: 1px solid #222222 !important;
-    color: #ffffff;
+.btn-logout {
+    background-color: #8B0000;
+    padding: 6px 16px;
+    border-radius: 4px;
 }
 
-/* Form Inputs màu tối sang trọng */
-.luxury-input {
-    background-color: #141414 !important;
-    border: 1px solid #2a2a2a !important;
-    color: #ffffff !important;
-    transition: all 0.3s ease;
-}
-
-.luxury-input:focus {
-    background-color: #1a1a1a !important;
-    border-color: var(--primary-color, #C5A059) !important;
-    box-shadow: 0 0 10px rgba(197, 160, 89, 0.2) !important;
-    color: #ffffff !important;
-}
-
-/* Gold Action Button */
+/* Buttons */
 .btn-gold {
-    background: linear-gradient(135deg, #C5A059 0%, #A88746 100%) !important;
-    color: #000000 !important;
-    font-weight: 700 !important;
-    border: none !important;
-    transition: all 0.3s ease !important;
+    background-color: var(--brand-gold);
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    border-radius: 4px;
 }
 
 .btn-gold:hover {
-    background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%) !important;
-    box-shadow: 0 0 15px rgba(197, 160, 89, 0.4) !important;
-    transform: translateY(-1px);
+    background-color: var(--brand-gold-hover);
+    color: #FFFFFF;
 }
 
-/* Custom Role Banners */
-.role-banner {
-    border-radius: 16px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
+/* Card Styling */
+.search-box-card, .profile-hero-card, .info-card, .upgrade-banner-card {
+    background: var(--card-bg);
+    border: 1px solid #EAEAEA;
+    border-radius: 8px;
+    padding: 24px;
 }
 
-.banner-free {
-    background: #141414;
-    border: 1px solid #333333;
-    border-left: 4px solid #71717a;
+/* Hero Section */
+.profile-hero-card {
+    text-align: center;
 }
 
-.banner-premium {
-    background: linear-gradient(90deg, #18150c 0%, #0d0d0d 100%);
-    border: 1px solid #3d3219;
-    border-left: 4px solid #ffc107;
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
 }
 
-.banner-vip {
-    background: linear-gradient(135deg, #1c180e 0%, #080808 100%);
-    border: 1px solid var(--primary-color, #C5A059);
-    box-shadow: 0 0 20px rgba(197, 160, 89, 0.1);
+.avatar-circle {
+    width: 90px;
+    height: 90px;
+    background-color: #1A1A1A;
+    color: var(--brand-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    border: 3px solid var(--brand-gold);
+    margin: 0 auto;
 }
 
-.banner-admin {
-    background: #1a0f0f;
-    border: 1px solid #4a1d1d;
-    border-left: 4px solid #dc3545;
+.avatar-circle-sm {
+    width: 40px;
+    height: 40px;
+    background-color: #1A1A1A;
+    color: var(--brand-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
 }
 
-/* Custom Badges */
-.badge-gold {
-    background: rgba(197, 160, 89, 0.15) !important;
-    color: #C5A059 !important;
-    border: 1px solid #C5A059 !important;
+.btn-avatar-edit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--brand-gold);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #6C757D;
+    letter-spacing: 1px;
+}
+
+/* Sub Navigation Tabs */
+.profile-nav-tabs {
+    background: #111111;
+    border-radius: 6px;
+    display: flex;
+    overflow-x: auto;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: #A0A0A0;
+    padding: 14px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn:hover {
+    color: #FFFFFF;
+}
+
+.tab-btn.active {
+    color: var(--brand-gold);
+    border-bottom: 3px solid var(--brand-gold);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Tab Switcher Display */
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.upgrade-banner-card {
+    background-color: #FDFBF7;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+}
+
+/* Footer */
+.main-footer {
+    background-color: #0B0B0B;
+    color: #888888;
+    padding: 24px 0;
+    margin-top: 60px;
+    border-top: 1px solid rgba(255,255,255,0.05);
 }

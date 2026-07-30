@@ -103,61 +103,59 @@ app.get('/api/v1/auth/logout', (req, res) => {
 // --- B. Guest Pages (Chỉ dành cho người chưa đăng nhập) ---
 app.get('/login', requireGuest, (req, res) => res.render('login'));
 app.get('/register', requireGuest, (req, res) => res.render('register'));
-
+// Route render trang Profile cá nhân
 app.get('/profile', requireAuth, async (req, res) => {
     try {
         const userId = res.locals.user.id;
 
-        // 1. Truy vấn thông tin User kèm Profile
-        let currentUser = null;
-        try {
-            currentUser = await User.findByPk(userId, {
-                include: [{ model: UserProfile, as: 'profile' }]
-            });
-        } catch (includeErr) {
-            console.warn("Chưa include được UserProfile, fallback truy vấn User đơn:", includeErr.message);
-            currentUser = await User.findByPk(userId);
-        }
+        // Truy vấn User cùng Profile
+        const currentUser = await User.findByPk(userId, {
+            include: [{ model: UserProfile, as: 'profile' }]
+        });
 
         if (!currentUser) {
             return res.redirect('/logout');
         }
 
-        // 2. Đếm số lượng Recipe (Bọc try-catch riêng để tránh sập trang)
+        // Thống kê đếm dữ liệu thực tế
         let recipesCount = 0;
         try {
             if (Recipe) {
                 recipesCount = await Recipe.count({ where: { user_id: userId } });
             }
-        } catch (recipeErr) {
-            console.warn("Chưa đếm được Recipe:", recipeErr.message);
+        } catch (err) {
+            console.warn("Lỗi đếm công thức:", err.message);
         }
 
-        // 3. Chuẩn hóa dữ liệu hiển thị
         const profile = currentUser.profile || {};
+
+        // Chuẩn hóa Role về chữ thường
+        const userRole = currentUser.role ? currentUser.role.toLowerCase() : 'free';
 
         const fullUserData = {
             id: currentUser.id,
             email: currentUser.email,
             username: currentUser.username || 'chef_member',
-            role: currentUser.role ? currentUser.role.toLowerCase() : 'free',
-            firstName: profile.first_name || currentUser.username || '',
+            role: userRole,
+            firstName: profile.first_name || '',
             lastName: profile.last_name || '',
             bio: profile.biography || '',
             cookingStyle: profile.cooking_style || 'Modern Gastronomy',
             location: profile.location || 'Hanoi, Vietnam',
-            avatarUrl: profile.avatar_url || '',
-            website: profile.website || ''
+            avatarUrl: profile.avatar_url || ''
         };
 
-        // 4. Render Giao diện
         res.render('profile', { 
             user: fullUserData, 
-            stats: { recipesCount } 
+            stats: { 
+                recipesCount: recipesCount,
+                followersCount: 0,
+                likesCount: 0
+            } 
         });
 
     } catch (error) {
-        console.error("Lỗi chi tiết khi tải trang Profile:", error);
+        console.error("Lỗi khi tải trang Profile:", error);
         res.status(500).send("Đã xảy ra lỗi khi tải dữ liệu người dùng.");
     }
 });

@@ -1,198 +1,186 @@
 <%- include('partials/header') %>
-<link rel="stylesheet" href="/css/profile.css">
 
-<div class="profile-banner"></div>
+<main class="profile-page-wrapper">
+    <div class="container py-4">
+        
+        <!-- SEARCH BAR SECTION -->
+        <div class="search-box-card mb-4">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search chefs or users by name or @username...">
+            </div>
+            <button class="btn btn-gold text-uppercase fw-bold mt-2">Search User</button>
+        </div>
 
-<main class="container profile-main-container mb-5" style="max-width: 1100px;">
-    
-    <!-- Header Profile Card -->
-    <div class="card rounded-4 mb-4 profile-header-card">
-        <div class="card-body p-4 p-md-5 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
-            <div class="d-flex align-items-center gap-4 mb-4 mb-md-0">
-                <div class="profile-avatar">
-                    <%= user && user.username ? user.username.charAt(0).toUpperCase() : 'C' %>
+        <!-- USER HERO PROFILE CARD -->
+        <div class="profile-hero-card mb-4">
+            <div class="avatar-wrapper">
+                <div class="avatar-circle">T</div>
+                <button class="btn-avatar-edit" title="Change Avatar"><i class="fa-solid fa-camera"></i></button>
+            </div>
+            <h3 class="fw-bold mt-3 mb-1">Chef Member <span class="badge bg-secondary-subtle text-dark border ms-2">FREE MEMBER</span></h3>
+            <p class="text-muted small mb-1">@tit2017vu@gmail.com</p>
+            <p class="text-muted small mb-3">No bio added yet.</p>
+
+            <div class="profile-stats d-flex justify-content-center gap-5">
+                <div>
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">RECIPES</span>
                 </div>
                 <div>
-                    <h2 class="fw-bold mb-1 d-flex align-items-center gap-3 text-white">
-                        <%= (user && (user.firstName || user.lastName)) ? (user.firstName + ' ' + user.lastName) : 'Chef Member' %>
-                        
-                        <!-- Dynamic Badge based on Role -->
-                        <% if (user && user.role === 'admin') { %>
-                            <span class="badge bg-danger text-white fs-6 px-3 py-1 rounded-pill">Administrator</span>
-                        <% } else if (user && user.role === 'vip') { %>
-                            <span class="badge badge-gold fs-6 px-3 py-1 rounded-pill">VIP Member</span>
-                        <% } else if (user && user.role === 'premium') { %>
-                            <span class="badge bg-warning text-dark fs-6 px-3 py-1 rounded-pill">Premium Member</span>
-                        <% } else { %>
-                            <span class="badge bg-secondary text-white fs-6 px-3 py-1 rounded-pill">Free Member</span>
-                        <% } %>
-                    </h2>
-                    <p class="text-secondary mb-0 fs-6">@<%= user ? user.username : 'unknown' %></p>
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">FOLLOWERS</span>
                 </div>
-            </div>
-            
-            <div class="d-flex align-items-center gap-3">
-                <% if (user && user.role === 'admin') { %>
-                    <a href="/admin/dashboard" class="btn btn-danger rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center gap-2">
-                        Admin Portal
-                    </a>
-                <% } else if (user && user.role === 'free') { %>
-                    <a href="/membership" class="btn btn-gold rounded-pill px-4 py-2">Upgrade Plan</a>
-                <% } %>
-            </div>
-        </div>
-    </div>
-
-    <!-- Layout 2 cột: Navigation Sidebar & Content Tab -->
-    <div class="row g-4">
-        <!-- Sidebar Left -->
-        <div class="col-12 col-lg-4">
-            <div class="card profile-sidebar-card rounded-4 sticky-top" style="top: 20px;">
-                <div class="card-body p-3">
-                    <div class="nav flex-column nav-pills gap-2" id="v-pills-tab" role="tablist">
-                        <button class="nav-link active text-start fw-bold py-3 px-4 d-flex align-items-center gap-3" data-bs-toggle="pill" data-bs-target="#public-profile" type="button" role="tab">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            View Profile
-                        </button>
-                        <button class="nav-link text-start fw-bold py-3 px-4 d-flex align-items-center gap-3" data-bs-toggle="pill" data-bs-target="#account-settings" type="button" role="tab">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            Account Settings
-                        </button>
-                        <button class="nav-link text-start fw-bold py-3 px-4 d-flex align-items-center gap-3" data-bs-toggle="pill" data-bs-target="#security-settings" type="button" role="tab">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                            Security & Password
-                        </button>
-                    </div>
+                <div>
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">LIKES</span>
                 </div>
             </div>
         </div>
 
-        <!-- Content Right -->
-        <div class="col-12 col-lg-8">
-            <div class="tab-content" id="v-pills-tabContent">
-                
-                <!-- TAB 1: VIEW PROFILE -->
-                <div class="tab-pane fade show active" id="public-profile" role="tabpanel">
-                    
-                    <!-- Role Banner Dynamic -->
-                    <% if (user && user.role === 'free') { %>
-                        <div class="role-banner banner-free">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="fw-bold mb-1 text-white">Unlock Culinary Masterpieces</h5>
-                                    <p class="mb-0 text-secondary small">Upgrade to Premium or VIP to access exclusive chef recipes & masterclasses.</p>
-                                </div>
-                                <a href="/membership" class="btn btn-gold btn-sm rounded-pill px-4 text-nowrap ms-3">Explore Plans</a>
-                            </div>
-                        </div>
-                    <% } else if (user && user.role === 'premium') { %>
-                        <div class="role-banner banner-premium">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="fw-bold mb-1 text-warning">Premium Access Active</h5>
-                                    <p class="mb-0 text-secondary small">You have full access to our premium recipe collection.</p>
-                                </div>
-                                <a href="/recipes/premium-exclusive" class="btn btn-outline-warning btn-sm rounded-pill px-4 text-nowrap ms-3">Exclusive Recipes</a>
-                            </div>
-                        </div>
-                    <% } else if (user && user.role === 'vip') { %>
-                        <div class="role-banner banner-vip">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="fw-bold mb-1 text-gold" style="color: #C5A059;">VIP Privilege Activated</h5>
-                                    <p class="mb-0 text-secondary small">Enjoy 1-on-1 Masterclass support and all premium culinary rights.</p>
-                                </div>
-                                <a href="/vip-masterclass" class="btn btn-gold btn-sm rounded-pill px-4 text-nowrap ms-3">Join Masterclass</a>
-                            </div>
-                        </div>
-                    <% } %>
+        <!-- SUB-NAVIGATION TABS -->
+        <div class="profile-nav-tabs mb-4">
+            <button class="tab-btn active" onclick="switchProfileTab('overview', this)">
+                <i class="fa-solid fa-user me-2"></i>Profile Overview
+            </button>
+            <button class="tab-btn" onclick="switchProfileTab('saved-recipes', this)">
+                <i class="fa-solid fa-bookmark me-2"></i>Saved Recipes
+            </button>
+            <button class="tab-btn" onclick="switchProfileTab('followed-chefs', this)">
+                <i class="fa-solid fa-users me-2"></i>Followed Chefs
+            </button>
+            <button class="tab-btn" onclick="switchProfileTab('settings', this)">
+                <i class="fa-solid fa-gear me-2"></i>Account Settings
+            </button>
+            <button class="tab-btn" onclick="switchProfileTab('security', this)">
+                <i class="fa-solid fa-lock me-2"></i>Security & Password
+            </button>
+        </div>
 
-                    <!-- Bio Card -->
-                    <div class="card profile-content-card rounded-4">
-                        <div class="card-body p-4 p-md-5">
-                            <h4 class="fw-bold mb-4 text-gold" style="color: #C5A059;">About Chef</h4>
-                            <p class="text-secondary fs-6 mb-4"><%= user && user.bio ? user.bio : 'No biography provided yet.' %></p>
-                            <hr class="my-4" style="border-color: #222;">
-                            <div class="row g-4">
-                                <div class="col-6">
-                                    <h6 class="text-secondary small fw-bold text-uppercase">Cooking Style</h6>
-                                    <p class="fw-bold fs-6 mb-0 text-white"><%= user && user.cookingStyle ? user.cookingStyle : 'Modern Gastronomy' %></p>
-                                </div>
-                                <div class="col-6">
-                                    <h6 class="text-secondary small fw-bold text-uppercase">Location</h6>
-                                    <p class="fw-bold fs-6 mb-0 text-white"><%= user && user.location ? user.location : 'Hanoi, Vietnam' %></p>
-                                </div>
-                                <div class="col-6">
-                                    <h6 class="text-secondary small fw-bold text-uppercase">Created Recipes</h6>
-                                    <p class="fw-bold fs-6 mb-0 text-white"><%= stats ? stats.recipesCount : 0 %> Recipes</p>
-                                </div>
-                            </div>
+        <!-- TAB CONTENT SECTION -->
+        <div class="tab-content-container">
+
+            <!-- TAB 1: OVERVIEW -->
+            <div id="tab-overview" class="tab-pane active">
+                <!-- Upgrade Banner -->
+                <div class="upgrade-banner-card mb-4">
+                    <h5 class="fw-bold mb-1">Unlock Masterclass Recipes</h5>
+                    <p class="text-muted small mb-3">Upgrade to Premium or VIP plan to access exclusive masterchef guidebooks and private culinary events.</p>
+                    <button class="btn btn-gold fw-bold text-uppercase">Upgrade Plan</button>
+                </div>
+
+                <!-- Bio & Info Card -->
+                <div class="info-card">
+                    <h6 class="fw-bold border-bottom pb-2 mb-3">About Chef</h6>
+                    <div class="mb-3">
+                        <label class="text-muted small d-block">Biography</label>
+                        <span>No biography provided yet.</span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="text-muted small d-block">Cooking Style</label>
+                            <strong>Modern Gastronomy</strong>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small d-block">Location</label>
+                            <strong>Not Specified</strong>
                         </div>
                     </div>
                 </div>
-
-                <!-- TAB 2: ACCOUNT SETTINGS -->
-                <div class="tab-pane fade" id="account-settings" role="tabpanel">
-                    <div class="card profile-content-card rounded-4">
-                        <div class="card-body p-4 p-md-5">
-                            <h4 class="fw-bold mb-4 text-gold" style="color: #C5A059;">Account Settings</h4>
-                            <form id="formUpdateProfile">
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">First Name</label>
-                                        <input type="text" name="firstName" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.firstName : '' %>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Last Name</label>
-                                        <input type="text" name="lastName" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.lastName : '' %>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Cooking Style</label>
-                                        <input type="text" name="cookingStyle" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.cookingStyle : '' %>">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Location</label>
-                                        <input type="text" name="location" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.location : '' %>">
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Biography</label>
-                                        <textarea name="bio" rows="3" class="form-control luxury-input py-2 px-3 rounded-3"><%= user ? user.bio : '' %></textarea>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-gold px-5 py-2 rounded-pill">Save Changes</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 3: CHANGE PASSWORD -->
-                <div class="tab-pane fade" id="security-settings" role="tabpanel">
-                     <div class="card profile-content-card rounded-4">
-                        <div class="card-body p-4 p-md-5">
-                            <h4 class="fw-bold mb-4 text-gold" style="color: #C5A059;">Change Password</h4>
-                            <form id="formChangePassword">
-                                <div class="mb-3">
-                                    <label class="form-label text-secondary fw-bold small text-uppercase">Current Password</label>
-                                    <input type="password" name="currentPassword" class="form-control luxury-input py-2 px-3 rounded-3">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label text-secondary fw-bold small text-uppercase">New Password</label>
-                                    <input type="password" name="newPassword" class="form-control luxury-input py-2 px-3 rounded-3" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label text-secondary fw-bold small text-uppercase">Confirm New Password</label>
-                                    <input type="password" name="confirmNewPassword" class="form-control luxury-input py-2 px-3 rounded-3" required>
-                                </div>
-                                <button type="submit" class="btn btn-gold px-5 py-2 rounded-pill">Update Password</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
+            <!-- TAB 2: SAVED RECIPES -->
+            <div id="tab-saved-recipes" class="tab-pane">
+                <div class="info-card">
+                    <h5 class="fw-bold mb-3">Saved Recipes</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="card h-100 border">
+                                <img src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Recipe">
+                                <div class="card-body">
+                                    <h6 class="fw-bold">Pan-Seared Scallops</h6>
+                                    <p class="text-muted small mb-0">By Chef Thomas Keller</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border">
+                                <img src="https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=400&q=80" class="card-img-top" alt="Recipe">
+                                <div class="card-body">
+                                    <h6 class="fw-bold">Heritage Sourdough</h6>
+                                    <p class="text-muted small mb-0">By James Thew</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: FOLLOWED CHEFS -->
+            <div id="tab-followed-chefs" class="tab-pane">
+                <div class="info-card">
+                    <h5 class="fw-bold mb-3">Followed Chefs</h5>
+                    <div class="d-flex align-items-center justify-content-between p-2 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="avatar-circle-sm">A</div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Chef Alain Passard</h6>
+                                <small class="text-muted">3-Star Michelin Chef</small>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-secondary btn-sm">Unfollow</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ACCOUNT SETTINGS -->
+            <div id="tab-settings" class="tab-pane">
+                <div class="info-card">
+                    <h5 class="fw-bold mb-3">Account Settings</h5>
+                    <form>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Display Name</label>
+                                <input type="text" class="form-control" value="Chef Member">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Email Address</label>
+                                <input type="email" class="form-control" value="tit2017vu@gmail.com" disabled>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Biography</label>
+                            <textarea class="form-control" rows="3" placeholder="Tell us about your culinary journey..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-gold text-uppercase fw-bold">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 5: SECURITY & PASSWORD -->
+            <div id="tab-security" class="tab-pane">
+                <div class="info-card">
+                    <h5 class="fw-bold mb-3">Security & Password</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Current Password</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">New Password</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Confirm New Password</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <button type="button" class="btn btn-gold text-uppercase fw-bold">Update Password</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
 
-<script src="/js/profile.js"></script>
 <%- include('partials/footer') %>

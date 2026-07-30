@@ -1,0 +1,238 @@
+/* public/css/member-dashboard.css */
+:root {
+    --bg-main: #FAFAFA;
+    --bg-card: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --text-muted: #71717A;
+    --gold-primary: #C5A059;
+    --gold-hover: #A88746;
+    --border-color: #EAEAEA;
+    --border-gold: rgba(197, 160, 89, 0.3);
+}
+
+body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard Wrapper Layout */
+.dashboard-wrapper {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.member-sidebar {
+    background-color: #FFFFFF;
+    border-right: 1px solid var(--border-color);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.brand-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gold-primary);
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+}
+
+.user-mini-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.user-mini-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--gold-primary);
+}
+
+.user-mini-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.user-mini-role {
+    font-size: 0.7rem;
+    color: var(--gold-primary);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-item-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.nav-item-link:hover {
+    color: var(--gold-primary);
+    background-color: rgba(197, 160, 89, 0.05);
+}
+
+.nav-item-link.active {
+    color: var(--gold-primary);
+    background-color: rgba(197, 160, 89, 0.08);
+    border-left: 3px solid var(--gold-primary);
+}
+
+.btn-book-table {
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-primary);
+    background: transparent;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    width: 100%;
+    margin-top: auto;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-book-table:hover {
+    background-color: var(--gold-primary);
+    color: #FFFFFF;
+}
+
+/* Main Content Area */
+.main-viewport {
+    padding: 40px 48px;
+    max-width: 1200px;
+}
+
+/* Common Header Component */
+.viewport-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.search-network-input {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    padding: 10px 16px;
+    border-radius: 6px;
+    width: 280px;
+    font-size: 0.85rem;
+}
+
+.search-network-input:focus {
+    border-color: var(--gold-primary);
+    outline: none;
+}
+
+/* Hero Profile Card (Dashboard Screen) */
+.hero-profile-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    margin-bottom: 40px;
+}
+
+.hero-banner-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.hero-profile-overlay {
+    padding: 24px 32px;
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    margin-top: -60px;
+    position: relative;
+}
+
+.hero-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 8px;
+    border: 4px solid #FFFFFF;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.hero-info-text h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Buttons */
+.btn-gold {
+    background-color: var(--gold-primary);
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-gold-outline {
+    background: transparent;
+    color: var(--gold-primary);
+    border: 1px solid var(--gold-primary);
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-gold-outline:hover {
+    background: var(--gold-primary);
+    color: #FFFFFF;
+}
+
+/* Activity Panel & Cards */
+.card-box {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 24px;
+}
