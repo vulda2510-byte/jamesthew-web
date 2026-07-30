@@ -4,6 +4,8 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Recipe extends Model {
     static associate(models) {
+      Recipe.hasMany(models.SavedRecipe, { foreignKey: 'recipe_id', as: 'savedBy' });
+      Recipe.hasMany(models.Like, { foreignKey: 'target_id', constraints: false, scope: { target_type: 'recipe' }, as: 'likes' });
       Recipe.belongsTo(models.User, {
         foreignKey: 'user_id',
         as: 'author'

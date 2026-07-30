@@ -3,22 +3,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('contest_submissions', {
+    await queryInterface.createTable('saved_recipes', {
       id: {
         type: Sequelize.CHAR(100),
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false
-      },
-      contest_id: {
-        type: Sequelize.CHAR(100), 
-        allowNull: false,
-        references: {
-          model: 'contests', // Tên bảng tham chiếu
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       user_id: {
         type: Sequelize.CHAR(100),
@@ -30,7 +20,16 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      // ... các trường khác (title, description, image_url, v.v.)
+      recipe_id: {
+        type: Sequelize.CHAR(100),
+        allowNull: false,
+        references: {
+          model: 'recipes',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -43,12 +42,22 @@ module.exports = {
       }
     }, {
       charset: 'utf8mb4',
-      collate: 'utf8mb4_unicode_ci', // ⚠️ Đảm bảo khớp charset/collate với bảng contests
+      collate: 'utf8mb4_unicode_ci',
       engine: 'InnoDB'
     });
+
+    // Mỗi user chỉ lưu 1 công thức 1 lần
+    await queryInterface.addConstraint('saved_recipes', {
+      fields: ['user_id', 'recipe_id'],
+      type: 'unique',
+      name: 'unique_user_saved_recipe'
+    });
+
+    await queryInterface.addIndex('saved_recipes', ['user_id'], { name: 'idx_saved_recipes_user' });
+    await queryInterface.addIndex('saved_recipes', ['recipe_id'], { name: 'idx_saved_recipes_recipe' });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('contest_submissions');
+    await queryInterface.dropTable('saved_recipes');
   }
 };

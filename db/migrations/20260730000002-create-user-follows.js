@@ -3,34 +3,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('contest_submissions', {
+    await queryInterface.createTable('user_follows', {
       id: {
         type: Sequelize.CHAR(100),
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false
       },
-      contest_id: {
-        type: Sequelize.CHAR(100), 
-        allowNull: false,
-        references: {
-          model: 'contests', // Tên bảng tham chiếu
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      user_id: {
+      follower_id: {
         type: Sequelize.CHAR(100),
         allowNull: false,
-        references: {
-          model: 'users',
-          key: 'id'
-        },
+        references: { model: 'users', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      // ... các trường khác (title, description, image_url, v.v.)
+      following_id: {
+        type: Sequelize.CHAR(100),
+        allowNull: false,
+        references: { model: 'users', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -43,12 +36,21 @@ module.exports = {
       }
     }, {
       charset: 'utf8mb4',
-      collate: 'utf8mb4_unicode_ci', // ⚠️ Đảm bảo khớp charset/collate với bảng contests
+      collate: 'utf8mb4_unicode_ci',
       engine: 'InnoDB'
     });
+
+    await queryInterface.addConstraint('user_follows', {
+      fields: ['follower_id', 'following_id'],
+      type: 'unique',
+      name: 'unique_user_follow'
+    });
+
+    await queryInterface.addIndex('user_follows', ['follower_id'], { name: 'idx_follows_follower' });
+    await queryInterface.addIndex('user_follows', ['following_id'], { name: 'idx_follows_following' });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('contest_submissions');
+    await queryInterface.dropTable('user_follows');
   }
 };

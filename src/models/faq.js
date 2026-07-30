@@ -13,8 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     question: { type: DataTypes.TEXT, allowNull: false },
     answer: { type: DataTypes.TEXT, allowNull: true },
     category: { type: DataTypes.STRING, defaultValue: 'General' },
-    author_id: { type: DataTypes.UUID, allowNull: false },
-    status: { type: DataTypes.ENUM('pending', 'answered', 'hidden'), defaultValue: 'pending' }
+    author_id: { type: DataTypes.UUID, allowNull: true },
+    status: { type: DataTypes.ENUM('pending', 'answered', 'hidden'), defaultValue: 'pending' },
+    is_active: { type: DataTypes.BOOLEAN, defaultValue: true }
   }, {
     sequelize,
     modelName: 'FAQ',

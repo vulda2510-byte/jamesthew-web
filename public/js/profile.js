@@ -1,79 +1,117 @@
-// public/js/profile.js
+document.addEventListener('DOMContentLoaded', () => {
+    const navButtons = document.querySelectorAll('.nav-tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
 
-document.addEventListener("DOMContentLoaded", () => {
-    const formUpdateProfile = document.getElementById("formUpdateProfile");
-    const formChangePassword = document.getElementById("formChangePassword");
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetTab = btn.getAttribute('data-tab');
+            navButtons.forEach(b => b.classList.remove('active'));
+            tabPanels.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`panel-${targetTab}`)?.classList.add('active');
+        });
+    });
 
-    if (formUpdateProfile) {
-        formUpdateProfile.addEventListener("submit", async (e) => {
+    const subButtons = document.querySelectorAll('.sub-tab-btn');
+    const subPanels = document.querySelectorAll('.sub-panel');
+
+    subButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetSub = btn.getAttribute('data-sub');
+            subButtons.forEach(b => b.classList.remove('active'));
+            subPanels.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`sub-${targetSub}`)?.classList.add('active');
+        });
+    });
+
+    const updateProfileForm = document.getElementById('updateProfileForm');
+    if (updateProfileForm) {
+        updateProfileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = new FormData(formUpdateProfile);
-            const data = Object.fromEntries(formData.entries());
+            const formData = new FormData(updateProfileForm);
+            const payload = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                cookingStyle: formData.get('cookingStyle'),
+                location: formData.get('location'),
+                bio: formData.get('bio')
+            };
+
+            const submitBtn = updateProfileForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerText;
 
             try {
-                const res = await fetch('/api/v1/users/profile', {
+                submitBtn.innerText = 'Saving...';
+                submitBtn.disabled = true;
+
+                const response = await fetch('/api/v1/users/profile', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    credentials: 'same-origin',
+                    body: JSON.stringify(payload)
                 });
-                const result = await res.json();
-                if (result.success) {
-                    if (window.AppNotify) {
-                        AppNotify.success("Cập nhật thông tin hồ sơ thành công!", "PROFILE UPDATED");
-                    } else {
-                        alert("Cập nhật thông tin thành công!");
-                    }
-                    setTimeout(() => window.location.reload(), 1200);
+                const result = await response.json();
+
+                // #region agent log
+                fetch('http://127.0.0.1:7886/ingest/c2c9f90b-7072-482f-8d89-0e9df247861d',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e7d9b4'},body:JSON.stringify({sessionId:'e7d9b4',location:'profile.js:updateProfile',message:'Profile update response',data:{ok:response.ok,success:result.success,status:response.status},timestamp:Date.now(),hypothesisId:'B'})}).catch(()=>{});
+                // #endregion
+
+                if (response.ok && result.success) {
+                    alert('Profile updated successfully.');
+                    window.location.href = '/profile';
                 } else {
-                    if (window.AppNotify) {
-                        AppNotify.error(result.message || "Có lỗi xảy ra.", "UPDATE FAILED");
-                    } else {
-                        alert(result.message || "Lỗi cập nhật.");
-                    }
+                    alert(result.message || 'Update failed. Please try again.');
                 }
-            } catch (err) {
-                console.error("Lỗi:", err);
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('Connection error. Please try again.');
+            } finally {
+                submitBtn.innerText = originalBtnText;
+                submitBtn.disabled = false;
             }
         });
     }
 
-    if (formChangePassword) {
-        formChangePassword.addEventListener("submit", async (e) => {
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = new FormData(formChangePassword);
-            const data = Object.fromEntries(formData.entries());
+            const formData = new FormData(changePasswordForm);
+            const newPassword = formData.get('newPassword');
+            const confirmNewPassword = newPassword;
 
-            if (data.newPassword !== data.confirmNewPassword) {
-                if (window.AppNotify) {
-                    return AppNotify.error("Mật khẩu xác nhận không khớp!", "VALIDATION ERROR");
-                } else {
-                    return alert("Mật khẩu xác nhận không khớp!");
-                }
-            }
+            const submitBtn = changePasswordForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerText;
 
             try {
-                const res = await fetch('/api/v1/users/change-password', {
+                submitBtn.innerText = 'Updating...';
+                submitBtn.disabled = true;
+
+                const response = await fetch('/api/v1/users/change-password', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    credentials: 'same-origin',
+                    body: JSON.stringify({
+                        currentPassword: formData.get('currentPassword'),
+                        newPassword,
+                        confirmNewPassword
+                    })
                 });
-                const result = await res.json();
-                if (result.success) {
-                    if (window.AppNotify) {
-                        AppNotify.success("Đổi mật khẩu thành công!", "PASSWORD CHANGED");
-                    } else {
-                        alert("Đổi mật khẩu thành công!");
-                    }
-                    formChangePassword.reset();
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert('Password updated successfully.');
+                    changePasswordForm.reset();
                 } else {
-                    if (window.AppNotify) {
-                        AppNotify.error(result.message || "Có lỗi xảy ra.", "CHANGE FAILED");
-                    } else {
-                        alert(result.message || "Đổi mật khẩu thất bại.");
-                    }
+                    alert(result.message || 'Password update failed.');
                 }
-            } catch (err) {
-                console.error("Lỗi:", err);
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('Connection error. Please try again.');
+            } finally {
+                submitBtn.innerText = originalBtnText;
+                submitBtn.disabled = false;
             }
         });
     }

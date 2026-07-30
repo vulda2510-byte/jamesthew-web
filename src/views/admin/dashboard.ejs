@@ -1,0 +1,101 @@
+<%- include('../partials/header') %>
+
+<link rel="stylesheet" href="/css/member-dashboard.css">
+
+<div class="container my-4">
+    <h2 class="section-title">Admin Dashboard</h2>
+    <p class="text-muted">Manage contest FAQs and site content.</p>
+
+    <div class="stats-grid mt-section">
+        <div class="card text-center p-20">
+            <h3 id="statPending">—</h3>
+            <p class="text-muted text-sm">Pending FAQs</p>
+        </div>
+        <div class="card text-center p-20">
+            <h3 id="statAnswered">—</h3>
+            <p class="text-muted text-sm">Answered FAQs</p>
+        </div>
+    </div>
+
+    <section class="card p-4 mt-section">
+        <h3 class="section-title">Pending Questions</h3>
+        <div id="pendingFaqs">
+            <p class="text-muted">Loading...</p>
+        </div>
+    </section>
+
+    <section class="card p-4 mt-section">
+        <h3 class="section-title">Quick Links</h3>
+        <div class="gap-buttons">
+            <a href="/contests" class="btn btn-outline">Contests</a>
+            <a href="/contests/faq" class="btn btn-outline">Public FAQ</a>
+            <a href="/contests/rules" class="btn btn-outline">Contest Rules</a>
+            <a href="/profile" class="btn btn-primary">My Profile</a>
+        </div>
+    </section>
+</div>
+
+<script>
+    async function loadAdminFaqs() {
+        const res = await fetch('/api/v1/faqs', { credentials: 'same-origin' });
+        const result = await res.json();
+
+        // #region agent log
+        fetch('http://127.0.0.1:7886/ingest/c2c9f90b-7072-482f-8d89-0e9df247861d',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e7d9b4'},body:JSON.stringify({sessionId:'e7d9b4',location:'admin/dashboard.ejs:loadAdminFaqs',message:'Admin FAQ load',data:{success:result.success,count:result.data?result.data.length:0},timestamp:Date.now(),hypothesisId:'C'})}).catch(()=>{});
+        // #endregion
+
+        if (!result.success) {
+            document.getElementById('pendingFaqs').innerHTML = '<p class="text-muted">Could not load FAQs.</p>';
+            return;
+        }
+
+        const pending = result.data.filter(f => f.status === 'pending' || !f.answer);
+        const answered = result.data.filter(f => f.status === 'answered' && f.answer);
+
+        document.getElementById('statPending').textContent = pending.length;
+        document.getElementById('statAnswered').textContent = answered.length;
+
+        if (!pending.length) {
+            document.getElementById('pendingFaqs').innerHTML = '<p class="text-muted">No pending questions.</p>';
+            return;
+        }
+
+        document.getElementById('pendingFaqs').innerHTML = pending.map(faq => `
+            <div class="card p-3 mb-3" data-faq-id="${faq.id}">
+                <p><strong>Q:</strong> ${faq.question}</p>
+                <p class="text-muted text-sm">By @${faq.author?.username || 'user'}</p>
+                <form class="answer-form mt-2">
+                    <textarea class="form-control mb-2" rows="2" placeholder="Write answer..." required></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm">Publish Answer</button>
+                </form>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.answer-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const card = form.closest('[data-faq-id]');
+                const faqId = card.dataset.faqId;
+                const answer = form.querySelector('textarea').value.trim();
+
+                const res = await fetch('/api/v1/faqs/' + faqId + '/answer', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({ answer })
+                });
+                const result = await res.json();
+
+                if (result.success) {
+                    loadAdminFaqs();
+                } else {
+                    alert(result.message || 'Could not save answer.');
+                }
+            });
+        });
+    }
+
+    loadAdminFaqs();
+</script>
+
+<%- include('../partials/footer') %>

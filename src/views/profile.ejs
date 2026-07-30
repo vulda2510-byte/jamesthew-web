@@ -1,198 +1,270 @@
-<%- include('partials/header') %>
 <link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<div class="profile-banner"></div>
+<%- include('partials/header') %>
 
-<main class="container profile-main-container mb-5" style="max-width: 1100px;">
-    
-    <!-- Header Profile Card -->
-    <div class="card rounded-4 mb-4 profile-header-card">
-        <div class="card-body p-4 p-md-5 d-flex flex-column flex-md-row align-items-md-center justify-content-between">
-            <div class="d-flex align-items-center gap-4 mb-4 mb-md-0">
-                <div class="profile-avatar">
-                    <%= user && user.username ? user.username.charAt(0).toUpperCase() : 'C' %>
-                </div>
-                <div>
-                    <h2 class="fw-bold mb-1 d-flex align-items-center gap-3 text-white">
-                        <%= (user && (user.firstName || user.lastName)) ? (user.firstName + ' ' + user.lastName) : 'Chef Member' %>
-                        
-                        <!-- Dynamic Badge based on Role -->
-                        <% if (user && user.role === 'admin') { %>
-                            <span class="badge bg-danger text-white fs-6 px-3 py-1 rounded-pill">Administrator</span>
-                        <% } else if (user && user.role === 'vip') { %>
-                            <span class="badge badge-gold fs-6 px-3 py-1 rounded-pill">VIP Member</span>
-                        <% } else if (user && user.role === 'premium') { %>
-                            <span class="badge bg-warning text-dark fs-6 px-3 py-1 rounded-pill">Premium Member</span>
-                        <% } else { %>
-                            <span class="badge bg-secondary text-white fs-6 px-3 py-1 rounded-pill">Free Member</span>
-                        <% } %>
-                    </h2>
-                    <p class="text-secondary mb-0 fs-6">@<%= user ? user.username : 'unknown' %></p>
-                </div>
-            </div>
-            
-            <div class="d-flex align-items-center gap-3">
-                <% if (user && user.role === 'admin') { %>
-                    <a href="/admin/dashboard" class="btn btn-danger rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center gap-2">
-                        Admin Portal
-                    </a>
-                <% } else if (user && user.role === 'free') { %>
-                    <a href="/membership" class="btn btn-gold rounded-pill px-4 py-2">Upgrade Plan</a>
+<!-- FULL SCREEN PROFILE WRAPPER (LAYOUT TRÁI SANG PHẢI) -->
+<div class="profile-layout-container">
+
+    <!-- ================= SIDEBAR BÊN TRÁI ================= -->
+    <aside class="profile-sidebar">
+        <div class="user-profile-card">
+            <div class="avatar-wrapper">
+                <% if (user && user.avatarUrl) { %>
+                    <img src="<%= user.avatarUrl %>" alt="Avatar" class="user-avatar-img">
+                <% } else { %>
+                    <div class="user-avatar-placeholder">
+                        <%= (user && user.username) ? user.username.charAt(0).toUpperCase() : 'U' %>
+                    </div>
                 <% } %>
+                <span class="role-badge role-<%= (user && user.role) ? user.role : 'free' %>">
+                    <%= (user && user.role) ? user.role.toUpperCase() : 'FREE' %> MEMBER
+                </span>
+            </div>
+
+            <h2 class="user-name">
+                <%= (user && (user.firstName || user.lastName)) ? (user.firstName + ' ' + (user.lastName || '')).trim() : (user ? user.username : 'User') %>
+            </h2>
+            <p class="user-email"><%= user ? user.email : '' %></p>
+            <p class="user-handle">@<%= user ? user.username : '' %></p>
+
+            <p class="user-bio"><%= (user && user.bio) ? user.bio : 'No biography added yet.' %></p>
+
+            <!-- Thống kê nhanh -->
+            <div class="sidebar-stats">
+                <div class="stat-item">
+                    <span class="stat-value"><%= (stats && stats.recipesCount) || 0 %></span>
+                    <span class="stat-label">Recipes</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value"><%= (stats && stats.followersCount) || 0 %></span>
+                    <span class="stat-label">Followers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value"><%= (stats && stats.likesCount) || 0 %></span>
+                    <span class="stat-label">Likes</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Layout 2 cột: Navigation Sidebar & Content Tab -->
-    <div class="row g-4">
-        <!-- Sidebar Left -->
-        <div class="col-12 col-lg-4">
-            <div class="card profile-sidebar-card rounded-4 sticky-top" style="top: 20px;">
-                <div class="card-body p-3">
-                    <div class="nav flex-column nav-pills gap-2" id="v-pills-tab" role="tablist">
-                        <button class="nav-link active text-start fw-bold py-3 px-4 d-flex align-items-center gap-3" data-bs-toggle="pill" data-bs-target="#public-profile" type="button" role="tab">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            View Profile
-                        </button>
-                        <button class="nav-link text-start fw-bold py-3 px-4 d-flex align-items-center gap-3" data-bs-toggle="pill" data-bs-target="#account-settings" type="button" role="tab">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            Account Settings
-                        </button>
-                        <button class="nav-link text-start fw-bold py-3 px-4 d-flex align-items-center gap-3" data-bs-toggle="pill" data-bs-target="#security-settings" type="button" role="tab">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                            Security & Password
-                        </button>
+        <!-- SIDEBAR NAV TABS -->
+        <nav class="profile-nav-sidebar">
+            <button class="nav-tab-btn active" data-tab="overview">
+                <i class="fa-solid fa-chart-pie"></i> Profile Overview
+            </button>
+            <button class="nav-tab-btn" data-tab="recipes">
+                <i class="fa-solid fa-utensils"></i> Recipes & Saved
+            </button>
+            <button class="nav-tab-btn" data-tab="subscription">
+                <i class="fa-solid fa-crown"></i> Subscription Detail
+            </button>
+            <button class="nav-tab-btn" data-tab="followed">
+                <i class="fa-solid fa-users"></i> Followed Chefs
+            </button>
+            <button class="nav-tab-btn" data-tab="settings">
+                <i class="fa-solid fa-user-gear"></i> Account Settings
+            </button>
+            <button class="nav-tab-btn" data-tab="security">
+                <i class="fa-solid fa-shield-halved"></i> Security & Password
+            </button>
+        </nav>
+    </aside>
+
+    <!-- ================= MAIN CONTENT BÊN PHẢI ================= -->
+    <main class="profile-main-content">
+
+        <!-- Thanh tìm kiếm Chef / User -->
+        <div class="top-search-section">
+            <form id="searchUserForm" class="search-form">
+                <div class="search-input-group">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search chefs or users by name or @username..." required>
+                </div>
+                <button type="submit" class="btn-gold-search">SEARCH USER</button>
+            </form>
+            <div id="searchResults" class="search-results-dropdown hidden"></div>
+        </div>
+
+        <!-- TAB 1: OVERVIEW -->
+        <section class="tab-panel active" id="panel-overview">
+            <% if (user && user.role === 'free') { %>
+            <div class="upgrade-banner">
+                <div class="banner-text">
+                    <h3><i class="fa-solid fa-lock"></i> Unlock Masterclass Recipes</h3>
+                    <p>Upgrade to Premium or VIP plan to access exclusive masterchef guidebooks and private culinary events.</p>
+                </div>
+                <a href="/membership" class="btn-upgrade-gold">UPGRADE PLAN</a>
+            </div>
+            <% } %>
+
+            <div class="content-card">
+                <h3 class="card-title"><i class="fa-solid fa-circle-info"></i> About Chef</h3>
+                <div class="info-grid">
+                    <div class="info-row">
+                        <span class="info-label">Biography:</span>
+                        <span class="info-value"><%= (user && user.bio) || 'No biography provided yet.' %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Cooking Style:</span>
+                        <span class="info-value text-gold"><%= (user && user.cookingStyle) || 'Not Specified' %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Location:</span>
+                        <span class="info-value"><%= (user && user.location) || 'Not Specified' %></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Website:</span>
+                        <span class="info-value">
+                            <% if (user && user.website) { %>
+                                <a href="<%= user.website %>" target="_blank" class="link-gold"><%= user.website %></a>
+                            <% } else { %>
+                                Not Specified
+                            <% } %>
+                        </span>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Content Right -->
-        <div class="col-12 col-lg-8">
-            <div class="tab-content" id="v-pills-tabContent">
-                
-                <!-- TAB 1: VIEW PROFILE -->
-                <div class="tab-pane fade show active" id="public-profile" role="tabpanel">
-                    
-                    <!-- Role Banner Dynamic -->
-                    <% if (user && user.role === 'free') { %>
-                        <div class="role-banner banner-free">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="fw-bold mb-1 text-white">Unlock Culinary Masterpieces</h5>
-                                    <p class="mb-0 text-secondary small">Upgrade to Premium or VIP to access exclusive chef recipes & masterclasses.</p>
+        <!-- TAB 2: RECIPES -->
+        <section class="tab-panel" id="panel-recipes">
+            <div class="content-card">
+                <div class="sub-tab-buttons">
+                    <button class="sub-tab-btn active" data-sub="my-recipes">My Recipes (<%= (recipes && recipes.my) ? recipes.my.length : 0 %>)</button>
+                    <button class="sub-tab-btn" data-sub="saved-recipes">Saved (<%= (recipes && recipes.saved) ? recipes.saved.length : 0 %>)</button>
+                    <button class="sub-tab-btn" data-sub="favorite-recipes">Favorites (<%= (recipes && recipes.favorite) ? recipes.favorite.length : 0 %>)</button>
+                </div>
+
+                <!-- Sub Panel 1: My Recipes -->
+                <div class="sub-panel active" id="sub-my-recipes">
+                    <% if (!recipes || !recipes.my || recipes.my.length === 0) { %>
+                        <p class="empty-state">You haven't submitted any recipes yet.</p>
+                    <% } else { %>
+                        <div class="recipes-grid">
+                            <% recipes.my.forEach(r => { %>
+                                <div class="recipe-mini-card">
+                                    <h4><%= r.title %></h4>
+                                    <a href="/recipes/detail/<%= r.id %>" class="btn-view">View Detail</a>
                                 </div>
-                                <a href="/membership" class="btn btn-gold btn-sm rounded-pill px-4 text-nowrap ms-3">Explore Plans</a>
-                            </div>
-                        </div>
-                    <% } else if (user && user.role === 'premium') { %>
-                        <div class="role-banner banner-premium">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="fw-bold mb-1 text-warning">Premium Access Active</h5>
-                                    <p class="mb-0 text-secondary small">You have full access to our premium recipe collection.</p>
-                                </div>
-                                <a href="/recipes/premium-exclusive" class="btn btn-outline-warning btn-sm rounded-pill px-4 text-nowrap ms-3">Exclusive Recipes</a>
-                            </div>
-                        </div>
-                    <% } else if (user && user.role === 'vip') { %>
-                        <div class="role-banner banner-vip">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="fw-bold mb-1 text-gold" style="color: #C5A059;">VIP Privilege Activated</h5>
-                                    <p class="mb-0 text-secondary small">Enjoy 1-on-1 Masterclass support and all premium culinary rights.</p>
-                                </div>
-                                <a href="/vip-masterclass" class="btn btn-gold btn-sm rounded-pill px-4 text-nowrap ms-3">Join Masterclass</a>
-                            </div>
+                            <% }) %>
                         </div>
                     <% } %>
-
-                    <!-- Bio Card -->
-                    <div class="card profile-content-card rounded-4">
-                        <div class="card-body p-4 p-md-5">
-                            <h4 class="fw-bold mb-4 text-gold" style="color: #C5A059;">About Chef</h4>
-                            <p class="text-secondary fs-6 mb-4"><%= user && user.bio ? user.bio : 'No biography provided yet.' %></p>
-                            <hr class="my-4" style="border-color: #222;">
-                            <div class="row g-4">
-                                <div class="col-6">
-                                    <h6 class="text-secondary small fw-bold text-uppercase">Cooking Style</h6>
-                                    <p class="fw-bold fs-6 mb-0 text-white"><%= user && user.cookingStyle ? user.cookingStyle : 'Modern Gastronomy' %></p>
-                                </div>
-                                <div class="col-6">
-                                    <h6 class="text-secondary small fw-bold text-uppercase">Location</h6>
-                                    <p class="fw-bold fs-6 mb-0 text-white"><%= user && user.location ? user.location : 'Hanoi, Vietnam' %></p>
-                                </div>
-                                <div class="col-6">
-                                    <h6 class="text-secondary small fw-bold text-uppercase">Created Recipes</h6>
-                                    <p class="fw-bold fs-6 mb-0 text-white"><%= stats ? stats.recipesCount : 0 %> Recipes</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- TAB 2: ACCOUNT SETTINGS -->
-                <div class="tab-pane fade" id="account-settings" role="tabpanel">
-                    <div class="card profile-content-card rounded-4">
-                        <div class="card-body p-4 p-md-5">
-                            <h4 class="fw-bold mb-4 text-gold" style="color: #C5A059;">Account Settings</h4>
-                            <form id="formUpdateProfile">
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">First Name</label>
-                                        <input type="text" name="firstName" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.firstName : '' %>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Last Name</label>
-                                        <input type="text" name="lastName" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.lastName : '' %>" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Cooking Style</label>
-                                        <input type="text" name="cookingStyle" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.cookingStyle : '' %>">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Location</label>
-                                        <input type="text" name="location" class="form-control luxury-input py-2 px-3 rounded-3" value="<%= user ? user.location : '' %>">
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label text-secondary fw-bold small text-uppercase">Biography</label>
-                                        <textarea name="bio" rows="3" class="form-control luxury-input py-2 px-3 rounded-3"><%= user ? user.bio : '' %></textarea>
-                                    </div>
+                <!-- Sub Panel 2: Saved Recipes -->
+                <div class="sub-panel" id="sub-saved-recipes">
+                    <% if (!recipes || !recipes.saved || recipes.saved.length === 0) { %>
+                        <p class="empty-state">No saved recipes found.</p>
+                    <% } else { %>
+                        <div class="recipes-grid">
+                            <% recipes.saved.forEach(r => { %>
+                                <div class="recipe-mini-card">
+                                    <h4><%= r.title %></h4>
+                                    <a href="/recipes/detail/<%= r.id %>" class="btn-view">View Detail</a>
                                 </div>
-                                <button type="submit" class="btn btn-gold px-5 py-2 rounded-pill">Save Changes</button>
-                            </form>
+                            <% }) %>
                         </div>
-                    </div>
+                    <% } %>
                 </div>
 
-                <!-- TAB 3: CHANGE PASSWORD -->
-                <div class="tab-pane fade" id="security-settings" role="tabpanel">
-                     <div class="card profile-content-card rounded-4">
-                        <div class="card-body p-4 p-md-5">
-                            <h4 class="fw-bold mb-4 text-gold" style="color: #C5A059;">Change Password</h4>
-                            <form id="formChangePassword">
-                                <div class="mb-3">
-                                    <label class="form-label text-secondary fw-bold small text-uppercase">Current Password</label>
-                                    <input type="password" name="currentPassword" class="form-control luxury-input py-2 px-3 rounded-3">
+                <!-- Sub Panel 3: Favorite Recipes -->
+                <div class="sub-panel" id="sub-favorite-recipes">
+                    <% if (!recipes || !recipes.favorite || recipes.favorite.length === 0) { %>
+                        <p class="empty-state">No favorite recipes yet.</p>
+                    <% } else { %>
+                        <div class="recipes-grid">
+                            <% recipes.favorite.forEach(r => { %>
+                                <div class="recipe-mini-card">
+                                    <h4><%= r.title %></h4>
+                                    <a href="/recipes/detail/<%= r.id %>" class="btn-view">View Detail</a>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label text-secondary fw-bold small text-uppercase">New Password</label>
-                                    <input type="password" name="newPassword" class="form-control luxury-input py-2 px-3 rounded-3" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label text-secondary fw-bold small text-uppercase">Confirm New Password</label>
-                                    <input type="password" name="confirmNewPassword" class="form-control luxury-input py-2 px-3 rounded-3" required>
-                                </div>
-                                <button type="submit" class="btn btn-gold px-5 py-2 rounded-pill">Update Password</button>
-                            </form>
+                            <% }) %>
                         </div>
-                    </div>
+                    <% } %>
                 </div>
-
             </div>
-        </div>
-    </div>
-</main>
+        </section>
+
+        <!-- TAB 3: SUBSCRIPTION -->
+        <section class="tab-panel" id="panel-subscription">
+            <div class="content-card">
+                <h3 class="card-title"><i class="fa-solid fa-id-card"></i> Membership Status</h3>
+                <p>Current Plan: <strong class="text-gold"><%= (user && user.role) ? user.role.toUpperCase() : 'FREE' %></strong></p>
+                <a href="/membership" class="btn-gold-search margin-top-15">Change Plan</a>
+            </div>
+        </section>
+
+        <!-- TAB 4: FOLLOWED CHEFS -->
+        <section class="tab-panel" id="panel-followed">
+            <div class="content-card">
+                <h3 class="card-title"><i class="fa-solid fa-users"></i> Chefs You Follow</h3>
+                <% if (!followedChefs || followedChefs.length === 0) { %>
+                    <p class="empty-state">You are not following any chefs yet.</p>
+                <% } else { %>
+                    <div class="chefs-list">
+                        <% followedChefs.forEach(chef => { %>
+                            <div class="chef-card">
+                                <span>@<%= chef.username %></span>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        </section>
+
+        <!-- TAB 5: ACCOUNT SETTINGS -->
+        <section class="tab-panel" id="panel-settings">
+            <div class="content-card">
+                <h3 class="card-title"><i class="fa-solid fa-user-pen"></i> Edit Profile Information</h3>
+                <form id="updateProfileForm" class="settings-form">
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="firstName" value="<%= (user && user.firstName) || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="lastName" value="<%= (user && user.lastName) || '' %>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Cooking Style</label>
+                        <input type="text" name="cookingStyle" value="<%= (user && user.cookingStyle) || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" name="location" value="<%= (user && user.location) || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Biography</label>
+                        <textarea name="bio" rows="3"><%= (user && user.bio) || '' %></textarea>
+                    </div>
+                    <button type="submit" class="btn-gold-search">Save Changes</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 6: SECURITY -->
+        <section class="tab-panel" id="panel-security">
+            <div class="content-card">
+                <h3 class="card-title"><i class="fa-solid fa-lock"></i> Change Password</h3>
+                <form id="changePasswordForm" class="settings-form">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" name="newPassword" required>
+                    </div>
+                    <button type="submit" class="btn-gold-search">Update Password</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<%- include('partials/footer') %>
 
 <script src="/js/profile.js"></script>
-<%- include('partials/footer') %>

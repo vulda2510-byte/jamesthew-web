@@ -1,4 +1,3 @@
-// src/app.js
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
@@ -6,15 +5,39 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// 1. IMPORT MODELS, CONTROLLERS & MIDDLEWARES (Tập trung ở đầu file)
-const { User, UserProfile, Recipe } = require('./models');
+// 1. IMPORT MODELS, CONTROLLERS & MIDDLEWARES
+const { 
+    User, 
+    UserProfile, 
+    Recipe, 
+    SavedRecipe, 
+    UserFollow, 
+    UserSubscription, 
+    MembershipPlan, 
+    Like 
+} = require('./models');
+
+console.log("=== CHECK MODELS LOADED ===");
+console.log({
+    User: !!User,
+    UserProfile: !!UserProfile,
+    Recipe: !!Recipe,
+    SavedRecipe: !!SavedRecipe,
+    UserFollow: !!UserFollow,
+    UserSubscription: !!UserSubscription,
+    MembershipPlan: !!MembershipPlan,
+    Like: !!Like
+});
+
+const v1Router = require('./routes/v1');
 const apiRoutes = require('./routes');
 const healthController = require('./controllers/health.controller');
 const notFoundMiddleware = require('./middlewares/notFound.middleware');
 const errorMiddleware = require('./middlewares/error.middleware');
 const { requireAuth, requireGuest, authorize } = require('./middlewares/auth.middleware');
 const logger = require('./config/logger');
-const { requireContestAccess } = require('./middlewares/contestAuth.middleware');
+
+// KHỞI TẠO APP
 const app = express();
 
 // 2. CONFIGURE VIEW ENGINE & STATIC FILES
@@ -22,7 +45,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// 3. BODY PARSERS & COOKIE PARSER
+// 3. BODY PARSERS & COOKIE PARSER (BẮT BUỘC ĐẶT TRƯỚC ROUTES)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -36,7 +59,9 @@ app.use((req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_fallback_secret'); 
             res.locals.user = decoded; 
         } catch (err) {
-            logger.error("Token invalid or expired");
+            if (logger && logger.error) {
+                logger.error("Token invalid or expired");
+            }
             res.locals.user = null;
         }
     } else {
@@ -49,118 +74,180 @@ app.use((req, res, next) => {
 // VIEW ROUTES
 // ==========================================
 
-// --- A. Public Pages (Ai cũng xem được) ---
+// --- A. Public Pages ---
 app.get('/', (req, res) => res.render('home'));
 app.get('/recipes', (req, res) => res.render('recipes'));
 app.get('/recipes/detail/:id', (req, res) => {
-    // Render file recipe-detail.ejs và truyền kèm ID để frontend dùng gọi API
     res.render('recipe-detail', { recipeId: req.params.id }); 
 });
-// BỔ SUNG THÊM ROUTE NÀY (Hỗ trợ trang Home /recipes/...)
 app.get('/recipes/:id', (req, res) => {
     res.render('recipe-detail', { recipeId: req.params.id }); 
 });
 app.get('/membership', (req, res) => res.render('membership'));
 
 app.get('/contests', (req, res) => {
-    res.render('contests', { title: 'Contests Hub' }); // File số 4
+    res.render('contests', { title: 'Contests Hub' });
 });
 
 app.get('/contests/list', (req, res) => {
-    res.render('contests-list', { title: 'All Contests' }); // File số 7
+    res.render('contests-list', { title: 'All Contests' });
 });
 
 app.get('/contests/detail/:id', (req, res) => {
-    // Truyền ID từ URL vào EJS để frontend JS gọi API (File số 8)
     res.render('contest-detail', { title: 'Contest Detail', contestId: req.params.id });
 });
 
 app.get('/contests/faq', (req, res) => {
-    res.render('faq', { title: 'Contest FAQs' }); // File số 9
+    // #region agent log
+    fetch('http://127.0.0.1:7886/ingest/c2c9f90b-7072-482f-8d89-0e9df247861d',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e7d9b4'},body:JSON.stringify({sessionId:'e7d9b4',location:'app.js:contests/faq',message:'Rendering contest-faq view',data:{view:'contest-faq'},timestamp:Date.now(),hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
+    res.render('contest-faq', { title: 'Contest FAQs' });
 });
 
 app.get('/contests/rules', (req, res) => {
-    res.render('rules', { title: 'Contest Rules' }); // File số 10
+    res.render('contest-rules', { title: 'Contest Rules' });
 });
 
+app.get('/faq', (req, res) => res.redirect('/contests/faq'));
+app.get('/rules', (req, res) => res.redirect('/contests/rules'));
+
 app.get('/contests/winners', (req, res) => {
-    res.render('winners', { title: 'Contest Winners' }); // File số 11
+    res.render('winners', { title: 'Contest Winners' });
 });
-// Route xử lý Đăng xuất
+
+// --- B. Authentication & Session Routes ---
 app.get('/logout', (req, res) => {
-    // 1. Xóa cookie token hiện tại
     res.clearCookie('token');
-    
-    // 2. Chuyển hướng người dùng về trang Login
     res.redirect('/login');
 });
 
-// Giữ thêm route này phòng trường hợp vẫn gọi theo đường dẫn cũ
 app.get('/api/v1/auth/logout', (req, res) => {
     res.clearCookie('token');
     res.redirect('/login');
 });
-// --- B. Guest Pages (Chỉ dành cho người chưa đăng nhập) ---
+
 app.get('/login', requireGuest, (req, res) => res.render('login'));
 app.get('/register', requireGuest, (req, res) => res.render('register'));
 
+// --- C. Protected User Profile & Dashboard ---
 app.get('/profile', requireAuth, async (req, res) => {
     try {
         const userId = res.locals.user.id;
-
-        // 1. Truy vấn thông tin User kèm Profile
-        let currentUser = null;
-        try {
-            currentUser = await User.findByPk(userId, {
-                include: [{ model: UserProfile, as: 'profile' }]
-            });
-        } catch (includeErr) {
-            console.warn("Chưa include được UserProfile, fallback truy vấn User đơn:", includeErr.message);
-            currentUser = await User.findByPk(userId);
+        const userIncludes = [];
+        
+        if (UserProfile) {
+            userIncludes.push({ model: UserProfile, as: 'profile', required: false });
         }
+        if (UserSubscription) {
+            const subInclude = {
+                model: UserSubscription,
+                as: 'subscription',
+                required: false
+            };
+            
+            if (MembershipPlan) {
+                subInclude.include = [{ model: MembershipPlan, as: 'plan', required: false }];
+            }
+
+            userIncludes.push(subInclude);
+        }
+        const validIncludes = userIncludes.filter(item => item && item.model);
+        
+        const currentUser = await User.findByPk(userId, { 
+            include: validIncludes 
+        });
 
         if (!currentUser) {
             return res.redirect('/logout');
         }
 
-        // 2. Đếm số lượng Recipe (Bọc try-catch riêng để tránh sập trang)
-        let recipesCount = 0;
+        let recipesCount = 0, followersCount = 0, likesCount = 0;
         try {
-            if (Recipe) {
-                recipesCount = await Recipe.count({ where: { user_id: userId } });
+            if (Recipe) recipesCount = await Recipe.count({ where: { user_id: userId } });
+            if (UserFollow) followersCount = await UserFollow.count({ where: { following_id: userId } });
+            
+            if (Recipe && Like) {
+                const userRecipes = await Recipe.findAll({ where: { user_id: userId }, attributes: ['id'] });
+                const recipeIds = userRecipes.map(r => r.id);
+                if (recipeIds.length > 0) {
+                    likesCount = await Like.count({ where: { target_id: recipeIds, target_type: 'recipe' } });
+                }
             }
-        } catch (recipeErr) {
-            console.warn("Chưa đếm được Recipe:", recipeErr.message);
+        } catch (err) {
+            console.warn("Cảnh báo stats query:", err.message);
         }
 
-        // 3. Chuẩn hóa dữ liệu hiển thị
+        let myRecipes = [], savedRecipes = [], favoriteRecipes = [];
+        try {
+            if (Recipe) {
+                myRecipes = await Recipe.findAll({ where: { user_id: userId }, order: [['created_at', 'DESC']] });
+            }
+            if (SavedRecipe && Recipe) {
+                const savedRecords = await SavedRecipe.findAll({
+                    where: { user_id: userId },
+                    include: [{ model: Recipe, as: 'recipe' }]
+                });
+                savedRecipes = savedRecords.map(sr => sr.recipe).filter(Boolean);
+            }
+            if (Like && Recipe) {
+                const favoriteRecords = await Like.findAll({ where: { user_id: userId, target_type: 'recipe' } });
+                const favIds = favoriteRecords.map(f => f.target_id);
+                if (favIds.length > 0) {
+                    favoriteRecipes = await Recipe.findAll({ where: { id: favIds } });
+                }
+            }
+        } catch (err) {
+            console.warn("Cảnh báo recipe query:", err.message);
+        }
+
+        let followedChefs = [];
+        try {
+            if (UserFollow && User) {
+                const followedRecords = await UserFollow.findAll({
+                    where: { follower_id: userId },
+                    include: [{ 
+                        model: User, 
+                        as: 'following',
+                        include: UserProfile ? [{ model: UserProfile, as: 'profile' }] : []
+                    }]
+                });
+                followedChefs = followedRecords.map(fr => fr.following).filter(Boolean);
+            }
+        } catch (err) {
+            console.warn("Cảnh báo followed chefs query:", err.message);
+        }
+
         const profile = currentUser.profile || {};
+        const subscription = currentUser.subscription || null;
 
         const fullUserData = {
             id: currentUser.id,
             email: currentUser.email,
-            username: currentUser.username || 'chef_member',
-            role: currentUser.role ? currentUser.role.toLowerCase() : 'free',
-            firstName: profile.first_name || currentUser.username || '',
+            username: currentUser.username || currentUser.email.split('@')[0],
+            role: (currentUser.role || 'free').toLowerCase(),
+            firstName: profile.first_name || '',
             lastName: profile.last_name || '',
             bio: profile.biography || '',
             cookingStyle: profile.cooking_style || 'Modern Gastronomy',
-            location: profile.location || 'Hanoi, Vietnam',
-            avatarUrl: profile.avatar_url || '',
-            website: profile.website || ''
+            location: profile.location || 'Not Specified',
+            website: profile.website || '',
+            avatarUrl: profile.avatar_url || ''
         };
 
-        // 4. Render Giao diện
         res.render('profile', { 
             user: fullUserData, 
-            stats: { recipesCount } 
+            subscription: subscription,
+            stats: { recipesCount, followersCount, likesCount },
+            recipes: { my: myRecipes, saved: savedRecipes, favorite: favoriteRecipes },
+            followedChefs: followedChefs
         });
 
     } catch (error) {
         console.error("Lỗi chi tiết khi tải trang Profile:", error);
-        res.status(500).send("Đã xảy ra lỗi khi tải dữ liệu người dùng.");
+        res.status(500).send("Đã xảy ra lỗi khi tải dữ liệu người dùng: " + error.message);
     }
 });
+
 app.get('/dashboard', requireAuth, (req, res) => res.render('dashboard'));
 
 // --- D. Membership & Stripe Checkout Routes ---
@@ -179,10 +266,10 @@ app.post('/membership/create-checkout-session', requireAuth, async (req, res, ne
         let productName = '';
 
         if (plan === 'premium') {
-            unitAmount = 999; // $9.99
+            unitAmount = 999;
             productName = 'Premium Membership - Monthly';
         } else if (plan === 'vip') {
-            unitAmount = 2499; // $24.99
+            unitAmount = 2499;
             productName = 'VIP Membership - Monthly';
         } else {
             return res.redirect('/membership');
@@ -206,7 +293,7 @@ app.post('/membership/create-checkout-session', requireAuth, async (req, res, ne
             mode: 'payment',
             success_url: `${req.protocol}://${req.get('host')}/membership/success?plan=${plan}`,
             cancel_url: `${req.protocol}://${req.get('host')}/membership/checkout?plan=${plan}`,
-            customer_email: res.locals.user.email,
+            customer_email: res.locals.user ? res.locals.user.email : undefined,
         });
 
         res.redirect(303, session.url);
@@ -220,7 +307,6 @@ app.get('/membership/success', requireAuth, async (req, res, next) => {
     try {
         const plan = req.query.plan || 'premium';
 
-        // Cập nhật Role của User trực tiếp trong Database
         await User.update(
             { role: plan },
             { where: { id: res.locals.user.id } }
@@ -236,7 +322,7 @@ app.get('/membership/success', requireAuth, async (req, res, next) => {
     }
 });
 
-// --- E. Role-Protected Pages (Phân quyền theo Role) ---
+// --- E. Role-Protected Pages ---
 app.get('/recipes/premium-exclusive', authorize('premium', 'vip'), (req, res) => {
     res.render('premium-recipes');
 });
@@ -253,7 +339,12 @@ app.get('/admin/dashboard', authorize('admin'), (req, res) => {
 // API ROUTES & ERROR HANDLERS
 // ==========================================
 app.get('/health', healthController.getHealth);
-app.use('/api', apiRoutes);
+
+// MOUNT ROUTERS
+app.use('/api/v1', v1Router);
+if (apiRoutes) {
+    app.use('/api', apiRoutes);
+}
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
