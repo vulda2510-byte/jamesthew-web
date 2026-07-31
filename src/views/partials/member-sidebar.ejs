@@ -4,10 +4,17 @@
         <div class="brand-title">Chef James<br>Thew</div>
         
         <div class="user-mini-card">
-            <img src="<%= user.avatarUrl || '/images/default-avatar.jpg' %>" alt="Avatar" class="user-mini-avatar">
-            <div>
-                <div class="user-mini-name"><%= user.firstName ? (user.firstName + ' ' + user.lastName) : user.username %></div>
-                <div class="user-mini-role"><%= user.role ? user.role.toUpperCase() : 'FREE MEMBER' %></div>
+            <% if (user.avatarUrl) { %>
+                <img src="<%= user.avatarUrl %>" alt="Avatar" class="user-mini-avatar">
+            <% } else { %>
+                <div class="user-mini-avatar user-mini-avatar-placeholder">
+                    <%= (user.firstName || user.username || 'U').charAt(0).toUpperCase() %>
+                </div>
+            <% } %>
+            <div class="user-mini-text">
+                <div class="user-mini-name"><%= (user.firstName || user.lastName) ? (user.firstName + ' ' + user.lastName).trim() : user.username %></div>
+                <!-- Badge dùng chung nguồn dữ liệu với trang Subscription (profileService.resolveMembership) -->
+                <div class="user-mini-role"><%= (locals.membership && membership.planName ? membership.planName : user.role || 'free').toUpperCase() %> MEMBER</div>
             </div>
         </div>
 
@@ -31,11 +38,11 @@
         </nav>
     </div>
 
-    <div>
-        <button class="btn-book-table mb-4">BOOK PRIVATE TABLE</button>
-        <div class="d-flex flex-column gap-2 small text-muted">
-            <a href="/support" class="text-decoration-none text-muted">Support</a>
-            <a href="/logout" class="text-decoration-none text-muted">Logout</a>
+    <div class="sidebar-footer">
+        <button type="button" class="btn-book-table">BOOK PRIVATE TABLE</button>
+        <div class="sidebar-links">
+            <a href="/support">Support</a>
+            <a href="/logout">Logout</a>
         </div>
     </div>
 </aside>

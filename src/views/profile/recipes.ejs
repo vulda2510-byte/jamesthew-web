@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="/css/member-dashboard.css">
+<link rel="stylesheet" href="/css/profile.css">
+
+<%- include('../partials/header') %>
+
+<div class="dashboard-wrapper">
+    <%- include('../partials/member-sidebar', { user, activeTab, membership }) %>
+
+    <main class="main-viewport">
+        <div class="viewport-header">
+            <div class="viewport-heading">
+                <h1 class="page-title">Recipes</h1>
+                <p class="page-subtitle">Everything you've created and saved.</p>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <div class="sub-tab-buttons">
+                <button class="sub-tab-btn active" data-sub="my-recipes">
+                    My Recipes <span class="sub-tab-count"><%= (recipes && recipes.my) ? recipes.my.length : 0 %></span>
+                </button>
+                <button class="sub-tab-btn" data-sub="saved-recipes">
+                    Saved Recipes <span class="sub-tab-count"><%= (recipes && recipes.saved) ? recipes.saved.length : 0 %></span>
+                </button>
+            </div>
+
+            <!-- Sub Panel 1: My Recipes -->
+            <div class="sub-panel active" id="sub-my-recipes">
+                <% if (!recipes || !recipes.my || recipes.my.length === 0) { %>
+                    <div class="empty-state">
+                        <i class="fa-regular fa-file-lines empty-state-icon"></i>
+                        <p class="empty-state-title">No recipes yet</p>
+                        <p class="empty-state-text">Recipes you publish will appear here.</p>
+                    </div>
+                <% } else { %>
+                    <div class="profile-recipes-grid">
+                        <% recipes.my.forEach(r => { %>
+                            <article class="profile-recipe-card">
+                                <a href="/recipes/detail/<%= r.id %>" class="profile-recipe-thumb">
+                                    <% if (r.thumbnail_url) { %>
+                                        <img src="<%= r.thumbnail_url %>" alt="<%= r.title %>">
+                                    <% } else { %>
+                                        <span class="profile-recipe-thumb-fallback"><i class="fa-solid fa-utensils"></i></span>
+                                    <% } %>
+                                    <% if (r.is_premium) { %>
+                                        <span class="recipe-flag recipe-flag-premium">Premium</span>
+                                    <% } %>
+                                </a>
+                                <div class="profile-recipe-body">
+                                    <h4 class="profile-recipe-title">
+                                        <a href="/recipes/detail/<%= r.id %>"><%= r.title %></a>
+                                    </h4>
+                                    <div class="profile-recipe-meta">
+                                        <% if (r.difficulty) { %><span class="recipe-badge"><%= r.difficulty %></span><% } %>
+                                        <% const totalTime = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0); %>
+                                        <% if (totalTime > 0) { %><span class="meta-item"><i class="fa-regular fa-clock"></i> <%= totalTime %> min</span><% } %>
+                                        <% if (r.servings) { %><span class="meta-item"><i class="fa-solid fa-utensils"></i> <%= r.servings %></span><% } %>
+                                    </div>
+                                </div>
+                                <div class="profile-recipe-footer">
+                                    <span class="recipe-status status-<%= (r.status || 'draft').toLowerCase() %>"><%= r.status || 'draft' %></span>
+                                    <a href="/recipes/detail/<%= r.id %>" class="btn-view">View Recipe</a>
+                                </div>
+                            </article>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Sub Panel 2: Saved Recipes -->
+            <div class="sub-panel" id="sub-saved-recipes">
+                <% if (!recipes || !recipes.saved || recipes.saved.length === 0) { %>
+                    <div class="empty-state">
+                        <i class="fa-regular fa-bookmark empty-state-icon"></i>
+                        <p class="empty-state-title">No saved recipes</p>
+                        <p class="empty-state-text">Tap “Save Recipe” on any recipe to keep it here.</p>
+                        <a href="/recipes" class="btn-gold-outline">Browse Recipes</a>
+                    </div>
+                <% } else { %>
+                    <div class="profile-recipes-grid">
+                        <% recipes.saved.forEach(r => { %>
+                            <article class="profile-recipe-card">
+                                <a href="/recipes/detail/<%= r.id %>" class="profile-recipe-thumb">
+                                    <% if (r.thumbnail_url) { %>
+                                        <img src="<%= r.thumbnail_url %>" alt="<%= r.title %>">
+                                    <% } else { %>
+                                        <span class="profile-recipe-thumb-fallback"><i class="fa-solid fa-utensils"></i></span>
+                                    <% } %>
+                                    <% if (r.is_premium) { %>
+                                        <span class="recipe-flag recipe-flag-premium">Premium</span>
+                                    <% } %>
+                                </a>
+                                <div class="profile-recipe-body">
+                                    <h4 class="profile-recipe-title">
+                                        <a href="/recipes/detail/<%= r.id %>"><%= r.title %></a>
+                                    </h4>
+                                    <div class="profile-recipe-meta">
+                                        <% if (r.difficulty) { %><span class="recipe-badge"><%= r.difficulty %></span><% } %>
+                                        <% const totalTimeSaved = (r.prep_time_minutes || 0) + (r.cook_time_minutes || 0); %>
+                                        <% if (totalTimeSaved > 0) { %><span class="meta-item"><i class="fa-regular fa-clock"></i> <%= totalTimeSaved %> min</span><% } %>
+                                        <% if (r.servings) { %><span class="meta-item"><i class="fa-solid fa-utensils"></i> <%= r.servings %></span><% } %>
+                                    </div>
+                                </div>
+                                <div class="profile-recipe-footer">
+                                    <button class="btn-danger-outline btn-unsave-recipe" data-recipe-id="<%= r.id %>">Remove</button>
+                                    <a href="/recipes/detail/<%= r.id %>" class="btn-view">View Recipe</a>
+                                </div>
+                            </article>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script src="/js/profile.js"></script>

@@ -1,7 +1,42 @@
 'use strict';
 const recipeService = require('../services/recipe.service');
+const profileService = require('../services/profile.service');
 
 class RecipeController {
+  async getSaveStatus(req, res) {
+    try {
+      const userId = res.locals.user?.id;
+      const saved = await profileService.isRecipeSaved(userId, req.params.id);
+      return res.status(200).json({ success: true, saved });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message || 'Internal server error' });
+    }
+  }
+
+  async saveRecipe(req, res) {
+    try {
+      const userId = res.locals.user?.id;
+      const recipe = await recipeService.findById(req.params.id);
+      if (!recipe) {
+        return res.status(404).json({ success: false, message: 'Recipe not found' });
+      }
+      const result = await profileService.toggleSaveRecipe(userId, req.params.id, 'save');
+      return res.status(200).json({ success: true, ...result });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message || 'Internal server error' });
+    }
+  }
+
+  async unsaveRecipe(req, res) {
+    try {
+      const userId = res.locals.user?.id;
+      const result = await profileService.toggleSaveRecipe(userId, req.params.id, 'unsave');
+      return res.status(200).json({ success: true, ...result });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message || 'Internal server error' });
+    }
+  }
+
   async create(req, res) {
     try {
       // Create user_id should be handled from auth context usually, assuming req.body contains it for now

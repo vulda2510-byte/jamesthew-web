@@ -1,7 +1,7 @@
 <%- include('partials/header') %>
 <link rel="stylesheet" href="/css/recipe-detail.css">
 
-<main class="container mt-section recipe-detail-page">
+<main class="container mt-section recipe-detail-page" data-logged-in="<%= locals.user ? 'true' : 'false' %>">
     <!-- Section 1: Breadcrumb -->
     <nav class="breadcrumb premium-breadcrumb">
         <a href="/">Home</a> <span>/</span> 

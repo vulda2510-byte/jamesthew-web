@@ -17,10 +17,34 @@ const requireAuth = async (req, res, next) => {
 
         // Cập nhật dữ liệu mới nhất vào res.locals.user cho các View EJS
         res.locals.user = dbUser.toJSON();
+        req.user = res.locals.user;
         next();
     } catch (error) {
         console.error('Lỗi kiểm tra xác thực (requireAuth):', error);
         next(error);
+    }
+};
+
+// 1b. Bản JSON cho API routes: trả 401 JSON thay vì redirect sang /login
+// (requireAuth ném 302 HTML ngay cả cho request fetch(), khiến `await res.json()` phía client bị lỗi)
+const requireAuthApi = async (req, res, next) => {
+    try {
+        if (!res.locals.user) {
+            return res.status(401).json({ success: false, message: 'Not signed in.' });
+        }
+
+        const dbUser = await User.findByPk(res.locals.user.id);
+        if (!dbUser) {
+            res.clearCookie('token');
+            return res.status(401).json({ success: false, message: 'Not signed in.' });
+        }
+
+        res.locals.user = dbUser.toJSON();
+        req.user = res.locals.user;
+        next();
+    } catch (error) {
+        console.error('Lỗi kiểm tra xác thực (requireAuthApi):', error);
+        res.status(500).json({ success: false, message: 'Authentication check failed.' });
     }
 };
 
@@ -77,6 +101,7 @@ const protectView = requireAuth;
 
 module.exports = {
     requireAuth,
+    requireAuthApi,
     requireGuest,
     authorize,
     protectView

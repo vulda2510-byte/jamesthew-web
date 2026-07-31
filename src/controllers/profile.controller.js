@@ -1,52 +1,75 @@
 // src/controllers/profile.controller.js
-const { User, UserProfile, Recipe } = require('../models');
+const profileService = require('../services/profile.service');
 
 module.exports = {
-    // 1. Render Dashboard
-    async getDashboard(req, res) {
-        const userId = res.locals.user.id;
-        const currentUser = await User.findByPk(userId, { include: [{ model: UserProfile, as: 'profile' }] });
-        const recipesCount = await Recipe.count({ where: { user_id: userId } });
+    // 1. Dashboard: profile overview stats + bio card + followed chefs
+    async getDashboard(req, res, next) {
+        try {
+            const userId = res.locals.user.id;
+            const data = await profileService.getDashboardData(userId);
+            if (!data) return res.redirect('/logout');
 
-        res.render('profile/dashboard', {
-            user: { ...currentUser.toJSON(), ...currentUser.profile },
-            stats: { recipesCount, followersCount: '8.4k' },
-            activeTab: 'dashboard'
-        });
+            const followedChefs = await profileService.getFollowedChefs(userId);
+
+            res.render('profile/dashboard', {
+                ...data,
+                followedChefs,
+                activeTab: 'dashboard'
+            });
+        } catch (error) {
+            console.error('profile.controller.getDashboard error:', error);
+            next(error);
+        }
     },
 
-    // 2. Render Recipes
-    async getRecipes(req, res) {
-        const userId = res.locals.user.id;
-        const currentUser = await User.findByPk(userId, { include: [{ model: UserProfile, as: 'profile' }] });
-        const myRecipes = await Recipe.findAll({ where: { user_id: userId } });
+    // 2. Recipes: My Recipes & Saved Recipes
+    async getRecipes(req, res, next) {
+        try {
+            const userId = res.locals.user.id;
+            const data = await profileService.getRecipesData(userId);
+            if (!data) return res.redirect('/logout');
 
-        res.render('profile/recipes', {
-            user: { ...currentUser.toJSON(), ...currentUser.profile },
-            myRecipes,
-            activeTab: 'recipes'
-        });
+            res.render('profile/recipes', {
+                ...data,
+                activeTab: 'recipes'
+            });
+        } catch (error) {
+            console.error('profile.controller.getRecipes error:', error);
+            next(error);
+        }
     },
 
-    // 3. Render Subscription
-    async getSubscription(req, res) {
-        const userId = res.locals.user.id;
-        const currentUser = await User.findByPk(userId, { include: [{ model: UserProfile, as: 'profile' }] });
+    // 3. Subscription details
+    async getSubscription(req, res, next) {
+        try {
+            const userId = res.locals.user.id;
+            const data = await profileService.getSubscriptionData(userId);
+            if (!data) return res.redirect('/logout');
 
-        res.render('profile/subscription', {
-            user: { ...currentUser.toJSON(), ...currentUser.profile },
-            activeTab: 'subscription'
-        });
+            res.render('profile/subscription', {
+                ...data,
+                activeTab: 'subscription'
+            });
+        } catch (error) {
+            console.error('profile.controller.getSubscription error:', error);
+            next(error);
+        }
     },
 
-    // 4. Render Settings
-    async getSettings(req, res) {
-        const userId = res.locals.user.id;
-        const currentUser = await User.findByPk(userId, { include: [{ model: UserProfile, as: 'profile' }] });
+    // 4. Account settings (profile info, email, password)
+    async getSettings(req, res, next) {
+        try {
+            const userId = res.locals.user.id;
+            const data = await profileService.getSettingsData(userId);
+            if (!data) return res.redirect('/logout');
 
-        res.render('profile/settings', {
-            user: { ...currentUser.toJSON(), ...currentUser.profile },
-            activeTab: 'settings'
-        });
+            res.render('profile/settings', {
+                ...data,
+                activeTab: 'settings'
+            });
+        } catch (error) {
+            console.error('profile.controller.getSettings error:', error);
+            next(error);
+        }
     }
 };

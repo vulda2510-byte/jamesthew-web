@@ -6,14 +6,15 @@ module.exports = {
     await queryInterface.createTable('contest_submissions', {
       id: {
         type: Sequelize.CHAR(100),
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
         allowNull: false
       },
       contest_id: {
-        type: Sequelize.CHAR(100),
+        type: Sequelize.CHAR(100), 
         allowNull: false,
         references: {
-          model: 'contests',
+          model: 'contests', // Tên bảng tham chiếu
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -29,18 +30,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      title: {
-        type: Sequelize.STRING(255),
-        allowNull: false
-      },
-      image_url: {
-        type: Sequelize.STRING(500),
-        allowNull: true
-      },
-      content: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
+      // ... các trường khác (title, description, image_url, v.v.)
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -53,12 +43,9 @@ module.exports = {
       }
     }, {
       charset: 'utf8mb4',
-      collate: 'utf8mb4_unicode_ci',
+      collate: 'utf8mb4_unicode_ci', // ⚠️ Đảm bảo khớp charset/collate với bảng contests
       engine: 'InnoDB'
     });
-
-    await queryInterface.addIndex('contest_submissions', ['contest_id'], { name: 'idx_submissions_contest_id' });
-    await queryInterface.addIndex('contest_submissions', ['user_id'], { name: 'idx_submissions_user_id' });
   },
 
   async down(queryInterface, Sequelize) {

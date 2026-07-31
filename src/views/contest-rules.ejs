@@ -1,28 +1,37 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Điều Lệ Cuộc Thi</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-    <%- include('partials/header') %>
+<%- include('partials/header') %>
 
-    <div class="container my-4">
-        <h2>📜 Quy Định & Điều Lệ Chung</h2>
-        <div class="card p-4 mt-3">
-            <h4>1. Quy định tham gia</h4>
-            <p>Mọi thành viên có tài khoản từ hạng Premium trở lên đều có quyền nộp bài tham gia cuộc thi.</p>
+<div class="container my-4">
+    <h2 class="section-title">Contest Rules</h2>
+    <p class="text-muted mb-4">Official rules for JamesThew cooking competitions.</p>
 
-            <h4>2. Quy định tính điểm (Dual-Rating)</h4>
-            <ul>
-                <li><strong>Like Rate:</strong> Đánh giá lượt yêu thích trực tiếp từ cộng đồng.</li>
-                <li><strong>Star Rate:</strong> Điểm đánh giá tổng hợp tự động tính toán dựa trên độ tương tác (Like, Comment) và điểm giám khảo trên thang điểm 5.0.</li>
-            </ul>
+    <div class="card p-4">
+        <h4>1. Eligibility</h4>
+        <p>Premium and VIP members may submit contest entries. Free members can browse contests and vote on submissions.</p>
 
-            <h4>3. Giới hạn hành động hàng ngày (Daily Limits)</h4>
-            <p>Để chống spam, các hành động hỏi đáp FAQ và Bình luận sẽ được áp dụng hạn mức theo phân cấp tài khoản (Free / Premium / VIP).</p>
-        </div>
+        <h4>2. Scoring (Dual-Rating)</h4>
+        <ul>
+            <li><strong>Like Rate:</strong> Community likes on your submission.</li>
+            <li><strong>Star Rate:</strong> Combined score from engagement (likes, comments) and judge ratings (1–5 scale).</li>
+        </ul>
+
+        <h4>3. Daily Limits</h4>
+        <p>FAQ questions and comments are limited per day by membership tier (Free / Premium / VIP) to prevent spam.</p>
+
+        <h4>4. Submissions</h4>
+        <ul>
+            <li>One original recipe per contest unless stated otherwise.</li>
+            <li>Include a photo and clear instructions.</li>
+            <li>Plagiarized or offensive content will be removed.</li>
+        </ul>
+
+        <h4>5. Winners</h4>
+        <p>Winners are announced on the <a href="/contests/winners">Winners page</a> after each contest closes. Prizes vary by event.</p>
     </div>
-</body>
-</html>
+
+    <div class="mt-4">
+        <a href="/contests" class="btn btn-outline">Back to Contests</a>
+        <a href="/contests/faq" class="btn btn-primary ms-2">View FAQ</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

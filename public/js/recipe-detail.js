@@ -224,22 +224,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Xử lý Sự kiện Nút Lưu & Chia sẻ
+    // Xử lý Sự kiện Nút Lưu (persist vào saved_recipes qua API, không chỉ đổi UI)
     const btnSave = document.getElementById('btnSaveRecipe');
     if (btnSave) {
-        let isSaved = false;
-        btnSave.addEventListener('click', () => {
-            isSaved = !isSaved;
-            if (isSaved) {
+        const isLoggedIn = document.querySelector('.recipe-detail-page')?.dataset.loggedIn === 'true';
+
+        function renderSaveState(saved) {
+            if (saved) {
                 btnSave.innerHTML = '❤️ Saved to Box';
                 btnSave.style.backgroundColor = '#f8d7da';
                 btnSave.style.color = '#721c24';
-                if (typeof AppNotify !== 'undefined') AppNotify.success('Recipe saved to your personal collection successfully!', 'COLLECTION');
             } else {
                 btnSave.innerHTML = '🔖 Save Recipe';
                 btnSave.style.backgroundColor = 'transparent';
                 btnSave.style.color = 'inherit';
-                if (typeof AppNotify !== 'undefined') AppNotify.info('Recipe removed from your saved box.', 'COLLECTION');
+            }
+        }
+
+        // Tải trạng thái đã lưu hay chưa khi vào trang (chỉ khi đã đăng nhập)
+        if (isLoggedIn) {
+            fetch(`/api/v1/recipes/${recipeId}/save`, { credentials: 'same-origin' })
+                .then(res => res.json())
+                .then(data => { if (data.success) renderSaveState(data.saved); })
+                .catch(() => {});
+        }
+
+        btnSave.addEventListener('click', async () => {
+            if (!isLoggedIn) {
+                if (typeof AppNotify !== 'undefined') {
+                    AppNotify.info('Please log in to save recipes.', 'LOGIN REQUIRED');
+                } else {
+                    alert('Please log in to save recipes.');
+                }
+                window.location.href = '/login';
+                return;
+            }
+
+            const currentlySaved = btnSave.innerHTML.includes('Saved to Box');
+            const method = currentlySaved ? 'DELETE' : 'POST';
+
+            btnSave.disabled = true;
+            try {
+                const response = await fetch(`/api/v1/recipes/${recipeId}/save`, {
+                    method,
+                    credentials: 'same-origin'
+                });
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    renderSaveState(result.saved);
+                    if (typeof AppNotify !== 'undefined') {
+                        AppNotify[result.saved ? 'success' : 'info'](
+                            result.saved ? 'Recipe saved to your personal collection successfully!' : 'Recipe removed from your saved box.',
+                            'COLLECTION'
+                        );
+                    }
+                } else {
+                    if (typeof AppNotify !== 'undefined') AppNotify.error(result.message || 'Could not update saved recipes.', 'ERROR');
+                }
+            } catch (error) {
+                console.error('Error saving recipe:', error);
+                if (typeof AppNotify !== 'undefined') AppNotify.error('Connection error. Please try again.', 'ERROR');
+            } finally {
+                btnSave.disabled = false;
             }
         });
     }

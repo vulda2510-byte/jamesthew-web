@@ -25,6 +25,10 @@ const Like = require('./like')(sequelize, DataTypes);
 const FAQ = require('./faq')(sequelize, DataTypes);
 const DailyLimit = require('./dailyLimit')(sequelize, DataTypes);
 const Contact = require('./contact')(sequelize, DataTypes);
+const SavedRecipe = require('./savedrecipe')(sequelize, DataTypes);
+const UserFollow = require('./userfollow')(sequelize, DataTypes);
+const MembershipPlan = require('./membershipplan')(sequelize, DataTypes);
+const UserSubscription = require('./usersubscription')(sequelize, DataTypes);
 
 const db = {
   sequelize,
@@ -47,7 +51,11 @@ const db = {
   FAQ,
   UserProfile,
   DailyLimit,
-  Contact
+  Contact,
+  SavedRecipe,
+  UserFollow,
+  MembershipPlan,
+  UserSubscription
 };
 
 // 2. Tự động gọi hàm associate() bên trong từng model (Nếu có)

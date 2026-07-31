@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="/css/member-dashboard.css">
+<link rel="stylesheet" href="/css/profile.css">
+
+<%- include('../partials/header') %>
+
+<div class="dashboard-wrapper">
+    <%- include('../partials/member-sidebar', { user, activeTab, membership }) %>
+
+    <main class="main-viewport">
+        <div class="viewport-header">
+            <div class="viewport-heading">
+                <h1 class="page-title">Subscription</h1>
+                <p class="page-subtitle">Your current membership and billing details.</p>
+            </div>
+        </div>
+
+        <div class="content-card mb-24">
+            <div class="subscription-plan-card">
+                <div class="subscription-plan-info">
+                    <div class="plan-heading">
+                        <h4 class="plan-name"><%= membership.planName %></h4>
+                        <span class="status-pill <%= (membership.status || 'active').toLowerCase() %>"><%= membership.status %></span>
+                    </div>
+
+                    <% if (membership.price !== null && membership.price !== undefined) { %>
+                        <p class="plan-price">
+                            $<%= Number(membership.price).toFixed(2) %>
+                            <% if (membership.billingCycle) { %><span class="plan-price-cycle">/ <%= membership.billingCycle %></span><% } %>
+                        </p>
+                    <% } %>
+
+                    <div class="subscription-meta">
+                        <div class="subscription-meta-item">
+                            <span class="label">Start Date</span>
+                            <span class="value"><%= membership.startDate ? new Date(membership.startDate).toLocaleDateString() : '—' %></span>
+                        </div>
+                        <div class="subscription-meta-item">
+                            <span class="label">End Date</span>
+                            <span class="value"><%= membership.endDate ? new Date(membership.endDate).toLocaleDateString() : 'No expiration' %></span>
+                        </div>
+                        <div class="subscription-meta-item">
+                            <span class="label">Auto Renew</span>
+                            <span class="value"><%= membership.autoRenew === null ? '—' : (membership.autoRenew ? 'Yes' : 'No') %></span>
+                        </div>
+                        <div class="subscription-meta-item">
+                            <span class="label">Billing Cycle</span>
+                            <span class="value"><%= membership.billingCycle || '—' %></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subscription-actions">
+                    <a href="/membership" class="btn-gold-solid">Change Plan</a>
+                </div>
+            </div>
+        </div>
+
+        <% if (membership.features && membership.features.length) { %>
+            <div class="content-card">
+                <h3 class="card-title"><i class="fa-solid fa-circle-check"></i> What's Included</h3>
+                <ul class="plan-features-list">
+                    <% membership.features.forEach(feature => { %>
+                        <li><%= feature %></li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+    </main>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script src="/js/profile.js"></script>

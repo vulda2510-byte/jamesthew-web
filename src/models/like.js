@@ -5,14 +5,19 @@ module.exports = (sequelize, DataTypes) => {
   class Like extends Model {
     static associate(models) {
       Like.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+      Like.belongsTo(models.Recipe, { foreignKey: 'target_id', constraints: false, as: 'recipe' });
     }
   }
 
   Like.init({
-    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
-    user_id: { type: DataTypes.UUID, allowNull: false },
-    target_id: { type: DataTypes.UUID, allowNull: false },
-    target_type: { type: DataTypes.ENUM('contest', 'submission', 'user_profile'), allowNull: false }
+    id: { type: DataTypes.STRING(100), defaultValue: DataTypes.UUIDV4, primaryKey: true },
+    user_id: { type: DataTypes.STRING(100), allowNull: false },
+    target_id: { type: DataTypes.STRING(100), allowNull: false },
+    // BỔ SUNG THÊM 'recipe' VÀO ENUM
+    target_type: { 
+      type: DataTypes.ENUM('contest', 'submission', 'user_profile', 'recipe'), 
+      allowNull: false 
+    }
   }, {
     sequelize,
     modelName: 'Like',

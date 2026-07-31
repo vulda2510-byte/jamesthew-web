@@ -4,22 +4,31 @@ const { FAQ, User } = require('../models');
 class FAQRepository {
   async findAll(filters = {}) {
     const { category, search } = filters;
-    const whereCondition = { status: ['answered', 'pending'] };
+    const { Op } = require('sequelize');
+    const whereCondition = {
+      status: { [Op.in]: ['answered', 'pending'] },
+      is_active: true
+    };
 
     if (category) whereCondition.category = category;
     if (search) {
-      whereCondition.question = { [require('sequelize').Op.like]: `%${search}%` };
+      whereCondition.question = { [Op.like]: `%${search}%` };
     }
 
     return FAQ.findAll({
       where: whereCondition,
-      include: [{ model: User, as: 'author', attributes: ['id', 'username'] }],
+      include: [{ model: User, as: 'author', attributes: ['id', 'username'], required: false }],
       order: [['created_at', 'DESC']]
     });
   }
 
   async create(data) {
-    return FAQ.create(data);
+    return FAQ.create({
+      ...data,
+      answer: data.answer || null,
+      status: data.status || 'pending',
+      is_active: true
+    });
   }
 
   async answerQuestion(id, answerText) {

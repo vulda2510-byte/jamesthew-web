@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="/css/member-dashboard.css">
+<link rel="stylesheet" href="/css/profile.css">
+
+<%- include('../partials/header') %>
+
+<div class="dashboard-wrapper">
+    <%- include('../partials/member-sidebar', { user, activeTab, membership }) %>
+
+    <main class="main-viewport">
+        <div class="viewport-header">
+            <div class="viewport-heading">
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle">Welcome back, <%= user.firstName || user.username %>.</p>
+            </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <span class="stat-card-value"><%= (stats && stats.recipesCount) || 0 %></span>
+                <span class="stat-card-label">Recipes</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card-value"><%= (stats && stats.followersCount) || 0 %></span>
+                <span class="stat-card-label">Followers</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card-value"><%= (stats && stats.likesCount) || 0 %></span>
+                <span class="stat-card-label">Likes</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card-value"><%= (stats && stats.savedCount) || 0 %></span>
+                <span class="stat-card-label">Saved</span>
+            </div>
+        </div>
+
+        <% if (membership && membership.planName && membership.planName.toLowerCase() === 'free') { %>
+        <div class="upgrade-banner">
+            <div class="banner-text">
+                <h3><i class="fa-solid fa-lock"></i> Unlock Masterclass Recipes</h3>
+                <p>Upgrade to Premium or VIP plan to access exclusive masterchef guidebooks and private culinary events.</p>
+            </div>
+            <a href="/profile/subscription" class="btn-gold-solid">Upgrade Plan</a>
+        </div>
+        <% } %>
+
+        <!-- Search User -->
+        <div class="content-card mb-24">
+            <h3 class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Find Chefs &amp; Users</h3>
+            <form id="searchUserForm" class="search-form" autocomplete="off">
+                <div class="search-input-group">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchInput" name="q" placeholder="Search by name or username..." minlength="2" required>
+                </div>
+                <button type="submit" class="btn-gold-solid">Search</button>
+            </form>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+
+        <div class="content-card mb-24">
+            <h3 class="card-title"><i class="fa-solid fa-circle-info"></i> About Chef</h3>
+            <div class="info-grid">
+                <div class="info-row">
+                    <span class="info-label">Biography</span>
+                    <span class="info-value"><%= (user && user.bio) || 'No biography provided yet.' %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Cooking Style</span>
+                    <span class="info-value text-gold"><%= (user && user.cookingStyle) || 'Not specified' %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Location</span>
+                    <span class="info-value"><%= (user && user.location) || 'Not specified' %></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Website</span>
+                    <span class="info-value">
+                        <% if (user && user.website) { %>
+                            <a href="<%= user.website %>" target="_blank" rel="noopener" class="link-gold"><%= user.website %></a>
+                        <% } else { %>
+                            Not specified
+                        <% } %>
+                    </span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="/profile/settings" class="btn-gold-outline">Edit Profile</a>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3 class="card-title"><i class="fa-solid fa-users"></i> Chefs You Follow</h3>
+            <% if (!followedChefs || followedChefs.length === 0) { %>
+                <div class="empty-state">
+                    <i class="fa-regular fa-user empty-state-icon"></i>
+                    <p class="empty-state-title">Not following anyone yet</p>
+                    <p class="empty-state-text">Use the search above to find chefs and follow their work.</p>
+                </div>
+            <% } else { %>
+                <div class="chefs-list">
+                    <% followedChefs.forEach(chef => { %>
+                        <div class="chef-card">
+                            <div class="chef-card-identity">
+                                <% if (chef.profile && chef.profile.avatar_url) { %>
+                                    <img src="<%= chef.profile.avatar_url %>" alt="" class="chef-avatar">
+                                <% } else { %>
+                                    <div class="chef-avatar chef-avatar-placeholder"><%= chef.username.charAt(0).toUpperCase() %></div>
+                                <% } %>
+                                <div>
+                                    <div class="chef-name"><%= (chef.profile && (chef.profile.first_name || chef.profile.last_name)) ? [chef.profile.first_name, chef.profile.last_name].filter(Boolean).join(' ') : chef.username %></div>
+                                    <div class="chef-handle">@<%= chef.username %></div>
+                                </div>
+                            </div>
+                            <button class="btn-danger-outline btn-unfollow" data-chef-id="<%= chef.id %>">Unfollow</button>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </main>
+</div>
+
+<%- include('../partials/footer') %>
+
+<script src="/js/profile.js"></script>
